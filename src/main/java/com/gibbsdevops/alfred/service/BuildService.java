@@ -1,0 +1,17 @@
+package com.gibbsdevops.alfred.service;
+
+import com.gibbsdevops.alfred.model.job.Job;
+
+public interface BuildService {
+
+    public void submit(Job job);
+
+    public void starting(Job job);
+
+    public void finished(Job job);
+
+    void failed(Job job, String reason);
+
+    void logOutput(Job job, String line);
+
+}
