@@ -23,7 +23,6 @@ public class SimpleJobRepository implements JobRepository {
     private static final Logger LOG = LoggerFactory.getLogger(SimpleJobRepository.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final String DB_FILE = "jobs-db.json";
-    private static int nextId = 1;
 
     private List<Job> jobs;
 
@@ -41,44 +40,58 @@ public class SimpleJobRepository implements JobRepository {
     }
 
     @Override
-    public Job create(PushEvent event) {
-        Job job = new Job();
-        job.setOrganization(event.getOrganization());
-        job.setRepository(event.getRepository());
-        job.setRef(event.getRef());
-        job.setCommit(event.getHeadCommit());
-        job.setPusher(event.getPusher());
-        job.setStatus("queued");
-
-        job.setId(jobs.size() + 1);
-        jobs.add(job);
-        saveList(jobs);
-
+    public void save(Job job) {
+        if (job.getId() == null) {
+            job.setId(nextId());
+        }
+        write(job);
         send(job);
-        return job;
     }
 
-    @Override
-    public void save(Job job) {
+    void write(Job job) {
+        new File("jobs").mkdirs();
+        File f = fileFor(job.getId());
+        try {
+            mapper.writeValue(f, job);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to write file: " + f.getAbsolutePath(), e);
+        }
+    }
 
-        jobs.set(job.getId() - 1, job);
-        saveList(jobs);
+    int nextId() {
+        int id = 0;
+        while (true) {
+            if (!fileFor(id).exists()) {
+                return id;
+            }
+            id++;
+        }
+    }
 
-        send(job);
+    File fileFor(int id) {
+        return new File(new File("jobs"), String.format("%07d", id) + ".json");
     }
 
     @Override
     public Set<Job> getJobs() {
-        return Sets.newHashSet(getList());
-    }
+        Set<Job> jobs = Sets.newHashSet();
 
-    void saveList(List<Job> jobs) {
-        File jsonDb = new File(DB_FILE);
-        try {
-            mapper.writeValue(jsonDb, jobs);
-        } catch (IOException e) {
-            LOG.warn("Failed to write to {}", DB_FILE, e);
+        File f;
+        boolean done = false;
+        for (int id = 0; done; id++) {
+            f = fileFor(id);
+            if (f.exists()) {
+                try {
+                    jobs.add(mapper.readValue(f, Job.class));
+                } catch (IOException e) {
+                    throw new RuntimeException("Unable to load file: " + f.getAbsolutePath(), e);
+                }
+            } else {
+                done = true;
+            }
         }
+
+        return jobs;
     }
 
     List<Job> getList() {

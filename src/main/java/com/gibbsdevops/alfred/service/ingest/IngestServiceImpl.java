@@ -48,8 +48,16 @@ public class IngestServiceImpl implements IngestService {
             return;
         }
 
-        // create new job
-        Job job = jobRepository.create(event);
+        Job job = new Job();
+        job.setOrganization(event.getOrganization());
+        job.setRepository(event.getRepository());
+        job.setRef(event.getRef());
+        job.setCommit(event.getHeadCommit());
+        job.setPusher(event.getPusher());
+        job.setStatus("queued");
+
+        // save job
+        jobRepository.save(job);
 
         // submit job for building
         buildService.submit(job);

@@ -7,8 +7,6 @@ import java.util.Set;
 
 public interface JobRepository {
 
-    public Job create(PushEvent event);
-
     public void save(Job event);
 
     public Set<Job> getJobs();
