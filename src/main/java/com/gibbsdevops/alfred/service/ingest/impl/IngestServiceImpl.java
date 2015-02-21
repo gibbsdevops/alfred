@@ -1,11 +1,11 @@
-package com.gibbsdevops.alfred.service.ingest;
+package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.service.IngestService;
 import com.gibbsdevops.alfred.model.events.github.PushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
-import com.gibbsdevops.alfred.service.BuildService;
-import com.gibbsdevops.alfred.service.JobRepository;
+import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.ingest.IngestService;
+import com.gibbsdevops.alfred.service.job.JobService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class IngestServiceImpl implements IngestService {
     private SimpMessagingTemplate template;
 
     @Autowired
-    private JobRepository jobRepository;
+    private JobService jobService;
 
     @Autowired
     private BuildService buildService;
@@ -57,7 +57,7 @@ public class IngestServiceImpl implements IngestService {
         job.setStatus("queued");
 
         // save job
-        jobRepository.save(job);
+        jobService.save(job);
 
         // submit job for building
         buildService.submit(job);

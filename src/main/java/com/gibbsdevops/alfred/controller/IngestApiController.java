@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.controller;
 
 import com.gibbsdevops.alfred.model.events.github.PushEvent;
-import com.gibbsdevops.alfred.service.IngestService;
+import com.gibbsdevops.alfred.service.ingest.IngestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

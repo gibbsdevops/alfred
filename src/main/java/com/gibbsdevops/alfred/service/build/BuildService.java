@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.service;
+package com.gibbsdevops.alfred.service.build;
 
 import com.gibbsdevops.alfred.model.job.Job;
 

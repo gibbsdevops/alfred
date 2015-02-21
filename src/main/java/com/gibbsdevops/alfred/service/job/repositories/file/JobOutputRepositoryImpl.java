@@ -1,10 +1,10 @@
-package com.gibbsdevops.alfred.service.repositories;
+package com.gibbsdevops.alfred.service.job.repositories.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gibbsdevops.alfred.model.events.job.JobLine;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.model.job.JobOutput;
-import com.gibbsdevops.alfred.service.JobOutputRepository;
+import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @Service
 public class JobOutputRepositoryImpl implements JobOutputRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SimpleJobRepository.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileJobRepository.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired

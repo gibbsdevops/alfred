@@ -1,6 +1,7 @@
 package com.gibbsdevops.alfred.controller;
 
-import com.gibbsdevops.alfred.service.JobRepository;
+import com.gibbsdevops.alfred.service.job.JobService;
+import com.gibbsdevops.alfred.service.job.repositories.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HistoryController extends ApiController {
 
     @Autowired
-    private JobRepository jobRepository;
+    private JobService jobService;
 
     @RequestMapping(method = RequestMethod.GET)
     public Object history() {
-        return jobRepository.getJobs();
+        return jobService.getJobs();
     }
 
 }

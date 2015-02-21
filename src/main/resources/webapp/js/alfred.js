@@ -116,36 +116,45 @@ function execConnect() {
 }
 
 function connect() {
-    var url = '/api/broker.socket'
+
+    function openSocket(url) {
+        var ws = new SockJS(url);
+
+        stompClient = Stomp.over(ws);
+        stompClient.heartbeat.outgoing = 2000;
+        stompClient.heartbeat.incoming = 2000;
+        stompClient.debug = null
+
+        stompClient.connect({}, function(frame) {
+            console.log('Connected');
+            stompClient.subscribe('/topic/github', function(event){
+                Alfred.Socket.receive_message(event);
+                handleGitHubEvent(JSON.parse(event.body));
+            });
+            stompClient.subscribe('/topic/jobs', function(event){
+                Alfred.Socket.receive_message(event);
+                handleJob(JSON.parse(event.body));
+            });
+            stompClient.subscribe('/topic/job-line', function(event){
+                Alfred.Socket.receive_message(event);
+                handleJobLine(JSON.parse(event.body));
+            });
+        }, function(msg) {
+            console.log("Socket closed, scheduling reconnection...");
+            setTimeout(connect, 3000);
+        });
+    }
+
     console.log("Connecting")
 
-    // stompClient = Stomp.client(url, 'v11.stomp');
-
-    var ws = new SockJS(url);
-
-    stompClient = Stomp.over(ws);
-    stompClient.heartbeat.outgoing = 2000;
-    stompClient.heartbeat.incoming = 2000;
-    stompClient.debug = null
-
-    stompClient.connect({}, function(frame) {
-        console.log('Connected');
-        stompClient.subscribe('/topic/github', function(event){
-            Alfred.Socket.receive_message(event);
-            handleGitHubEvent(JSON.parse(event.body));
-        });
-        stompClient.subscribe('/topic/jobs', function(event){
-            Alfred.Socket.receive_message(event);
-            handleJob(JSON.parse(event.body));
-        });
-        stompClient.subscribe('/topic/job-line', function(event){
-            Alfred.Socket.receive_message(event);
-            handleJobLine(JSON.parse(event.body));
-        });
-    }, function(msg) {
-        console.log("Socket closed, scheduling reconnection...");
-        setTimeout(connect, 3000);
+    $.getJSON("api/settings/system", function(settings) {
+        console.log(settings);
+        openSocket(settings["websocket-uri"])
     });
+
+    var url = '/api/broker.socket'
+
+    // stompClient = Stomp.client(url, 'v11.stomp');
 }
 
 function disconnect() {

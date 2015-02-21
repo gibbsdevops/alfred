@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.service;
+package com.gibbsdevops.alfred.service.ingest;
 
 import com.gibbsdevops.alfred.model.events.github.PushEvent;
 

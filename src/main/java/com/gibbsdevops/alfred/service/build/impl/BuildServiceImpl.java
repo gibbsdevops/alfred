@@ -1,9 +1,9 @@
-package com.gibbsdevops.alfred.service.build;
+package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.job.Job;
-import com.gibbsdevops.alfred.service.BuildService;
-import com.gibbsdevops.alfred.service.JobOutputRepository;
-import com.gibbsdevops.alfred.service.JobRepository;
+import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
+import com.gibbsdevops.alfred.service.job.JobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class BuildServiceImpl implements BuildService {
     ExecutorService buildExecutor;
 
     @Autowired
-    private JobRepository jobRepository;
+    private JobService jobService;
 
     @Autowired
     private JobOutputRepository jobOutputRepository;
@@ -38,7 +38,7 @@ public class BuildServiceImpl implements BuildService {
         LOG.info("Started building job {}", job);
 
         job.setStatus("in-progress");
-        jobRepository.save(job);
+        jobService.save(job);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BuildServiceImpl implements BuildService {
         LOG.info("Building job {} complete", job);
 
         job.setStatus("complete");
-        jobRepository.save(job);
+        jobService.save(job);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BuildServiceImpl implements BuildService {
         LOG.info("Building job {} failed: {}", job, reason);
         job.setStatus("failed");
         job.setError(reason);
-        jobRepository.save(job);
+        jobService.save(job);
     }
 
     @Override
