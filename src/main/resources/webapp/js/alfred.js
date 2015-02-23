@@ -58,6 +58,9 @@ Alfred.Job.build = function(j) {
 Alfred.Commit = Ember.Object.extend({
     id: null,
     shortId: function() {
+        if (this.get('id') == null) {
+            return "";
+        }
         return this.get('id').substring(0,7);
     }.property('id')
 });
@@ -90,23 +93,97 @@ Alfred.RunningJobsClass = Ember.ArrayController.extend({
 });
 Alfred.RunningJobs = Alfred.RunningJobsClass.create();
 
+Alfred.FadeInView = Ember.View.extend({
+    didInsertElement: function(){
+        this.$().hide().fadeIn("fast");
+    }
+});
+
 Alfred.IndexRoute = Ember.Route.extend({
     model: function(params) {
-        console.log("IndexRoute.model params=" + JSON.stringify(params));
+        // console.log("IndexRoute.model params=" + JSON.stringify(params));
         return Alfred.SortedJobs;
     },
     setupController : function(controller, model) {
-        console.log("IndexRoute.setupController model=" + JSON.stringify(model));
-        controller.set('jobs', model);
+        // console.log("IndexRoute.setupController model=" + JSON.stringify(model));
+        controller.set('model', model);
         controller.set('running_jobs', Alfred.RunningJobs);
         controller.set('socket', Alfred.Socket);
     }
-})
+});
 
-Alfred.FadeInView = Ember.View.extend({
-    didInsertElement: function(){
-        // this.$().hide().show(100);
+Alfred.Org = Ember.Object.extend({
+});
+
+Alfred.Org.find = function(id) {
+    console.log("Find org " + id);
+    return Alfred.Org.create();
+};
+
+Alfred.Repo = Ember.Object.extend({
+});
+
+Alfred.Repo.find = function(id) {
+    console.log("Find repo " + id);
+    return Alfred.Repo.create();
+}
+
+Alfred.OrgRoute = Ember.Route.extend({
+    setupController : function(controller, model) {
+        controller.set('model', model);
+        controller.set('socket', Alfred.Socket);
+    },
+    serialize: function(/* org */ model) {
+        if (model == null) return null;
+        if (typeof model.get == 'function') {
+            return { org_id: model.get('login') };
+        }
+        return { org_id: model.login };
+    },
+    renderTemplate: function() {
+        this.render('org');
     }
+});
+
+Alfred.RepoRoute = Ember.Route.extend({
+    model: function(id) {
+        console.log('Loading Repo for route - ' + JSON.stringify(id))
+        return Alfred.Repo.create({ repo_id: id.repo_id, name: 'infra20-example' });
+    },
+    setupController: function(controller, model) {
+        controller.set('model', model);
+        controller.set('socket', Alfred.Socket);
+    },
+    serialize: function(/* repo */ model) {
+        if (model == null) return null;
+        if (typeof model.get == 'function') {
+            return { org_id: 'devops', repo_id: model.get('name') };
+        }
+        return { org_id: 'devops', repo_id: model.name };
+    }
+});
+
+/*
+Alfred.Router.map(function() {
+    this.resource('orgs', function() {
+        this.resource('org', { path: '/:org_id' }, function() {
+            this.resource('repos', function() {
+                this.resource('repo', { path: '/:repo_id' });
+            });
+        });
+    });
+});
+*/
+
+Alfred.Router.map(function() {
+    this.resource('orgs', function() {
+        this.resource('org', { path: '/:org_id' }, function() {
+            this.resource('repos', function() {
+                this.resource('repo', { path: '/:repo_id' }, function() {
+                });
+            });
+        });
+    });
 });
 
 var stompClient = null;

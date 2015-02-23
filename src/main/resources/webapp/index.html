@@ -64,48 +64,45 @@
             font-size: 14px;
             font-weight: bold;
         }
+
+        a {
+            color: black;
+        }
     </style>
 
 </head>
 
 <body>
-<script type="text/x-handlebars" data-template-name="index">
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Alfred</a>
+<script type="text/x-handlebars" data-template-name="navbar">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Alfred</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!--
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">Builds</a></li>
+                    <li><a href="#contact">Repos</a></li>
+                    -->
+                </ul>
+            </div>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <!--
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">Builds</a></li>
-                <li><a href="#contact">Repos</a></li>
-                -->
-            </ul>
-        </div>
-    </div>
-</nav>
+    </nav>
+</script>
 
-<div class="container">
-
-    <div>
-        <h1>Alfred CI Server</h1>
-        <p class="lead">Automatically builds and tests Commits or Pull Requests from GitHub.</p>
-    </div>
-
-    <div style="text-align: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
-
+<script type="text/x-handlebars" data-template-name="running-jobs-mini">
     <div class="running-jobs-mini">
-        {{#each job in running_jobs}}
-        {{#view Alfred.FadeInView contentBinding="this"}}
+        {{#each job in this}}
+        {{#view "fadeIn" contentBinding="this"}}
         <div class="running-job-mini">
             <div><span class="badge"><i class="glyphicon glyphicon-scale"></i> {{job.id}}</span> <a href="#" class="org-link">{{job.organization.login}}</a> / <a href="#" class="repo-link">{{job.repository.name}}</a></div>
             <div class="mini-console">
@@ -120,7 +117,9 @@
         {{/view}}
         {{/each}}
     </div>
+</script>
 
+<script type="text/x-handlebars" data-template-name="latest-job-table">
     <table class="table table-condensed table-hover">
     <thead>
         <tr>
@@ -133,10 +132,13 @@
         </tr>
     </thead>
     <tbody>
-        {{#each job in jobs}}
+        {{#each job in this}}
         <tr>
             <th>{{job.id}}</th>
-            <td>{{job.organization.login}}/{{job.repository.name}}</td>
+            <td>
+                {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}}
+                /{{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
+            </td>
             <td>{{job.pusher.name}}</td>
             <td>{{job.commit.message}}</td>
             <td>{{job.commit.shortId}} ({{job.branch}})</td>
@@ -145,9 +147,76 @@
         {{/each}}
     </tbody>
     </table>
+</script>
 
-</div>
+<script type="text/x-handlebars" data-template-name="index">
 
+    {{render "navbar"}}
+
+    <div class="container">
+
+        <div>
+            <h1>Alfred CI Server</h1>
+            <p class="lead">Automatically builds and tests Commits or Pull Requests from GitHub.</p>
+        </div>
+
+        <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
+
+        {{render "running-jobs-mini" running_jobs}}
+
+        {{render "latest-job-table" model}}
+
+    </div>
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="org">
+{{outlet}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="org/index">
+
+    {{render "navbar"}}
+
+    <div class="container">
+
+        <div>
+            <h1>{{login}}</h1>
+        </div>
+
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">{{login}}</li>
+        </ol>
+
+        <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
+
+        org template
+
+    </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="repo/index">
+
+    {{render "navbar"}}
+
+    <div class="container">
+
+        <div>
+            <h1>{{name}}</h1>
+        </div>
+
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">{{org.login}}</li>
+            <li class="active">{{name}}</li>
+        </ol>
+
+        <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
+
+        repo template
+
+    </div>
 </script>
 
 <!-- Placed at the end of the document so the pages load faster -->
