@@ -1,0 +1,214 @@
+{
+  "ref": "refs/heads/master",
+  "before": "e16835eb6e938d67a44d266c40c28dae2385c1de",
+  "after": "aac0701e0166f48fbd99c611c48ffe49643a36e4",
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/gibbsdevops/alfred/compare/e16835eb6e93...aac0701e0166",
+  "commits": [
+    {
+      "id": "c978fc899e7028f093fcc4e20e8286e336bac967",
+      "distinct": true,
+      "message": "Start on orgs and repos",
+      "timestamp": "2015-02-22T20:59:06-06:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/c978fc899e7028f093fcc4e20e8286e336bac967",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/service/PingService.java",
+        "src/main/java/com/gibbsdevops/alfred/web/RequestLogger.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/config/AppConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/controller/IngestApiController.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Repository.java",
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js"
+      ]
+    },
+    {
+      "id": "aac0701e0166f48fbd99c611c48ffe49643a36e4",
+      "distinct": true,
+      "message": "Add some sample github events",
+      "timestamp": "2015-02-22T21:00:12-06:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/aac0701e0166f48fbd99c611c48ffe49643a36e4",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/resources/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+        "src/test/resources/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+        "src/test/resources/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+        "src/test/resources/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+        "src/test/resources/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+        "src/test/resources/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "aac0701e0166f48fbd99c611c48ffe49643a36e4",
+    "distinct": true,
+    "message": "Add some sample github events",
+    "timestamp": "2015-02-22T21:00:12-06:00",
+    "url": "https://github.com/gibbsdevops/alfred/commit/aac0701e0166f48fbd99c611c48ffe49643a36e4",
+    "author": {
+      "name": "Shane Gibbs",
+      "email": "shane@hands.net.nz",
+      "username": "shanegibbs"
+    },
+    "committer": {
+      "name": "Shane Gibbs",
+      "email": "shane@hands.net.nz",
+      "username": "shanegibbs"
+    },
+    "added": [
+      "src/test/resources/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+      "src/test/resources/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+      "src/test/resources/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+      "src/test/resources/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+      "src/test/resources/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+      "src/test/resources/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json"
+    ],
+    "removed": [
+
+    ],
+    "modified": [
+
+    ]
+  },
+  "repository": {
+    "id": 30513996,
+    "name": "alfred",
+    "full_name": "gibbsdevops/alfred",
+    "owner": {
+      "name": "gibbsdevops",
+      "email": null
+    },
+    "private": false,
+    "html_url": "https://github.com/gibbsdevops/alfred",
+    "description": "Alfred CI Server",
+    "fork": false,
+    "url": "https://github.com/gibbsdevops/alfred",
+    "forks_url": "https://api.github.com/repos/gibbsdevops/alfred/forks",
+    "keys_url": "https://api.github.com/repos/gibbsdevops/alfred/keys{/key_id}",
+    "collaborators_url": "https://api.github.com/repos/gibbsdevops/alfred/collaborators{/collaborator}",
+    "teams_url": "https://api.github.com/repos/gibbsdevops/alfred/teams",
+    "hooks_url": "https://api.github.com/repos/gibbsdevops/alfred/hooks",
+    "issue_events_url": "https://api.github.com/repos/gibbsdevops/alfred/issues/events{/number}",
+    "events_url": "https://api.github.com/repos/gibbsdevops/alfred/events",
+    "assignees_url": "https://api.github.com/repos/gibbsdevops/alfred/assignees{/user}",
+    "branches_url": "https://api.github.com/repos/gibbsdevops/alfred/branches{/branch}",
+    "tags_url": "https://api.github.com/repos/gibbsdevops/alfred/tags",
+    "blobs_url": "https://api.github.com/repos/gibbsdevops/alfred/git/blobs{/sha}",
+    "git_tags_url": "https://api.github.com/repos/gibbsdevops/alfred/git/tags{/sha}",
+    "git_refs_url": "https://api.github.com/repos/gibbsdevops/alfred/git/refs{/sha}",
+    "trees_url": "https://api.github.com/repos/gibbsdevops/alfred/git/trees{/sha}",
+    "statuses_url": "https://api.github.com/repos/gibbsdevops/alfred/statuses/{sha}",
+    "languages_url": "https://api.github.com/repos/gibbsdevops/alfred/languages",
+    "stargazers_url": "https://api.github.com/repos/gibbsdevops/alfred/stargazers",
+    "contributors_url": "https://api.github.com/repos/gibbsdevops/alfred/contributors",
+    "subscribers_url": "https://api.github.com/repos/gibbsdevops/alfred/subscribers",
+    "subscription_url": "https://api.github.com/repos/gibbsdevops/alfred/subscription",
+    "commits_url": "https://api.github.com/repos/gibbsdevops/alfred/commits{/sha}",
+    "git_commits_url": "https://api.github.com/repos/gibbsdevops/alfred/git/commits{/sha}",
+    "comments_url": "https://api.github.com/repos/gibbsdevops/alfred/comments{/number}",
+    "issue_comment_url": "https://api.github.com/repos/gibbsdevops/alfred/issues/comments{/number}",
+    "contents_url": "https://api.github.com/repos/gibbsdevops/alfred/contents/{+path}",
+    "compare_url": "https://api.github.com/repos/gibbsdevops/alfred/compare/{base}...{head}",
+    "merges_url": "https://api.github.com/repos/gibbsdevops/alfred/merges",
+    "archive_url": "https://api.github.com/repos/gibbsdevops/alfred/{archive_format}{/ref}",
+    "downloads_url": "https://api.github.com/repos/gibbsdevops/alfred/downloads",
+    "issues_url": "https://api.github.com/repos/gibbsdevops/alfred/issues{/number}",
+    "pulls_url": "https://api.github.com/repos/gibbsdevops/alfred/pulls{/number}",
+    "milestones_url": "https://api.github.com/repos/gibbsdevops/alfred/milestones{/number}",
+    "notifications_url": "https://api.github.com/repos/gibbsdevops/alfred/notifications{?since,all,participating}",
+    "labels_url": "https://api.github.com/repos/gibbsdevops/alfred/labels{/name}",
+    "releases_url": "https://api.github.com/repos/gibbsdevops/alfred/releases{/id}",
+    "created_at": 1423447114,
+    "updated_at": "2015-02-23T03:00:16Z",
+    "pushed_at": 1424660415,
+    "git_url": "git://github.com/gibbsdevops/alfred.git",
+    "ssh_url": "git@github.com:gibbsdevops/alfred.git",
+    "clone_url": "https://github.com/gibbsdevops/alfred.git",
+    "svn_url": "https://github.com/gibbsdevops/alfred",
+    "homepage": "",
+    "size": 164,
+    "stargazers_count": 0,
+    "watchers_count": 0,
+    "language": "Java",
+    "has_issues": true,
+    "has_downloads": true,
+    "has_wiki": true,
+    "has_pages": false,
+    "forks_count": 0,
+    "mirror_url": null,
+    "open_issues_count": 0,
+    "forks": 0,
+    "open_issues": 0,
+    "watchers": 0,
+    "default_branch": "master",
+    "stargazers": 0,
+    "master_branch": "master",
+    "organization": "gibbsdevops"
+  },
+  "pusher": {
+    "name": "shanegibbs",
+    "email": "shane@hands.net.nz"
+  },
+  "organization": {
+    "login": "gibbsdevops",
+    "id": 10710439,
+    "url": "https://api.github.com/orgs/gibbsdevops",
+    "repos_url": "https://api.github.com/orgs/gibbsdevops/repos",
+    "events_url": "https://api.github.com/orgs/gibbsdevops/events",
+    "members_url": "https://api.github.com/orgs/gibbsdevops/members{/member}",
+    "public_members_url": "https://api.github.com/orgs/gibbsdevops/public_members{/member}",
+    "avatar_url": "https://avatars.githubusercontent.com/u/10710439?v=3",
+    "description": null
+  },
+  "sender": {
+    "login": "shanegibbs",
+    "id": 2838876,
+    "avatar_url": "https://avatars.githubusercontent.com/u/2838876?v=3",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/shanegibbs",
+    "html_url": "https://github.com/shanegibbs",
+    "followers_url": "https://api.github.com/users/shanegibbs/followers",
+    "following_url": "https://api.github.com/users/shanegibbs/following{/other_user}",
+    "gists_url": "https://api.github.com/users/shanegibbs/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/shanegibbs/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/shanegibbs/subscriptions",
+    "organizations_url": "https://api.github.com/users/shanegibbs/orgs",
+    "repos_url": "https://api.github.com/users/shanegibbs/repos",
+    "events_url": "https://api.github.com/users/shanegibbs/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/shanegibbs/received_events",
+    "type": "User",
+    "site_admin": false
+  }
+}

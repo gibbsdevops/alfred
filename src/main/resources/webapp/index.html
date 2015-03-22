@@ -136,8 +136,7 @@
         <tr>
             <th>{{job.id}}</th>
             <td>
-                {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}}
-                /{{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
+                {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}} / {{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
             </td>
             <td>{{job.pusher.name}}</td>
             <td>{{job.commit.message}}</td>
@@ -191,7 +190,11 @@
 
         <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
 
-        org template
+        <br />
+
+        <h3>Organization Jobs</h3>
+
+        {{render "latest-job-table" jobs}}
 
     </div>
 </script>
@@ -208,13 +211,17 @@
 
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li class="active">{{org.login}}</li>
+            <li>{{#link-to 'org' organization}}{{organization.login}}{{/link-to}}</li>
             <li class="active">{{name}}</li>
         </ol>
 
         <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
 
-        repo template
+        <br />
+
+        <h3>Repo Jobs</h3>
+
+        {{render "latest-job-table" jobs}}
 
     </div>
 </script>

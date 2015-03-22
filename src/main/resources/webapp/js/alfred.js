@@ -49,10 +49,36 @@ Alfred.Job = Ember.Object.extend({
 });
 
 Alfred.Job.build = function(j) {
-   job = Alfred.Job.create(j);
-   job.set('commit', Alfred.Commit.create(job.commit));
-   job.set('output', []);
-   return job;
+    job = Alfred.Job.create(j);
+    job.set('commit', Alfred.Commit.create(job.commit));
+    job.set('output', []);
+
+    // parse org into tree
+    var plainOrg = null;
+    if (j['organization'] && j['organization']['login']) {
+        plainOrg = j['organization'];
+    } else {
+        plainOrg = { 'id': j['repository']['owner']['email'], 'login': j['repository']['owner']['name'] }
+    }
+
+    var org = Alfred.OrgsByLogin[plainOrg.login];
+    if (org == null) {
+        org = Alfred.Org.create(plainOrg);
+        Alfred.OrgsByLogin[plainOrg.login] = org;
+    }
+    job.set('organization', org);
+
+    // parse repo into tree
+    var repoPath = org.get('login') + '/' + j['repository']['name'];
+    var repo = Alfred.ReposByPath[repoPath];
+    if (repo == null) {
+        repo = Alfred.Repo.create(j['repository']);
+        repo.set('organization', org);
+        Alfred.ReposByPath[repoPath] = repo;
+    }
+    job.set('repository', repo);
+
+    return job;
 };
 
 Alfred.Commit = Ember.Object.extend({
@@ -113,6 +139,12 @@ Alfred.IndexRoute = Ember.Route.extend({
 });
 
 Alfred.Org = Ember.Object.extend({
+    id: null,
+    login: null,
+    all_jobs: Alfred.SortedJobs,
+    jobs: function() {
+        return this.get('all_jobs').filterBy('organization.login', this.get('login'));
+    }.property('all_jobs.@each.organization.login', 'login')
 });
 
 Alfred.Org.find = function(id) {
@@ -120,13 +152,36 @@ Alfred.Org.find = function(id) {
     return Alfred.Org.create();
 };
 
+Alfred.Orgs = Ember.A([]);
+Alfred.OrgsByLogin = {};
+
 Alfred.Repo = Ember.Object.extend({
+    name: null,
+    organization: null,
+    jobs: function() {
+        var org = this.get('organization');
+        if (org == null) throw "Repo is missing organization";
+
+        var jobs = org.get('jobs');
+        if (jobs.get('length') < 1) throw "No jobs in org";
+
+        var name = this.get('name');
+        if (name == null) throw "Repository has no name";
+
+        var filtered = jobs.filterBy('repository.name', name);
+        if (filtered.get('length') < 1) throw "No jobs in org after filter";
+
+        return filtered;
+    }.property('organization', 'organization.jobs.@each.repository.name', 'name')
 });
 
 Alfred.Repo.find = function(id) {
     console.log("Find repo " + id);
     return Alfred.Repo.create();
 }
+
+Alfred.Repos = Ember.A([]);
+Alfred.ReposByPath = {};
 
 Alfred.OrgRoute = Ember.Route.extend({
     setupController : function(controller, model) {
