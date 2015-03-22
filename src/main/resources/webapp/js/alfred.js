@@ -1,5 +1,7 @@
+console.log('Alfred version 0');
+
 window.Alfred = Ember.Application.create({
-  LOG_TRANSITIONS: true
+  LOG_TRANSITIONS: false
 });
 
 Alfred.SocketClass = Ember.Object.extend({
@@ -61,21 +63,13 @@ Alfred.Job.build = function(j) {
         plainOrg = { 'id': j['repository']['owner']['email'], 'login': j['repository']['owner']['name'] }
     }
 
-    var org = Alfred.OrgsByLogin[plainOrg.login];
-    if (org == null) {
-        org = Alfred.Org.create(plainOrg);
-        Alfred.OrgsByLogin[plainOrg.login] = org;
-    }
+    var org = Alfred.Org.find(plainOrg.login, plainOrg);
+    if (org == null) throw "org is null"
+    if (org.login == null) throw "org.login is null"
     job.set('organization', org);
 
     // parse repo into tree
-    var repoPath = org.get('login') + '/' + j['repository']['name'];
-    var repo = Alfred.ReposByPath[repoPath];
-    if (repo == null) {
-        repo = Alfred.Repo.create(j['repository']);
-        repo.set('organization', org);
-        Alfred.ReposByPath[repoPath] = repo;
-    }
+    var repo = Alfred.Repo.findByOrgAndName(org, j['repository']['name'], j['repository']);
     job.set('repository', repo);
 
     return job;
@@ -147,11 +141,6 @@ Alfred.Org = Ember.Object.extend({
     }.property('all_jobs.@each.organization.login', 'login')
 });
 
-Alfred.Org.find = function(id) {
-    console.log("Find org " + id);
-    return Alfred.Org.create();
-};
-
 Alfred.Orgs = Ember.A([]);
 Alfred.OrgsByLogin = {};
 
@@ -163,21 +152,54 @@ Alfred.Repo = Ember.Object.extend({
         if (org == null) throw "Repo is missing organization";
 
         var jobs = org.get('jobs');
-        if (jobs.get('length') < 1) throw "No jobs in org";
+        // if (jobs.get('length') < 1) throw "No jobs in org";
 
         var name = this.get('name');
         if (name == null) throw "Repository has no name";
 
         var filtered = jobs.filterBy('repository.name', name);
-        if (filtered.get('length') < 1) throw "No jobs in org after filter";
+        // if (filtered.get('length') < 1) throw "No jobs in org after filter";
 
         return filtered;
     }.property('organization', 'organization.jobs.@each.repository.name', 'name')
 });
 
-Alfred.Repo.find = function(id) {
-    console.log("Find repo " + id);
-    return Alfred.Repo.create();
+Alfred.Org.find = function(id, data) {
+    // console.log("Alfred.Org.find " + id + ', ' + (data != null));
+    var org = Alfred.OrgsByLogin[id];
+    if (org == null) {
+        console.log('New org: ' + id);
+        if (data != null) {
+            org = Alfred.Org.create(data);
+        } else {
+            org = Alfred.Org.create({ 'login': id });
+        }
+        Alfred.OrgsByLogin[id] = org;
+    }
+    return org;
+};
+
+Alfred.Repo.findByOrgAndName = function(org, name, data) {
+    console.log("Alfred.Repo.findByOrgAndName " + org.login + ', ' + name + ', ' + (data != null));
+    if (data != null && data.name == null) throw "data supplied but name is null";
+    if (data != null && name != data.name) throw "data supplied but name does not match";
+
+    var repoPath = org.login + '/' + name;
+
+    var repo = Alfred.ReposByPath[repoPath];
+    if (repo == null) {
+        if (data != null) {
+            repo = Alfred.Repo.create(data);
+        } else {
+            repo = Alfred.Repo.create({ 'name': name });
+        }
+        repo.set('organization', org);
+        Alfred.ReposByPath[repoPath] = repo;
+    } else if (data != null) {
+        repo.set('name', data.name);
+    }
+
+    return repo;
 }
 
 Alfred.Repos = Ember.A([]);
@@ -201,9 +223,24 @@ Alfred.OrgRoute = Ember.Route.extend({
 });
 
 Alfred.RepoRoute = Ember.Route.extend({
-    model: function(id) {
-        console.log('Loading Repo for route - ' + JSON.stringify(id))
-        return Alfred.Repo.create({ repo_id: id.repo_id, name: 'infra20-example' });
+    model: function(id, trans) {
+        var org = trans.resolvedModels.org;
+        if (org == null) throw "no org found for repo in route"
+
+        console.log('Loading Repo for route - ' + org.login + '/' + id.repo_id)
+
+        var repo = Alfred.Repo.findByOrgAndName(org, id.repo_id);
+
+        /*
+        var repoPath = org.login + '/' + id;
+        var repo = Alfred.ReposByPath[repoPath];
+        if (repo == null) {
+            repo = Alfred.Repo.create({ 'name': id.repo_id, 'organization': org });
+            Alfred.ReposByPath[repoPath] = repo;
+        }
+        */
+
+        return repo;
     },
     setupController: function(controller, model) {
         controller.set('model', model);
@@ -280,7 +317,7 @@ function connect() {
     console.log("Connecting")
 
     $.getJSON("api/settings/system", function(settings) {
-        console.log(settings);
+        console.log('Settings: ' + JSON.stringify(settings));
         openSocket(settings["websocket-uri"])
     });
 
@@ -297,6 +334,7 @@ function disconnect() {
 
 function load_history() {
     $.getJSON("api/history/jobs", function(data) {
+        console.log('Loading history');
         $.each(data, function(index, j) {
             handleJob(j);
         });
