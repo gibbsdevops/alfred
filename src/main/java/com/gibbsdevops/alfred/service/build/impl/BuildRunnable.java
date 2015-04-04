@@ -2,6 +2,7 @@ package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,12 @@ public class BuildRunnable implements Runnable {
         LOG.info("Starting Builder #{}", job.getId());
         buildService.starting(job);
 
-        File executable = new File("ci-script.bat");
+        File executable = null;
+        if (SystemUtils.IS_OS_WINDOWS) {
+            executable = new File("ci-script.bat");
+        } else {
+            executable = new File("ci-script.sh");
+        }
 
         String[] cmd = new String[]{executable.getAbsolutePath()};
         Runtime rt = Runtime.getRuntime();
