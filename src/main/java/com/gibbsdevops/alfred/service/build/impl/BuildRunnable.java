@@ -2,11 +2,16 @@ package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class BuildRunnable implements Runnable {
 
@@ -33,24 +38,34 @@ public class BuildRunnable implements Runnable {
         LOG.info("Starting Builder #{}", job.getId());
         buildService.starting(job);
 
-        File executable = null;
+        String command = "ci-script.sh";
         if (SystemUtils.IS_OS_WINDOWS) {
-            executable = new File("ci-script.bat");
-        } else {
-            executable = new File("ci-script.sh");
+            command = "ci-script.bat";
         }
 
-        String[] cmd = new String[]{executable.getAbsolutePath()};
-        Runtime rt = Runtime.getRuntime();
-
+        File workspace = null;
         try {
-            Process proc = rt.exec(cmd);
+            workspace = new File("workspace", job.getId().toString());
+            FileUtils.forceDelete(workspace);
+            workspace.mkdirs();
 
-            BuildInputStream errStream = new BuildInputStream(job, proc.getErrorStream(), buildService);
+            String fullCommand = new File(command).getAbsolutePath();
+
+            ProcessBuilder pb = new ProcessBuilder(fullCommand);
+            pb.directory(workspace);
+            pb.environment().put("ALFRED_JOB_ID", job.getId().toString());
+            pb.environment().put("ALFRED_REPO_NAME", job.getRepository().getName());
+            pb.environment().put("ALFRED_ORG_NAME", job.getOrganization().getLogin());
+            pb.environment().put("ALFRED_GIT_URL", job.getRepository().getGitUrl());
+            pb.environment().put("ALFRED_GIT_SSH_URL", job.getRepository().getSshUrl());
+            pb.redirectErrorStream(true);
+
+            Process proc = pb.start();
             BuildInputStream stdStream = new BuildInputStream(job, proc.getInputStream(), buildService);
 
-            errStream.start();
             stdStream.start();
+
+            // TODO new process stuff
 
             int exitVal = proc.waitFor();
 
@@ -61,6 +76,13 @@ public class BuildRunnable implements Runnable {
             buildService.failed(job, t.getMessage());
         } finally {
             Thread.currentThread().setName("Builder - Open");
+            if (workspace != null) {
+                try {
+                    FileUtils.forceDelete(workspace);
+                } catch (IOException e) {
+                    LOG.warn("Unable to delete temp dir {}", workspace.getAbsolutePath(), e);
+                }
+            }
         }
     }
 
