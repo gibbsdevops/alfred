@@ -27,6 +27,9 @@ public class FileJobRepository implements JobRepository {
     public void save(Job job) {
         if (job.getId() == null) {
             job.setId(nextId());
+            job.setVersion(0);
+        } else {
+            job.setVersion(job.getVersion() + 1);
         }
         write(job);
     }

@@ -110,6 +110,13 @@ Alfred.SortedJobs = Ember.ArrayController.create({
   sortAscending: false
 });
 
+Alfred.SortedLatestJobsClass = Ember.Object.extend({
+    model: function() {
+        return this.get('ref').slice(0, 10);
+    }.property('ref', 'ref.@each')
+});
+Alfred.SortedLatestJobs = Alfred.SortedLatestJobsClass.create({ ref: Alfred.SortedJobs });
+
 Alfred.RunningJobsClass = Ember.ArrayController.extend({
   jobs: Alfred.Jobs,
   model: function() {
@@ -129,7 +136,7 @@ Alfred.FadeInView = Ember.View.extend({
 Alfred.IndexRoute = Ember.Route.extend({
     model: function(params) {
         // console.log("IndexRoute.model params=" + JSON.stringify(params));
-        return Alfred.SortedJobs;
+        return Alfred.SortedLatestJobs;
     },
     setupController : function(controller, model) {
         // console.log("IndexRoute.setupController model=" + JSON.stringify(model));
@@ -144,7 +151,7 @@ Alfred.Org = Ember.Object.extend({
     login: null,
     all_jobs: Alfred.SortedJobs,
     jobs: function() {
-        return this.get('all_jobs').filterBy('organization.login', this.get('login'));
+        return this.get('all_jobs').filterBy('organization.login', this.get('login')).slice(0, 10);
     }.property('all_jobs.@each.organization.login', 'login')
 });
 
@@ -165,9 +172,7 @@ Alfred.Repo = Ember.Object.extend({
         if (name == null) throw "Repository has no name";
 
         var filtered = jobs.filterBy('repository.name', name);
-        // if (filtered.get('length') < 1) throw "No jobs in org after filter";
-
-        return filtered;
+        return filtered.slice(0, 10);
     }.property('organization', 'organization.jobs.@each.repository.name', 'name'),
     branches: function() {
         var jobs = this.get('jobs');
@@ -263,21 +268,23 @@ Alfred.RepoIndexController = Ember.Controller.extend({
     actions: {
         build: function() {
             var repo = this.get('model');
-            console.log('build ' + this.get('gitSpec'));
+            var spec = this.get('gitSpec');
+            if (spec == '') spec = 'master';
 
-            var jobRequest = {
+            var request = {
                 'repo': repo.get('name'),
                 'organization': repo.get('organization').get('login'),
-                'spec': this.get('gitSpec')
+                'spec': spec
             };
 
-            $.post("api/jobs", JSON.stringify(jobRequest), function(response) {
-                console.log('Response: ' + JSON.stringify(response));
+            console.log('Job Response: ' + JSON.stringify(request));
+            $.post("api/job", JSON.stringify(request), function(response) {
+                console.log('Job Response: ' + JSON.stringify(response));
             }, 'json');
 
         }
     },
-    gitSpec: 'master'
+    gitSpec: ''
 });
 
 Alfred.RepoRoute = Ember.Route.extend({
@@ -401,7 +408,7 @@ function disconnect() {
 }
 
 function load_history() {
-    $.getJSON("api/history/jobs", function(data) {
+    $.getJSON("api/history/jobs?limit=100", function(data) {
         console.log('Loading history');
         $.each(data, function(index, j) {
             handleJob(j);
@@ -425,25 +432,36 @@ function generateJobElement(job) {
     return pre;
 }
 
+function JobIdsCompare(a, b) {
+  return parseInt(a) - parseInt(b);
+}
+
 function handleJob(j) {
     job = Alfred.Job.build(j);
 
     existing = Alfred.JobsById[job.get('id')];
     if (existing != null) {
-        if (existing.get('status') == 'in-progress' && job.get('status') == 'complete') {
-            setTimeout(function() {
-                existing.set('status', 'complete');
-            }, 3000);
-        } else {
+        if (existing.get('version') < job.get('version')) {
+            existing.set('version', job.get('version'));
             existing.set('status', job.get('status'));
             existing.set('error', job.get('error'));
         }
-
     } else {
-
         Alfred.JobsById[job.get('id')] = job;
         Alfred.Jobs.pushObject(job);
     }
+
+    /*
+    if (Alfred.Jobs.length > 100) {
+        var ids = Object.keys(Alfred.JobsById);
+        ids.sort(JobIdsCompare);
+        id = ids[0];
+
+        var obj = Alfred.Jobs.findProperty('id', parseInt(id));
+        Alfred.Jobs.removeObject(obj);
+        delete Alfred.JobsById[id];
+    }
+    */
 }
 
 function handleJobLine(l) {

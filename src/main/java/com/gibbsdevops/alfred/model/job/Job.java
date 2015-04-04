@@ -8,6 +8,7 @@ import com.gibbsdevops.alfred.model.events.github.User;
 public class Job {
 
     private Integer id;
+    private Integer version;
     private Organization organization;
     private Repository repository;
     private Commit commit;
@@ -27,6 +28,14 @@ public class Job {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Organization getOrganization() {

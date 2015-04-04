@@ -161,14 +161,11 @@
           <p class="lead">Automatically builds and tests Commits or Pull Requests from GitHub.</p>
         </div>
 
-        <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
-
         {{render "running-jobs-mini" running_jobs}}
 
-        {{render "latest-job-table" model}}
+        {{render "latest-job-table" model.model}}
 
       </div>
-
 
     </script>
 
@@ -191,11 +188,7 @@
           <li class="active">{{login}}</li>
         </ol>
 
-        <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
-
-        <br />
-
-        <h3>Organization Jobs</h3>
+        <!--<h3>Organization Jobs</h3>-->
 
         {{render "latest-job-table" jobs}}
 
@@ -210,7 +203,7 @@
           {{#with model as repo}}
 
           <div>
-            <h1>{{repo.name}} <small>repo</small></h1>
+            <h1>{{repo.name}}</h1>
           </div>
 
           <ol class="breadcrumb">
@@ -230,13 +223,11 @@
 
       {{#with model as repo}}
 
-        <div class="row">
+        <div class="row hidden">
           <div class="col-md-7">
-
             <div class="panel panel-default">
               <div class="panel-body">
                 <h4>Pull Requests</h4>
-
                 <table class="table table-condensed table-hover">
                   <thead>
                     <tr>
@@ -252,11 +243,9 @@
             </div>
           </div>
           <div class="col-md-5">
-
             <div class="panel panel-default">
               <div class="panel-body">
                 <h4>Branches</h4>
-
                 <table class="table table-condensed table-hover">
                   <thead>
                     <tr>
@@ -273,31 +262,19 @@
                     {{/each}}
                   </tbody>
                 </table>
-
               </div>
             </div>
           </div>
         </div>
-        <br />
 
-        <div class="row">
-          <div class="col-md-3">
-
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <h4>New Job</h4>
-                <div class="form-group">
-                  <label for="gitSpec">Git Spec</label>
-                  {{input value=gitSpec type="spec" class="form-control" placeholder="branch, revision, etc" }}
-                </div>
-                <button class="btn btn-primary" type="button" {{action 'build'}}>Build</button>
-              </div>
-            </div>
-
+        <div class="form-inline pull-right">
+          <div class="form-group">
+            {{input value=gitSpec type="spec" class="form-control" placeholder="branch, revision, etc" }}
           </div>
+          <button class="btn btn-primary" type="button" {{action 'build'}}>Build</button>
         </div>
 
-        <h3>Repo Jobs</h3>
+        <!--<h3 class="pull-left">Repo Jobs</h3>-->
 
         {{render "latest-job-table" repo.jobs}}
 
