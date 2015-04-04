@@ -5,8 +5,8 @@ $.ajaxSetup({
 });
 
 window.Alfred = Ember.Application.create({
-  LOG_TRANSITIONS: false,
-  LOG_ACTIVE_GENERATION: true,
+  LOG_TRANSITIONS: true,
+  LOG_ACTIVE_GENERATION: false,
   LOG_VIEW_LOOKUPS: false,
   LOG_RESOLVER: false
 });
@@ -38,7 +38,9 @@ Alfred.Job = Ember.Object.extend({
     id: null,
     ref: null,
     branch: function() {
-        return this.get('ref').replace("refs/heads/", "");
+        var ref = this.get('ref');
+        if (ref) return ref.replace("refs/heads/", "");
+        return null;
     }.property('ref'),
     output: null,
     last_line: function() {
@@ -57,19 +59,32 @@ Alfred.Job = Ember.Object.extend({
     }
 });
 
+Alfred.Job.find = function(id) {
+    id = parseInt(id);
+
+    // console.log("Alfred.Org.find " + id + ', ' + (data != null));
+    var job = Alfred.JobsById[id];
+    if (job == null) {
+        console.log('New job: ' + id);
+        job = Alfred.Job.create({ 'id': id, 'version': -1 });
+        Alfred.Jobs.pushObject(job);
+        Alfred.JobsById[id] = job;
+    }
+    return job;
+};
+
+Alfred.ParseRawOrg = function(raw) {
+    if (raw['organization'] && raw['organization']['login']) return raw['organization'];
+    return { 'id': raw['repository']['owner']['email'], 'login': raw['repository']['owner']['name'] }
+};
+
 Alfred.Job.build = function(j) {
     job = Alfred.Job.create(j);
+    job.set('id', parseInt(job.get('id')));
     job.set('commit', Alfred.Commit.create(job.commit));
     job.set('output', []);
 
-    // parse org into tree
-    var plainOrg = null;
-    if (j['organization'] && j['organization']['login']) {
-        plainOrg = j['organization'];
-    } else {
-        plainOrg = { 'id': j['repository']['owner']['email'], 'login': j['repository']['owner']['name'] }
-    }
-
+    var plainOrg = Alfred.ParseRawOrg(j);
     var org = Alfred.Org.find(plainOrg.login, plainOrg);
     if (org == null) throw "org is null"
     if (org.login == null) throw "org.login is null"
@@ -80,6 +95,34 @@ Alfred.Job.build = function(j) {
     job.set('repository', repo);
 
     return job;
+};
+
+Alfred.Job.update = function(job, data) {
+    if (job.get('version') < data.get('version')) {
+        console.log('Received job update. Version=' + data.get('version') + ', current version=' + job.get('version'));
+        job.set('version', data.get('version'));
+        job.set('status', data.get('status'));
+        job.set('error', data.get('error'));
+        job.set('ref', data.get('ref'));
+
+        if (job.get('commit') == null) {
+            job.set('commit', Alfred.Commit.create(data.commit));
+        }
+        var org = job.get('organization');
+        if (org == null) {
+            var plainOrg = Alfred.ParseRawOrg(data);
+            org = Alfred.Org.find(plainOrg.login, plainOrg);
+            job.set('organization', org);
+        }
+        if (job.get('repository') == null) {
+            job.set('repository', Alfred.Repo.findByOrgAndName(org, data.repository.name, data.repository));
+        }
+        if (job.get('commit') == null) {
+            job.set('commit', Alfred.Commit.create(data.commit));
+        }
+    } else {
+        console.log('Received stale job update. Version=' + data.get('version') + ', current version=' + job.get('version'));
+    }
 };
 
 Alfred.Commit = Ember.Object.extend({
@@ -213,7 +256,7 @@ Alfred.Org.find = function(id, data) {
 };
 
 Alfred.Repo.findByOrgAndName = function(org, name, data) {
-    console.log("Alfred.Repo.findByOrgAndName " + org.login + ', ' + name + ', ' + (data != null));
+    // console.log("Alfred.Repo.findByOrgAndName " + org.login + ', ' + name + ', ' + (data != null));
     if (data != null && data.name == null) throw "data supplied but name is null";
     if (data != null && name != data.name) throw "data supplied but name does not match";
 
@@ -330,17 +373,23 @@ Alfred.RepoIndexRoute = Ember.Route.extend({
     }
 });
 
-/*
-Alfred.Router.map(function() {
-    this.resource('orgs', function() {
-        this.resource('org', { path: '/:org_id' }, function() {
-            this.resource('repos', function() {
-                this.resource('repo', { path: '/:repo_id' });
-            });
-        });
-    });
+Alfred.JobRoute = Ember.Route.extend({
+    init: function() {
+        console.log('init JobRoute');
+    },
+    model: function(params) {
+        return Alfred.Job.find(params.id);
+    }
 });
-*/
+
+Alfred.JobIndexRoute = Ember.Route.extend({
+    init: function() {
+        console.log('init JobIndexRoute');
+    },
+    model: function(id, trans) {
+        return trans.resolvedModels.job;
+    }
+});
 
 Alfred.Router.map(function() {
     this.resource('orgs', function() {
@@ -349,6 +398,10 @@ Alfred.Router.map(function() {
                 this.resource('repo', { path: '/:repo_id' }, function() {
                 });
             });
+        });
+    });
+    this.resource('jobs', function() {
+        this.resource('job', { path: '/:id' }, function() {
         });
     });
 });
@@ -441,11 +494,7 @@ function handleJob(j) {
 
     existing = Alfred.JobsById[job.get('id')];
     if (existing != null) {
-        if (existing.get('version') < job.get('version')) {
-            existing.set('version', job.get('version'));
-            existing.set('status', job.get('status'));
-            existing.set('error', job.get('error'));
-        }
+        Alfred.Job.update(existing, job);
     } else {
         Alfred.JobsById[job.get('id')] = job;
         Alfred.Jobs.pushObject(job);

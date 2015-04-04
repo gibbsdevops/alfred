@@ -32,7 +32,7 @@ public class BuildRunnable implements Runnable {
         LOG.info("Starting Builder #{}", job.getId());
         buildService.starting(job);
 
-        File executable = new File("ci-script.sh");
+        File executable = new File("ci-script.bat");
 
         String[] cmd = new String[]{executable.getAbsolutePath()};
         Runtime rt = Runtime.getRuntime();

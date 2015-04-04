@@ -19,15 +19,21 @@
       }
       .is-stale {
       }
-      .mini-console {
+      .console {
         color: #F1F1F1;
         font-family: monospace;
         background-color: #2a2a2a;
         border-radius: 4px;
+        font-size: 12px;
+        overflow: hidden;
+        padding: 4px;
+        margin: 4px;
+      }
+      .mini-console {
+        border-radius: 4px;
         font-size: 6px;
         width: 256px;
         height: 144px;
-        overflow: hidden;
         padding: 4px;
         margin: 4px;
       }
@@ -49,7 +55,7 @@
         display: inline;
       }
 
-      .running-job-mini {
+      .running-job {
         float: left;
       }
       .running-jobs-mini {
@@ -73,6 +79,13 @@
   </head>
 
   <body>
+
+      <script type="text/x-handlebars" data-template-name="application">
+          {{render "navbar"}}
+          <div class="container">
+          {{outlet}}
+          </div>
+      </script>
 
     <script type="text/x-handlebars" data-template-name="navbar">
       <a href="https://github.com/gibbsdevops/alfred"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
@@ -105,9 +118,9 @@
       <div class="running-jobs-mini">
         {{#each job in this}}
         {{#view "fadeIn" contentBinding="this"}}
-        <div class="running-job-mini">
+        <div class="running-job running-job-mini">
           <div><span class="badge"><i class="glyphicon glyphicon-scale"></i> {{job.id}}</span> <a href="#" class="org-link">{{job.organization.login}}</a> / <a href="#" class="repo-link">{{job.repository.name}}</a></div>
-          <div class="mini-console">
+          <div class="console mini-console">
             {{#each line in job.output}}
             <div class="console-line">
               <div class="console-line-number">{{line.number}}</div>
@@ -135,7 +148,7 @@
         </thead>
         <tbody>
           {{#each job in this}}
-          <tr>
+          {{#link-to 'job' job tagName="tr"}}
             <th>{{job.id}}</th>
             <td>
               {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}} / {{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
@@ -144,17 +157,13 @@
             <td>{{job.commit.message}}</td>
             <td>{{job.commit.shortId}} ({{job.branch}})</td>
             <td>{{job.status}}</td>
-          </tr>
+          {{/link-to}}
           {{/each}}
         </tbody>
       </table>
     </script>
 
     <script type="text/x-handlebars" data-template-name="index">
-
-      {{render "navbar"}}
-
-      <div class="container">
 
         <div>
           <h1>Alfred CI Server</h1>
@@ -165,8 +174,6 @@
 
         {{render "latest-job-table" model.model}}
 
-      </div>
-
     </script>
 
     <script type="text/x-handlebars" data-template-name="org">
@@ -174,10 +181,6 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="org/index">
-
-      {{render "navbar"}}
-
-      <div class="container">
 
         <div>
           <h1>{{login}}</h1>
@@ -192,31 +195,23 @@
 
         {{render "latest-job-table" jobs}}
 
-      </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="repo">
-        {{render "navbar"}}
+        {{#with model as repo}}
 
-        <div class="container">
-
-          {{#with model as repo}}
-
-          <div>
+        <div>
             <h1>{{repo.name}}</h1>
-          </div>
+        </div>
 
-          <ol class="breadcrumb">
+        <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
             <li>{{#link-to 'org' repo.organization}}{{repo.organization.login}}{{/link-to}}</li>
             <li class="active">{{repo.name}}</li>
-          </ol>
+        </ol>
 
-          {{/with}}
-
-          {{outlet}}
-
-        </div>
+        {{/with}}
+        {{outlet}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="repo/index">
@@ -279,6 +274,52 @@
         {{render "latest-job-table" repo.jobs}}
 
         {{/with}}
+
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="job">
+
+        {{#with model as job}}
+
+        <div>
+        <h1>Build #{{job.id}}</h1>
+        </div>
+
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li>{{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}}</li>
+            <li>{{#link-to 'repo' job.organization job.repository}}{{job.repository.name}}{{/link-to}}</li>
+            <li class="active">{{job.id}}</li>
+        </ol>
+
+        {{/with}}
+
+        {{outlet}}
+
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="job/index">
+
+        <h4>Ref</h4>
+        <pre>{{ref}}</pre>
+        
+        <h4>Status</h4>
+        <pre>{{status}}</pre>
+
+        <h4>Error</h4>
+        <pre>{{error}}</pre>
+
+        <h4>Output</h4>
+          <div class="running-job">
+            <div class="console">
+              {{#each line in output}}
+              <div class="console-line">
+                <div class="console-line-number">{{line.number}}</div>
+                <div class="console-line-content">{{line.line}}</div>
+              </div>
+              {{/each}}
+            </div>
+          </div>
 
     </script>
 
