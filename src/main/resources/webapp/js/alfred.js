@@ -1,4 +1,4 @@
-console.log('Alfred version 0');
+console.log('Alfred version 1');
 
 $.ajaxSetup({
   contentType: "application/json; charset=utf-8"
