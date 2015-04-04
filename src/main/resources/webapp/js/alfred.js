@@ -69,6 +69,12 @@ Alfred.Job.find = function(id) {
         job = Alfred.Job.create({ 'id': id, 'version': -1 });
         Alfred.Jobs.pushObject(job);
         Alfred.JobsById[id] = job;
+
+        $.get("api/job/" + id, function(response) {
+            console.log('GET Job Response: ' + JSON.stringify(response));
+            Alfred.Job.merge(job, response);
+        }, 'json');
+
     }
     return job;
 };
@@ -97,7 +103,9 @@ Alfred.Job.build = function(j) {
     return job;
 };
 
-Alfred.Job.update = function(job, data) {
+Alfred.Job.merge = function(job, data) {
+    if (job.get('id') != data.id) throw "Can not merge jobs with different id's";
+
     if (job.get('version') < data.get('version')) {
         console.log('Received job update. Version=' + data.get('version') + ', current version=' + job.get('version'));
         job.set('version', data.get('version'));
@@ -378,7 +386,8 @@ Alfred.JobRoute = Ember.Route.extend({
         console.log('init JobRoute');
     },
     model: function(params) {
-        return Alfred.Job.find(params.id);
+        var job = Alfred.Job.find(params.id)
+        return job;
     }
 });
 
@@ -494,7 +503,7 @@ function handleJob(j) {
 
     existing = Alfred.JobsById[job.get('id')];
     if (existing != null) {
-        Alfred.Job.update(existing, job);
+        Alfred.Job.merge(existing, job);
     } else {
         Alfred.JobsById[job.get('id')] = job;
         Alfred.Jobs.pushObject(job);
