@@ -181,7 +181,7 @@ Alfred.SortedJobs = Ember.ArrayController.create({
 
 Alfred.SortedLatestJobsClass = Ember.Object.extend({
     model: function() {
-        return this.get('ref').slice(0, 10);
+        return this.get('ref').slice(0, 100);
     }.property('ref', 'ref.@each')
 });
 Alfred.SortedLatestJobs = Alfred.SortedLatestJobsClass.create({ ref: Alfred.SortedJobs });
