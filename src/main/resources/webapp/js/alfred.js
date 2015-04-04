@@ -1,5 +1,9 @@
 console.log('Alfred version 0');
 
+$.ajaxSetup({
+  contentType: "application/json; charset=utf-8"
+});
+
 window.Alfred = Ember.Application.create({
   LOG_TRANSITIONS: false,
   LOG_ACTIVE_GENERATION: true,
@@ -258,9 +262,22 @@ Alfred.RepoIndexController = Ember.Controller.extend({
     },
     actions: {
         build: function() {
-            console.log('build');
+            var repo = this.get('model');
+            console.log('build ' + this.get('gitSpec'));
+
+            var jobRequest = {
+                'repo': repo.get('name'),
+                'organization': repo.get('organization').get('login'),
+                'spec': this.get('gitSpec')
+            };
+
+            $.post("api/jobs", JSON.stringify(jobRequest), function(response) {
+                console.log('Response: ' + JSON.stringify(response));
+            }, 'json');
+
         }
-    }
+    },
+    gitSpec: 'master'
 });
 
 Alfred.RepoRoute = Ember.Route.extend({

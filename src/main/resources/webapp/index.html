@@ -288,7 +288,7 @@
                 <h4>New Job</h4>
                 <div class="form-group">
                   <label for="gitSpec">Git Spec</label>
-                  <input type="spec" class="form-control" id="exampleInputEmail1" value="master" placeholder="branch, revision, etc">
+                  {{input value=gitSpec type="spec" class="form-control" placeholder="branch, revision, etc" }}
                 </div>
                 <button class="btn btn-primary" type="button" {{action 'build'}}>Build</button>
               </div>
