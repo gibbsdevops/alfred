@@ -7,8 +7,10 @@ import java.util.Set;
 
 public interface JobRepository {
 
-    public void save(Job event);
+    void save(Job event);
 
-    public Set<Job> getJobs();
+    Set<Job> getJobs();
+
+    Job getJob(int id);
 
 }

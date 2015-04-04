@@ -77,4 +77,14 @@ public class FileJobRepository implements JobRepository {
         }
     }
 
+    @Override
+    public Job getJob(int id) {
+        File f = fileFor(id);
+        try {
+            return mapper.readValue(f, Job.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to load file: " + f.getAbsolutePath(), e);
+        }
+    }
+
 }

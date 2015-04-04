@@ -48,16 +48,21 @@ Alfred.Job = Ember.Object.extend({
         l = output.get('lastObject');
         console.log("Last line is " + l)
         return l;
-    }.property('output', 'output.@each'),
-    addLine: function(line) {
-        // console.log("Adding line to " + this.get('id'));
-        output = this.get('output');
-        output.pushObject(Alfred.OutputLine.create(line));
-        this.set('output', output);
-
-        $(".mini-console").scrollTop(10000);
-    }
+    }.property('output', 'output.@each')
 });
+
+Alfred.Job.AddLine = function(job, l) {
+    var line = Alfred.OutputLine.create(l);
+
+    var output = job.output;
+    if (output.length < line.index + 1) {
+        output.pushObject(line);
+    }
+
+    output[line.index].set('line', line.line);
+
+    $(".mini-console").scrollTop(10000);
+}
 
 Alfred.Job.find = function(id) {
     id = parseInt(id);
@@ -66,11 +71,11 @@ Alfred.Job.find = function(id) {
     var job = Alfred.JobsById[id];
     if (job == null) {
         console.log('New job: ' + id);
-        job = Alfred.Job.create({ 'id': id, 'version': -1 });
+        job = Alfred.Job.create({ 'id': id, 'version': -1, 'output': Ember.A([]) });
         Alfred.Jobs.pushObject(job);
         Alfred.JobsById[id] = job;
 
-        $.get("api/job/" + id, function(response) {
+        $.get("api/jobs/" + id, function(response) {
             console.log('GET Job Response: ' + JSON.stringify(response));
             Alfred.Job.merge(job, response);
         }, 'json');
@@ -104,14 +109,16 @@ Alfred.Job.build = function(j) {
 };
 
 Alfred.Job.merge = function(job, data) {
+    if (data.id == null) throw "Will not merge job with no id";
+    if (data.version == null) throw "Will not merge job with no version";
     if (job.get('id') != data.id) throw "Can not merge jobs with different id's";
 
-    if (job.get('version') < data.get('version')) {
-        console.log('Received job update. Version=' + data.get('version') + ', current version=' + job.get('version'));
-        job.set('version', data.get('version'));
-        job.set('status', data.get('status'));
-        job.set('error', data.get('error'));
-        job.set('ref', data.get('ref'));
+    if (job.get('version') < data.version) {
+        console.log('Received job update. Version=' + data.version + ', current version=' + job.get('version'));
+        job.set('version', data.version);
+        job.set('status', data.status);
+        job.set('error', data.error);
+        job.set('ref', data.ref);
 
         if (job.get('commit') == null) {
             job.set('commit', Alfred.Commit.create(data.commit));
@@ -129,8 +136,20 @@ Alfred.Job.merge = function(job, data) {
             job.set('commit', Alfred.Commit.create(data.commit));
         }
     } else {
-        console.log('Received stale job update. Version=' + data.get('version') + ', current version=' + job.get('version'));
+        console.log('Received stale job update. Version=' + data.version + ', current version=' + job.get('version'));
     }
+};
+
+Alfred.Job.LoadOutput = function(job) {
+    $.get("api/jobs/" + job.get('id') + '/output', function(response) {
+        console.log('GET Job Output Response: ' + JSON.stringify(response));
+        // Alfred.Job.merge(job, response);
+
+        $.each(response.output, function(index, line) {
+            Alfred.Job.AddLine(job, { 'index': index, 'line': line });
+        });
+
+    }, 'json');
 };
 
 Alfred.Commit = Ember.Object.extend({
@@ -144,12 +163,11 @@ Alfred.Commit = Ember.Object.extend({
 });
 
 Alfred.OutputLine = Ember.Object.extend({
-    id: null,
-    pos: null,
+    index: null,
     line: null,
     number: function() {
-        return this.get('pos') + 1;
-    }.property('pos')
+        return this.get('index') + 1;
+    }.property('index')
 });
 
 Alfred.Jobs = Ember.A([]);
@@ -329,7 +347,7 @@ Alfred.RepoIndexController = Ember.Controller.extend({
             };
 
             console.log('Job Response: ' + JSON.stringify(request));
-            $.post("api/job", JSON.stringify(request), function(response) {
+            $.post("api/jobs", JSON.stringify(request), function(response) {
                 console.log('Job Response: ' + JSON.stringify(response));
             }, 'json');
 
@@ -386,8 +404,13 @@ Alfred.JobRoute = Ember.Route.extend({
         console.log('init JobRoute');
     },
     model: function(params) {
-        var job = Alfred.Job.find(params.id)
+        var job = Alfred.Job.find(params.id);
+        Alfred.Job.LoadOutput(job);
         return job;
+    },
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        Alfred.Job.LoadOutput(model);
     }
 });
 
@@ -470,7 +493,7 @@ function disconnect() {
 }
 
 function load_history() {
-    $.getJSON("api/history/jobs?limit=100", function(data) {
+    $.getJSON("api/jobs?limit=100", function(data) {
         console.log('Loading history');
         $.each(data, function(index, j) {
             handleJob(j);
@@ -523,8 +546,7 @@ function handleJob(j) {
 }
 
 function handleJobLine(l) {
-    // console.log("Received job line: " + JSON.stringify(l));
-    Alfred.JobsById[l.id].addLine(l);
+    Alfred.Job.AddLine(Alfred.JobsById[l.id], { 'index': l.index, 'line': l.line });
 }
 
 function handleGitHubEvent(event) {

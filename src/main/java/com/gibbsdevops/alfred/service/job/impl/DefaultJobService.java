@@ -37,12 +37,17 @@ public class DefaultJobService implements JobService {
 
     @Override
     public void appendOutput(Job job, String line) {
-        jobOutputRepository.append(job, line);
+        jobOutputRepository.append(job.getId(), line);
     }
 
     @Override
     public List<Job> getJobs() {
         return Lists.newArrayList(jobRepository.getJobs());
+    }
+
+    @Override
+    public Job getJob(int id) {
+        return jobRepository.getJob(id);
     }
 
 }

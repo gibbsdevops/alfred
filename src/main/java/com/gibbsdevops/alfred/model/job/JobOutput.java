@@ -7,7 +7,7 @@ import java.util.List;
 public class JobOutput {
 
     private int id;
-    private List<String> buildOutput = Lists.newArrayList();
+    private List<String> output = Lists.newArrayList();
 
     public int getId() {
         return id;
@@ -17,8 +17,8 @@ public class JobOutput {
         this.id = id;
     }
 
-    public List<String> getBuildOutput() {
-        return buildOutput;
+    public List<String> getOutput() {
+        return output;
     }
 
 }

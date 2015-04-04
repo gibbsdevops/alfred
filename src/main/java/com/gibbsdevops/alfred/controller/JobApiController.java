@@ -7,13 +7,16 @@ import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
+import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
-@RequestMapping(value = "/job")
+@RequestMapping(value = "/jobs")
 public class JobApiController extends ApiController {
 
     private static final Logger LOG = LoggerFactory.getLogger(JobApiController.class);
@@ -22,10 +25,28 @@ public class JobApiController extends ApiController {
     private JobService jobService;
 
     @Autowired
+    private JobOutputRepository jobOutputRepository;
+
+    @Autowired
     private BuildService buildService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public Object getAll(@RequestParam(required = false) Integer limit) {
+        return jobService.getJobs();
+    }
+
+    @RequestMapping(value = "/{id}/output", method = RequestMethod.GET)
+    public Object getOutput(@PathVariable int id) {
+        return jobOutputRepository.get(id);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Object get(@PathVariable int id) {
+        return jobService.getJob(id);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
-    public Object newJob(@RequestBody NewJobRequest request) {
+    public Object create(@RequestBody NewJobRequest request) {
 
         Job job = new Job();
 

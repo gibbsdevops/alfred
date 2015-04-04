@@ -60,7 +60,7 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public void logOutput(Job job, String line) {
         LOG.info("Build Output {}: {}", job, line);
-        jobOutputRepository.append(job, line);
+        jobOutputRepository.append(job.getId(), line);
     }
 
 }

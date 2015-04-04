@@ -12,4 +12,6 @@ public interface JobService {
 
     List<Job> getJobs();
 
+    Job getJob(int id);
+
 }

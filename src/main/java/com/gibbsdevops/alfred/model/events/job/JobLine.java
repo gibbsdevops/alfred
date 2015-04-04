@@ -3,7 +3,7 @@ package com.gibbsdevops.alfred.model.events.job;
 public class JobLine {
 
     private int id;
-    private int pos;
+    private int index;
     private String line;
 
     public int getId() {
@@ -14,12 +14,12 @@ public class JobLine {
         this.id = id;
     }
 
-    public int getPos() {
-        return pos;
+    public int getIndex() {
+        return index;
     }
 
-    public void setPos(int pos) {
-        this.pos = pos;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getLine() {

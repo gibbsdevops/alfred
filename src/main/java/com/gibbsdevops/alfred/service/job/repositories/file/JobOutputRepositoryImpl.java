@@ -2,7 +2,6 @@ package com.gibbsdevops.alfred.service.job.repositories.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gibbsdevops.alfred.model.events.job.JobLine;
-import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.model.job.JobOutput;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.slf4j.Logger;
@@ -24,18 +23,23 @@ public class JobOutputRepositoryImpl implements JobOutputRepository {
     private SimpMessagingTemplate template;
 
     @Override
-    public void append(Job job, String line) {
-        JobOutput output = load(job);
-        output.getBuildOutput().add(line);
+    public void append(int id, String line) {
+        JobOutput output = load(id);
+        output.getOutput().add(line);
         save(output);
 
         JobLine jobLine = new JobLine();
-        jobLine.setId(job.getId());
-        jobLine.setPos(output.getBuildOutput().size() - 1);
+        jobLine.setId(id);
+        jobLine.setIndex(output.getOutput().size() - 1);
         jobLine.setLine(line);
 
-        LOG.info("Sending JobLine to /topic/job-line: {}", job.getId());
+        LOG.info("Sending JobLine to /topic/job-line: {}", id);
         template.convertAndSend("/topic/job-line", jobLine);
+    }
+
+    @Override
+    public JobOutput get(int id) {
+        return load(id);
     }
 
     File getFile(int id) {
@@ -43,18 +47,18 @@ public class JobOutputRepositoryImpl implements JobOutputRepository {
         return new File(new File("jobs"), String.format("%07d", id) + "-output.json");
     }
 
-    JobOutput load(Job job) {
-        File f = getFile(job.getId());
+    JobOutput load(int id) {
+        File f = getFile(id);
 
         if (!f.exists()) {
-            return create(job);
+            return create(id);
         }
 
         try {
             return mapper.readValue(f, JobOutput.class);
         } catch (IOException e) {
             LOG.warn("Failed to read {}", f.getAbsolutePath(), e);
-            return create(job);
+            return create(id);
         }
     }
 
@@ -67,9 +71,9 @@ public class JobOutputRepositoryImpl implements JobOutputRepository {
         }
     }
 
-    JobOutput create(Job job) {
+    JobOutput create(int id) {
         JobOutput jobOutput = new JobOutput();
-        jobOutput.setId(job.getId());
+        jobOutput.setId(id);
         return jobOutput;
     }
 }
