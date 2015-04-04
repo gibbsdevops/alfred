@@ -1,7 +1,10 @@
 console.log('Alfred version 0');
 
 window.Alfred = Ember.Application.create({
-  LOG_TRANSITIONS: false
+  LOG_TRANSITIONS: false,
+  LOG_ACTIVE_GENERATION: true,
+  LOG_VIEW_LOOKUPS: false,
+  LOG_RESOLVER: false
 });
 
 Alfred.SocketClass = Ember.Object.extend({
@@ -244,13 +247,29 @@ Alfred.OrgRoute = Ember.Route.extend({
 });
 
 Alfred.RepoController = Ember.Controller.extend({
-    buildAction: function() {
-        console.log('build');
+    init: function() {
+        console.log('Init RepoController');
+    }
+});
+
+Alfred.RepoIndexController = Ember.Controller.extend({
+    init: function() {
+        console.log('Init RepoIndexController');
+    },
+    actions: {
+        build: function() {
+            console.log('build');
+        }
     }
 });
 
 Alfred.RepoRoute = Ember.Route.extend({
+    init: function() {
+        console.log('Init RepoRoute');
+    },
     model: function(id, trans) {
+        console.log('Loading model for RepoRoute');
+
         var org = trans.resolvedModels.org;
         if (org == null) throw "no org found for repo in route"
 
@@ -258,16 +277,25 @@ Alfred.RepoRoute = Ember.Route.extend({
 
         var repo = Alfred.Repo.findByOrgAndName(org, id.repo_id);
 
-        /*
-        var repoPath = org.login + '/' + id;
-        var repo = Alfred.ReposByPath[repoPath];
-        if (repo == null) {
-            repo = Alfred.Repo.create({ 'name': id.repo_id, 'organization': org });
-            Alfred.ReposByPath[repoPath] = repo;
-        }
-        */
-
         return repo;
+    },
+    serialize: function(/* repo */ model) {
+        if (model == null) return null;
+        if (typeof model.get == 'function') {
+            return { org_id: 'devops', repo_id: model.get('name') };
+        }
+        return { org_id: 'devops', repo_id: model.name };
+    }
+});
+
+Alfred.RepoIndexRoute = Ember.Route.extend({
+    init: function() {
+        console.log('Init RepoIndexRoute');
+    },
+    model: function(id, trans) {
+        console.log('Pulling model for RepoIndexRoute: ');
+        console.log(trans.resolvedModels.repo);
+        return trans.resolvedModels.repo;
     },
     serialize: function(/* repo */ model) {
         if (model == null) return null;

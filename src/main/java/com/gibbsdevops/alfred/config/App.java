@@ -25,6 +25,9 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+        String devResources = "src/main/resources/webapp";
+        boolean devMode = new File(devResources).exists();
+
         /* Spring Config */
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("com.gibbsdevops.alfred.config");
@@ -40,13 +43,13 @@ public class App {
         /* Resource Handler */
         List<Resource> resourceList = Lists.newArrayList();
 
-        String devResources = "src/main/resources/webapp";
-        if (new File(devResources).exists()) {
-            LOG.info("Adding resource path {}", devResources);
+        if (devMode) {
+            LOG.info("Adding dev resources");
             resourceList.add(Resource.newResource(devResources));
+            resourceList.add(Resource.newResource("target/classes/webapp"));
+        } else {
+            resourceList.add(Resource.newClassPathResource("/webapp"));
         }
-
-        resourceList.add(Resource.newClassPathResource("/webapp"));
 
         ResourceCollection resources = new ResourceCollection();
         resources.setResources(resourceList.toArray(new Resource[]{}));
@@ -56,8 +59,14 @@ public class App {
         webAppContext.setBaseResource(resources);
 
         // http://download.eclipse.org/jetty/9.2.6.v20141205/apidocs/org/eclipse/jetty/servlet/DefaultServlet.html
-        webAppContext.setInitParameter("dirAllowed", "true");
-        webAppContext.setInitParameter("etags", "true");
+        webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.etags", "true");
+        if (devMode) {
+            webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "true");
+            webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.useFileMappedBuffer", "false");
+        } else {
+            webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+            webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.useFileMappedBuffer", "true");
+        }
 
         /* Handler List */
         HandlerList handlers = new HandlerList();

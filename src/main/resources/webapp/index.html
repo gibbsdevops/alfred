@@ -202,21 +202,33 @@
       </div>
     </script>
 
+    <script type="text/x-handlebars" data-template-name="repo">
+        {{render "navbar"}}
+
+        <div class="container">
+
+          {{#with model as repo}}
+
+          <div>
+            <h1>{{repo.name}} <small>repo</small></h1>
+          </div>
+
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li>{{#link-to 'org' repo.organization}}{{repo.organization.login}}{{/link-to}}</li>
+            <li class="active">{{repo.name}}</li>
+          </ol>
+
+          {{/with}}
+
+          {{outlet}}
+
+        </div>
+    </script>
+
     <script type="text/x-handlebars" data-template-name="repo/index">
 
-      {{render "navbar"}}
-
-      <div class="container">
-
-        <div>
-          <h1>{{name}} <small>repo</small></h1>
-        </div>
-
-        <ol class="breadcrumb">
-          <li><a href="#">Home</a></li>
-          <li>{{#link-to 'org' organization}}{{organization.login}}{{/link-to}}</li>
-          <li class="active">{{name}}</li>
-        </ol>
+      {{#with model as repo}}
 
         <div class="row">
           <div class="col-md-7">
@@ -253,7 +265,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {{#each job in branches}}
+                    {{#each job in repo.branches}}
                     <tr>
                       <td>{{job.branch}}</td>
                       <td><span class="badge"><i class="glyphicon glyphicon-scale"></i> {{job.id}}</span> {{job.status}}</td>
@@ -278,19 +290,18 @@
                   <label for="gitSpec">Git Spec</label>
                   <input type="spec" class="form-control" id="exampleInputEmail1" value="master" placeholder="branch, revision, etc">
                 </div>
-                <button class="btn btn-primary" type="button" {{action 'buildAction'}}>Build</button>
+                <button class="btn btn-primary" type="button" {{action 'build'}}>Build</button>
               </div>
             </div>
 
           </div>
         </div>
 
-
         <h3>Repo Jobs</h3>
 
-        {{render "latest-job-table" jobs}}
+        {{render "latest-job-table" repo.jobs}}
 
-      </div>
+        {{/with}}
 
     </script>
 
