@@ -161,7 +161,28 @@ Alfred.Repo = Ember.Object.extend({
         // if (filtered.get('length') < 1) throw "No jobs in org after filter";
 
         return filtered;
-    }.property('organization', 'organization.jobs.@each.repository.name', 'name')
+    }.property('organization', 'organization.jobs.@each.repository.name', 'name'),
+    branches: function() {
+        var jobs = this.get('jobs');
+
+        var latest_jobs_by_branch = {};
+
+        // jobs is ordered
+        $.each(jobs, function(index, job) {
+            var branch = job.get('branch');
+            var current = latest_jobs_by_branch[branch];
+            if (current == null) {
+                latest_jobs_by_branch[branch] = job;
+            }
+        });
+
+        var latest_jobs = Ember.A([]);
+        $.each(latest_jobs_by_branch, function(branch, job) {
+            latest_jobs.pushObject(job);
+        });
+
+        return latest_jobs;
+    }.property('jobs', 'jobs.@each.branch'),
 });
 
 Alfred.Org.find = function(id, data) {
@@ -222,6 +243,12 @@ Alfred.OrgRoute = Ember.Route.extend({
     }
 });
 
+Alfred.RepoController = Ember.Controller.extend({
+    buildAction: function() {
+        console.log('build');
+    }
+});
+
 Alfred.RepoRoute = Ember.Route.extend({
     model: function(id, trans) {
         var org = trans.resolvedModels.org;
@@ -241,10 +268,6 @@ Alfred.RepoRoute = Ember.Route.extend({
         */
 
         return repo;
-    },
-    setupController: function(controller, model) {
-        controller.set('model', model);
-        controller.set('socket', Alfred.Socket);
     },
     serialize: function(/* repo */ model) {
         if (model == null) return null;

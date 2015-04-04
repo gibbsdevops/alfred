@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,151 +14,151 @@
     <link href="js/components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
     <style>
-        body {
-            padding-top: 50px;
-        }
-        .is-stale {
-        }
-        .mini-console {
-            color: #F1F1F1;
-            font-family: monospace;
-            background-color: #2a2a2a;
-            border-radius: 4px;
-            font-size: 6px;
-            width: 256px;
-            height: 144px;
-            overflow: hidden;
-            padding: 4px;
-            margin: 4px;
-        }
-        .console-line {
-            padding: 0 10px 0 5px;
-            position: relative;
-        }
-        .console-line-number {
-            margin-left: -10px;
-            margin-right: 4px;
-            display: inline-block;
-            text-align: right;
-            color: rgb(102, 102, 102);
-            width: 20px;
-        }
-        .console-line-content {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            display: inline;
-        }
+      body {
+        padding-top: 50px;
+      }
+      .is-stale {
+      }
+      .mini-console {
+        color: #F1F1F1;
+        font-family: monospace;
+        background-color: #2a2a2a;
+        border-radius: 4px;
+        font-size: 6px;
+        width: 256px;
+        height: 144px;
+        overflow: hidden;
+        padding: 4px;
+        margin: 4px;
+      }
+      .console-line {
+        padding: 0 10px 0 5px;
+        position: relative;
+      }
+      .console-line-number {
+        margin-left: -10px;
+        margin-right: 4px;
+        display: inline-block;
+        text-align: right;
+        color: rgb(102, 102, 102);
+        width: 20px;
+      }
+      .console-line-content {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        display: inline;
+      }
 
-        .running-job-mini {
-            float: left;
-        }
-        .running-jobs-mini {
-            height: 180px;
-        }
+      .running-job-mini {
+        float: left;
+      }
+      .running-jobs-mini {
+        height: 180px;
+      }
 
-        .org-link {
-            font-size: 14px;
-        }
+      .org-link {
+        font-size: 14px;
+      }
 
-        .repo-link {
-            font-size: 14px;
-            font-weight: bold;
-        }
+      .repo-link {
+        font-size: 14px;
+        font-weight: bold;
+      }
 
-        a {
-            color: black;
-        }
+      a {
+        color: black;
+      }
     </style>
 
-</head>
+  </head>
 
-<body>
+  <body>
 
-<script type="text/x-handlebars" data-template-name="navbar">
-    <a href="https://github.com/gibbsdevops/alfred"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <script type="text/x-handlebars" data-template-name="navbar">
+      <a href="https://github.com/gibbsdevops/alfred"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Alfred</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <!--
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">Builds</a></li>
-                    <li><a href="#contact">Repos</a></li>
-                    -->
-                </ul>
-            </div>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Alfred</a>
         </div>
-    </nav>
-</script>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <!--
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">Builds</a></li>
+            <li><a href="#contact">Repos</a></li>
+            -->
+          </ul>
+        </div>
+      </div>
+      </nav>
+    </script>
 
-<script type="text/x-handlebars" data-template-name="running-jobs-mini">
-    <div class="running-jobs-mini">
+    <script type="text/x-handlebars" data-template-name="running-jobs-mini">
+      <div class="running-jobs-mini">
         {{#each job in this}}
         {{#view "fadeIn" contentBinding="this"}}
         <div class="running-job-mini">
-            <div><span class="badge"><i class="glyphicon glyphicon-scale"></i> {{job.id}}</span> <a href="#" class="org-link">{{job.organization.login}}</a> / <a href="#" class="repo-link">{{job.repository.name}}</a></div>
-            <div class="mini-console">
+          <div><span class="badge"><i class="glyphicon glyphicon-scale"></i> {{job.id}}</span> <a href="#" class="org-link">{{job.organization.login}}</a> / <a href="#" class="repo-link">{{job.repository.name}}</a></div>
+          <div class="mini-console">
             {{#each line in job.output}}
-                <div class="console-line">
-                    <div class="console-line-number">{{line.number}}</div>
-                    <div class="console-line-content">{{line.line}}</div>
-                </div>
-            {{/each}}
+            <div class="console-line">
+              <div class="console-line-number">{{line.number}}</div>
+              <div class="console-line-content">{{line.line}}</div>
             </div>
+            {{/each}}
+          </div>
         </div>
         {{/view}}
         {{/each}}
-    </div>
-</script>
+      </div>
+    </script>
 
-<script type="text/x-handlebars" data-template-name="latest-job-table">
-    <table class="table table-condensed table-hover">
-    <thead>
-        <tr>
+    <script type="text/x-handlebars" data-template-name="latest-job-table">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
             <th><i class="glyphicon glyphicon-scale"></i></th>
             <th>Build</th>
             <th>User</th>
             <th>Message</th>
             <th>Commit</th>
             <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each job in this}}
-        <tr>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each job in this}}
+          <tr>
             <th>{{job.id}}</th>
             <td>
-                {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}} / {{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
+              {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}} / {{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
             </td>
             <td>{{job.pusher.name}}</td>
             <td>{{job.commit.message}}</td>
             <td>{{job.commit.shortId}} ({{job.branch}})</td>
             <td>{{job.status}}</td>
-        </tr>
-        {{/each}}
-    </tbody>
-    </table>
-</script>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </script>
 
-<script type="text/x-handlebars" data-template-name="index">
+    <script type="text/x-handlebars" data-template-name="index">
 
-    {{render "navbar"}}
+      {{render "navbar"}}
 
-    <div class="container">
+      <div class="container">
 
         <div>
-            <h1>Alfred CI Server</h1>
-            <p class="lead">Automatically builds and tests Commits or Pull Requests from GitHub.</p>
+          <h1>Alfred CI Server</h1>
+          <p class="lead">Automatically builds and tests Commits or Pull Requests from GitHub.</p>
         </div>
 
         <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
@@ -167,28 +167,28 @@
 
         {{render "latest-job-table" model}}
 
-    </div>
+      </div>
 
 
-</script>
+    </script>
 
-<script type="text/x-handlebars" data-template-name="org">
-{{outlet}}
-</script>
+    <script type="text/x-handlebars" data-template-name="org">
+      {{outlet}}
+    </script>
 
-<script type="text/x-handlebars" data-template-name="org/index">
+    <script type="text/x-handlebars" data-template-name="org/index">
 
-    {{render "navbar"}}
+      {{render "navbar"}}
 
-    <div class="container">
+      <div class="container">
 
         <div>
-            <h1>{{login}}</h1>
+          <h1>{{login}}</h1>
         </div>
 
         <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li class="active">{{login}}</li>
+          <li><a href="#">Home</a></li>
+          <li class="active">{{login}}</li>
         </ol>
 
         <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
@@ -199,45 +199,109 @@
 
         {{render "latest-job-table" jobs}}
 
-    </div>
-</script>
+      </div>
+    </script>
 
-<script type="text/x-handlebars" data-template-name="repo/index">
+    <script type="text/x-handlebars" data-template-name="repo/index">
 
-    {{render "navbar"}}
+      {{render "navbar"}}
 
-    <div class="container">
+      <div class="container">
 
         <div>
-            <h1>{{name}}</h1>
+          <h1>{{name}} <small>repo</small></h1>
         </div>
 
         <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li>{{#link-to 'org' organization}}{{organization.login}}{{/link-to}}</li>
-            <li class="active">{{name}}</li>
+          <li><a href="#">Home</a></li>
+          <li>{{#link-to 'org' organization}}{{organization.login}}{{/link-to}}</li>
+          <li class="active">{{name}}</li>
         </ol>
 
-        <div style="text-align: right; float: right;"><span class="badge" {{bind-attr class="socket.isStale"}}><i class="glyphicon" {{bind-attr class="socket.isStale:glyphicon-remove:glyphicon-ok"}}></i> {{socket.msg_count}}</span></div>
+        <div class="row">
+          <div class="col-md-7">
 
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <h4>Pull Requests</h4>
+
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>PR</th>
+                      <th>Title</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <h4>Branches</h4>
+
+                <table class="table table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th>Branch</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each job in branches}}
+                    <tr>
+                      <td>{{job.branch}}</td>
+                      <td><span class="badge"><i class="glyphicon glyphicon-scale"></i> {{job.id}}</span> {{job.status}}</td>
+                    </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
         <br />
+
+        <div class="row">
+          <div class="col-md-3">
+
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <h4>New Job</h4>
+                <div class="form-group">
+                  <label for="gitSpec">Git Spec</label>
+                  <input type="spec" class="form-control" id="exampleInputEmail1" value="master" placeholder="branch, revision, etc">
+                </div>
+                <button class="btn btn-primary" type="button" {{action 'buildAction'}}>Build</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
 
         <h3>Repo Jobs</h3>
 
         {{render "latest-job-table" jobs}}
 
-    </div>
+      </div>
 
-</script>
+    </script>
 
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="js/components/sockjs/sockjs.js"></script>
-<script src="js/components/stomp-websocket/lib/stomp.js"></script>
-<script src="js/components/jquery/dist/jquery.js"></script>
-<script src="js/components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="js/components/handlebars/handlebars.js"></script>
-<script src="js/components/ember/ember.js"></script>
-<script src="js/alfred.js"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/components/sockjs/sockjs.js"></script>
+    <script src="js/components/stomp-websocket/lib/stomp.js"></script>
+    <script src="js/components/jquery/dist/jquery.js"></script>
+    <script src="js/components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="js/components/handlebars/handlebars.js"></script>
+    <script src="js/components/ember/ember.js"></script>
+    <script src="js/alfred.js"></script>
 
-</body>
+  </body>
 </html>
