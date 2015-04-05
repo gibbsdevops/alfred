@@ -11,11 +11,14 @@ public class Repository {
     @JsonProperty("full_name")
     private String fullName;
     private User owner;
-    private String url;
-    @JsonProperty("git_url")
-    private String gitUrl;
+    @JsonProperty("html_url")
+    private String htmlUrl;
     @JsonProperty("ssh_url")
     private String sshUrl;
+    @JsonProperty("git_url")
+    private String gitUrl;
+    @JsonProperty("clone_url")
+    private String cloneUrl;
 
     public int getId() {
         return id;
@@ -49,20 +52,12 @@ public class Repository {
         this.owner = owner;
     }
 
-    public String getUrl() {
-        return url;
+    public String getHtmlUrl() {
+        return htmlUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getGitUrl() {
-        return gitUrl;
-    }
-
-    public void setGitUrl(String gitUrl) {
-        this.gitUrl = gitUrl;
+    public void setHtmlUrl(String htmlUrl) {
+        this.htmlUrl = htmlUrl;
     }
 
     public String getSshUrl() {
@@ -73,4 +68,19 @@ public class Repository {
         this.sshUrl = sshUrl;
     }
 
+    public String getGitUrl() {
+        return gitUrl;
+    }
+
+    public void setGitUrl(String gitUrl) {
+        this.gitUrl = gitUrl;
+    }
+
+    public String getCloneUrl() {
+        return cloneUrl;
+    }
+
+    public void setCloneUrl(String cloneUrl) {
+        this.cloneUrl = cloneUrl;
+    }
 }

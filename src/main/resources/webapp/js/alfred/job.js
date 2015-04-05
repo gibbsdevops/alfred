@@ -16,17 +16,13 @@ Alfred.Job = Ember.Object.extend({
 });
 
 Alfred.Job.AddLine = function(job, l) {
-    var line = Alfred.OutputLine.create(l);
-
     var output = job.output;
-    if (output.length < line.index + 1) {
-        output.pushObject(line);
+    while (output.length < l.index + 1) {
+        output.pushObject(Alfred.OutputLine.create({ 'index': (output.length) }));
     }
 
-    if (output[line.index] == null) {
-        output.pushObject(line);
-    }
-    output[line.index].set('line', line.line);
+    output[l.index].set('line', l.line);
+    if (output[l.index].index != l.index) throw "Line numbers do not match";
 
     $(".mini-console").scrollTop(10000);
 }

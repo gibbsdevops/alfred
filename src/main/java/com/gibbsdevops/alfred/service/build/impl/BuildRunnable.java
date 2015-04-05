@@ -3,15 +3,12 @@ package com.gibbsdevops.alfred.service.build.impl;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class BuildRunnable implements Runnable {
 
@@ -45,8 +42,10 @@ public class BuildRunnable implements Runnable {
 
         File workspace = null;
         try {
-            workspace = new File("workspace", job.getId().toString());
-            FileUtils.forceDelete(workspace);
+            workspace = new File("workspace", job.getId().toString()).getAbsoluteFile();
+            if (workspace.exists()) {
+                FileUtils.forceDelete(workspace);
+            }
             workspace.mkdirs();
 
             String fullCommand = new File(command).getAbsolutePath();
@@ -56,8 +55,11 @@ public class BuildRunnable implements Runnable {
             pb.environment().put("ALFRED_JOB_ID", job.getId().toString());
             pb.environment().put("ALFRED_REPO_NAME", job.getRepository().getName());
             pb.environment().put("ALFRED_ORG_NAME", job.getOrganization().getLogin());
+            pb.environment().put("ALFRED_HTML_URL", job.getRepository().getHtmlUrl());
+            pb.environment().put("ALFRED_SSH_URL", job.getRepository().getSshUrl());
             pb.environment().put("ALFRED_GIT_URL", job.getRepository().getGitUrl());
-            pb.environment().put("ALFRED_GIT_SSH_URL", job.getRepository().getSshUrl());
+            pb.environment().put("ALFRED_CLONE_URL", job.getRepository().getCloneUrl());
+            pb.environment().put("ALFRED_SPEC", job.getRef());
             pb.redirectErrorStream(true);
 
             Process proc = pb.start();

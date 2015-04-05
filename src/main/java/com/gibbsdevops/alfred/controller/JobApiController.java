@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-
 @RestController
 @RequestMapping(value = "/jobs")
 public class JobApiController extends ApiController {
@@ -56,6 +54,10 @@ public class JobApiController extends ApiController {
 
         Repository repository = new Repository();
         repository.setName(request.getRepo());
+        repository.setHtmlUrl(request.getHtmlUrl());
+        repository.setSshUrl(request.getSshUrl());
+        repository.setGitUrl(request.getGitUrl());
+        repository.setCloneUrl(request.getCloneUrl());
         job.setRepository(repository);
 
         job.setRef(request.getSpec());
