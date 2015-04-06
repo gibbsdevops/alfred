@@ -3,7 +3,7 @@ package com.gibbsdevops.alfred.service.job.repositories.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gibbsdevops.alfred.service.job.repositories.JobRepository;
 import com.google.common.collect.Sets;
-import com.gibbsdevops.alfred.web.model.job.Job;
+import com.gibbsdevops.alfred.model.job.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

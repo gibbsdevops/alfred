@@ -1,8 +1,8 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.web.model.events.github.PushEvent;
-import com.gibbsdevops.alfred.web.model.job.Job;
+import com.gibbsdevops.alfred.model.events.github.PushEvent;
+import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
 import com.gibbsdevops.alfred.service.job.JobService;
@@ -35,8 +35,6 @@ public class IngestServiceImpl implements IngestService {
     public void handle(PushEvent event) {
         LOG.info("New GutHub PushEvent {}", event.getGuid());
 
-        writeToDisk(event);
-
         // send event to client
         if (event.getHeadCommit() != null) {
             LOG.info("Sending PushEvent to /topic/github: {}", event.getGuid());
@@ -61,23 +59,6 @@ public class IngestServiceImpl implements IngestService {
 
         // submit job for building
         buildService.submit(job);
-    }
-
-    void writeToDisk(PushEvent event) {
-        String eventJson = null;
-        try {
-            eventJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(event);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to parse to JSON", e);
-        }
-
-        File file = new File(new File("ingest"), "event" + "_" + event.getGuid() + ".hook");
-        LOG.info("Writing PushEvent {} to {}", new String[]{event.getGuid(), file.getAbsolutePath()});
-        try {
-            FileUtils.writeStringToFile(file, eventJson);
-        } catch (IOException e) {
-            LOG.warn("Failed to write queue file {}", file.getAbsolutePath(), e);
-        }
     }
 
 }

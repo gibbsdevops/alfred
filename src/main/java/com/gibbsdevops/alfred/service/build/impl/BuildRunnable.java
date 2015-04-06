@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
-import com.gibbsdevops.alfred.web.model.job.Job;
+import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;

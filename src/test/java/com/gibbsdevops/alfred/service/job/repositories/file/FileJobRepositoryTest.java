@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.service.job.repositories.file;
 
-import com.gibbsdevops.alfred.web.model.job.Job;
+import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.job.repositories.JobRepository;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;

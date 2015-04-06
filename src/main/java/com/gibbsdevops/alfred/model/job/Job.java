@@ -1,9 +1,9 @@
-package com.gibbsdevops.alfred.web.model.job;
+package com.gibbsdevops.alfred.model.job;
 
-import com.gibbsdevops.alfred.web.model.events.github.Commit;
-import com.gibbsdevops.alfred.web.model.events.github.Organization;
-import com.gibbsdevops.alfred.web.model.events.github.Repository;
-import com.gibbsdevops.alfred.web.model.events.github.User;
+import com.gibbsdevops.alfred.model.events.github.Commit;
+import com.gibbsdevops.alfred.model.events.github.Organization;
+import com.gibbsdevops.alfred.model.events.github.Repository;
+import com.gibbsdevops.alfred.model.events.github.User;
 
 public class Job {
 

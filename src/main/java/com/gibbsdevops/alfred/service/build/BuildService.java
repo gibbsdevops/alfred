@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.service.build;
 
-import com.gibbsdevops.alfred.web.model.job.Job;
+import com.gibbsdevops.alfred.model.job.Job;
 
 public interface BuildService {
 

@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.service.job.impl;
 
-import com.gibbsdevops.alfred.web.model.job.Job;
+import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import com.gibbsdevops.alfred.service.job.repositories.JobRepository;
@@ -29,15 +29,10 @@ public class DefaultJobService implements JobService {
 
     @Override
     public void save(Job job) {
-        LOG.info("Saving Job {}", job.getId());
+        LOG.info("Saving Job {}", job);
         jobRepository.save(job);
-        LOG.info("Sending Job to /topic/jobs: {}", job.getId());
+        LOG.info("Sending Job to /topic/jobs: {}", job);
         template.convertAndSend("/topic/jobs", job);
-    }
-
-    @Override
-    public void appendOutput(Job job, String line) {
-        jobOutputRepository.append(job.getId(), line);
     }
 
     @Override

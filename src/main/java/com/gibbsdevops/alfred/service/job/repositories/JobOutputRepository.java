@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.service.job.repositories;
 
-import com.gibbsdevops.alfred.web.model.job.JobOutput;
+import com.gibbsdevops.alfred.model.job.JobOutput;
 
 public interface JobOutputRepository {
 

@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.web.model.job;
+package com.gibbsdevops.alfred.model.job;
 
 import com.google.common.collect.Lists;
 

@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.web.model.events.github;
+package com.gibbsdevops.alfred.model.events.github;
 
 public abstract class Event {
 
