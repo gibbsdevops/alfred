@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.model.events.job;
+package com.gibbsdevops.alfred.web.model.events.job;
 
 public class JobLine {
 

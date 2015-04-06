@@ -1,7 +1,6 @@
-package com.gibbsdevops.alfred.controller;
+package com.gibbsdevops.alfred.web.controller;
 
 import com.gibbsdevops.alfred.service.job.JobService;
-import com.gibbsdevops.alfred.service.job.repositories.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.controller;
+package com.gibbsdevops.alfred.web.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

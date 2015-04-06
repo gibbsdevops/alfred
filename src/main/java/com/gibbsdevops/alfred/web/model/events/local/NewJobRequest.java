@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.model.events.local;
+package com.gibbsdevops.alfred.web.model.events.local;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

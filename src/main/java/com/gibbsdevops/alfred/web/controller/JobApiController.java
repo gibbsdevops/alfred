@@ -1,10 +1,10 @@
-package com.gibbsdevops.alfred.controller;
+package com.gibbsdevops.alfred.web.controller;
 
-import com.gibbsdevops.alfred.model.events.github.Organization;
-import com.gibbsdevops.alfred.model.events.github.Repository;
-import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
-import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
-import com.gibbsdevops.alfred.model.job.Job;
+import com.gibbsdevops.alfred.web.model.events.github.Organization;
+import com.gibbsdevops.alfred.web.model.events.github.Repository;
+import com.gibbsdevops.alfred.web.model.events.local.NewJobRequest;
+import com.gibbsdevops.alfred.web.model.events.local.NewJobResponse;
+import com.gibbsdevops.alfred.web.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;

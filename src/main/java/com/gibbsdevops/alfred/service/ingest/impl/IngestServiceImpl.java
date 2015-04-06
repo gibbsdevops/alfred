@@ -1,8 +1,8 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.events.github.PushEvent;
-import com.gibbsdevops.alfred.model.job.Job;
+import com.gibbsdevops.alfred.web.model.events.github.PushEvent;
+import com.gibbsdevops.alfred.web.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
 import com.gibbsdevops.alfred.service.job.JobService;

@@ -1,7 +1,6 @@
 package com.gibbsdevops.alfred.service.job.repositories;
 
-import com.gibbsdevops.alfred.model.events.github.PushEvent;
-import com.gibbsdevops.alfred.model.job.Job;
+import com.gibbsdevops.alfred.web.model.job.Job;
 
 import java.util.Set;
 
