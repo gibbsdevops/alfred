@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,12 @@ public class IngestApiController extends ApiController {
     private static final Logger LOG = LoggerFactory.getLogger(IngestApiController.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final AtomicInteger counter = new AtomicInteger();
+    public static final File INGEST_PATH = new File("ingest");
+
+    @PostConstruct
+    public void setup() {
+        INGEST_PATH.mkdirs();
+    }
 
     @Autowired
     private IngestService ingestService;
@@ -54,7 +61,7 @@ public class IngestApiController extends ApiController {
 
     void writeEvent(String guid, JsonNode json) throws IOException {
         String filename = String.format("event_%d-%05d_%s.json", System.currentTimeMillis(), counter.getAndIncrement(), guid);
-        File file = new File(new File("ingest"), filename);
+        File file = new File(INGEST_PATH, filename);
         OutputStream os = new FileOutputStream(file);
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(os, json);
