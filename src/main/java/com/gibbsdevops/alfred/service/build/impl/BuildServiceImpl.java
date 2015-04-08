@@ -39,7 +39,7 @@ public class BuildServiceImpl implements BuildService {
             GitHub gitHub = GitHub.connect();
             GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
             GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
-            ghRepo.createCommitStatus(job.getCommit().getId(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com", "Building...");
+            ghRepo.createCommitStatus(job.getCommit().getId(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "Building...");
         } catch (IOException e) {
             LOG.warn("Failed to mark github status as pending", e);
         }

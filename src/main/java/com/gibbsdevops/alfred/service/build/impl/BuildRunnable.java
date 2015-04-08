@@ -99,7 +99,7 @@ public class BuildRunnable implements Runnable {
                 GitHub gitHub = GitHub.connect();
                 GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
                 GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
-                ghRepo.createCommitStatus(job.getCommit().getId(), state, "http://alfred.gibbsdevops.com", "complete");
+                ghRepo.createCommitStatus(job.getCommit().getId(), state, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "complete");
             } catch (IOException e) {
                 LOG.warn("Failed to mark github status as complete", e);
             }
