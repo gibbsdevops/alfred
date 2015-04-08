@@ -54,20 +54,26 @@ public class BuildRunnable implements Runnable {
                 throw new RuntimeException("Job has no repo");
             }
 
+            /*
             if (job.getOrganization() == null) {
                 throw new RuntimeException("Job has no org");
+            }
+            */
+
+            if (job.getCommit() == null) {
+                throw new RuntimeException("Job has no commit");
             }
 
             ProcessBuilder pb = new ProcessBuilder(fullCommand);
             pb.directory(workspace);
             pb.environment().put("ALFRED_JOB_ID", job.getId().toString());
             pb.environment().put("ALFRED_REPO_NAME", job.getRepository().getName());
-            pb.environment().put("ALFRED_ORG_NAME", job.getOrganization().getLogin());
+            // pb.environment().put("ALFRED_ORG_NAME", job.getOrganization().getLogin());
             pb.environment().put("ALFRED_HTML_URL", job.getRepository().getHtmlUrl());
             pb.environment().put("ALFRED_SSH_URL", job.getRepository().getSshUrl());
             pb.environment().put("ALFRED_GIT_URL", job.getRepository().getGitUrl());
             pb.environment().put("ALFRED_CLONE_URL", job.getRepository().getCloneUrl());
-            pb.environment().put("ALFRED_SPEC", job.getRef());
+            pb.environment().put("ALFRED_COMMIT", job.getCommit().getId());
             pb.redirectErrorStream(true);
 
             Process proc = pb.start();
