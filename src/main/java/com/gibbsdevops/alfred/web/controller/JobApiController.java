@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.web.controller;
 
-import com.gibbsdevops.alfred.model.events.github.Organization;
+import com.gibbsdevops.alfred.model.events.github.GHOrganization;
 import com.gibbsdevops.alfred.model.events.github.Repository;
 import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
 import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
@@ -8,10 +8,13 @@ import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
+import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/jobs")
@@ -44,11 +47,16 @@ public class JobApiController extends ApiController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Object create(@RequestBody NewJobRequest request) {
+    public Object create(@RequestBody NewJobRequest request) throws IOException {
+
+        // GitHub github = GitHub.connect();
+
+        // org.kohsuke.github.GHOrganization organization = github.getOrganization(request.getOrganization());
+
 
         Job job = new Job();
 
-        Organization organization = new Organization();
+        GHOrganization organization = new GHOrganization();
         organization.setLogin(request.getOrganization());
         job.setOrganization(organization);
 

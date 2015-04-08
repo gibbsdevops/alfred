@@ -10,7 +10,7 @@ public class Repository {
     private String name;
     @JsonProperty("full_name")
     private String fullName;
-    private User owner;
+    private GHPersonRef owner;
     @JsonProperty("html_url")
     private String htmlUrl;
     @JsonProperty("ssh_url")
@@ -44,11 +44,11 @@ public class Repository {
         this.fullName = fullName;
     }
 
-    public User getOwner() {
+    public GHPersonRef getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(GHPersonRef owner) {
         this.owner = owner;
     }
 

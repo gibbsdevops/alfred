@@ -1,19 +1,16 @@
 package com.gibbsdevops.alfred.model.job;
 
-import com.gibbsdevops.alfred.model.events.github.Commit;
-import com.gibbsdevops.alfred.model.events.github.Organization;
-import com.gibbsdevops.alfred.model.events.github.Repository;
-import com.gibbsdevops.alfred.model.events.github.User;
+import com.gibbsdevops.alfred.model.events.github.*;
 
 public class Job {
 
     private Integer id;
     private Integer version;
-    private Organization organization;
+    private GHOrganization organization;
     private Repository repository;
     private Commit commit;
     private String ref;
-    private User pusher;
+    private GHPersonRef pusher;
     private String status;
     private String error;
 
@@ -38,11 +35,11 @@ public class Job {
         this.version = version;
     }
 
-    public Organization getOrganization() {
+    public GHOrganization getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public void setOrganization(GHOrganization organization) {
         this.organization = organization;
     }
 
@@ -70,11 +67,11 @@ public class Job {
         this.ref = ref;
     }
 
-    public User getPusher() {
+    public GHPersonRef getPusher() {
         return pusher;
     }
 
-    public void setPusher(User pusher) {
+    public void setPusher(GHPersonRef pusher) {
         this.pusher = pusher;
     }
 

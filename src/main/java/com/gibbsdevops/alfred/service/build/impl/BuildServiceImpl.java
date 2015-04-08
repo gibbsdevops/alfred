@@ -4,12 +4,17 @@ import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import com.gibbsdevops.alfred.service.job.JobService;
+import org.kohsuke.github.GHCommitState;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 @Service
@@ -29,6 +34,16 @@ public class BuildServiceImpl implements BuildService {
 
     @Override
     public void submit(Job job) {
+
+        try {
+            GitHub gitHub = GitHub.connect();
+            GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
+            GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
+            ghRepo.createCommitStatus(job.getCommit().getId(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "Building...");
+        } catch (IOException e) {
+            LOG.warn("Failed to mark github status as pending", e);
+        }
+
         LOG.info("Submitted job {}", job);
         buildExecutor.execute(new BuildRunnable(job, this));
     }

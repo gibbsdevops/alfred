@@ -3,11 +3,10 @@ package com.gibbsdevops.alfred.model.events.github;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class GHPerson extends GHUser {
 
     private String name;
     private String email;
-    private String username;
 
     public String getName() {
         return name;
@@ -23,14 +22,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
 }
