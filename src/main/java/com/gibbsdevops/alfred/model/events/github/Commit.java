@@ -8,8 +8,8 @@ public class Commit {
     private String id;
     private String message;
     private String timestamp;
-    private User author;
-    private User committer;
+    private GHPersonRef author;
+    private GHPersonRef committer;
 
     public String getId() {
         return id;
@@ -35,19 +35,19 @@ public class Commit {
         this.timestamp = timestamp;
     }
 
-    public User getAuthor() {
+    public GHPersonRef getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(GHPersonRef author) {
         this.author = author;
     }
 
-    public User getCommitter() {
+    public GHPersonRef getCommitter() {
         return committer;
     }
 
-    public void setCommitter(User committer) {
+    public void setCommitter(GHPersonRef committer) {
         this.committer = committer;
     }
 

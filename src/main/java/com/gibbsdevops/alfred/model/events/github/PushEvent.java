@@ -9,12 +9,14 @@ import java.util.List;
 public class PushEvent extends Event {
 
     private String ref;
-    private User pusher;
+    private GHPersonRef pusher;
+    private String compare;
     private List<Commit> commits;
     @JsonProperty("head_commit")
     private Commit headCommit;
     private Repository repository;
-    private Organization organization;
+    private GHOrganization organization;
+    private GHPerson sender;
 
     public String getRef() {
         return ref;
@@ -24,11 +26,19 @@ public class PushEvent extends Event {
         this.ref = ref;
     }
 
-    public User getPusher() {
+    public GHPersonRef getPusher() {
         return pusher;
     }
 
-    public void setPusher(User pusher) {
+    public String getCompare() {
+        return compare;
+    }
+
+    public void setCompare(String compare) {
+        this.compare = compare;
+    }
+
+    public void setPusher(GHPersonRef pusher) {
         this.pusher = pusher;
     }
 
@@ -56,12 +66,20 @@ public class PushEvent extends Event {
         this.repository = repository;
     }
 
-    public Organization getOrganization() {
+    public GHOrganization getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public void setOrganization(GHOrganization organization) {
         this.organization = organization;
+    }
+
+    public GHPerson getSender() {
+        return sender;
+    }
+
+    public void setSender(GHPerson sender) {
+        this.sender = sender;
     }
 
 }

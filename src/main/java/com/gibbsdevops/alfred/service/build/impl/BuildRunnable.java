@@ -50,6 +50,14 @@ public class BuildRunnable implements Runnable {
 
             String fullCommand = new File(command).getAbsolutePath();
 
+            if (job.getRepository() == null) {
+                throw new RuntimeException("Job has no repo");
+            }
+
+            if (job.getOrganization() == null) {
+                throw new RuntimeException("Job has no org");
+            }
+
             ProcessBuilder pb = new ProcessBuilder(fullCommand);
             pb.directory(workspace);
             pb.environment().put("ALFRED_JOB_ID", job.getId().toString());
