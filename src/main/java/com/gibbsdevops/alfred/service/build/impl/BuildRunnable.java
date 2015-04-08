@@ -4,6 +4,10 @@ import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.kohsuke.github.GHCommitState;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,11 +85,24 @@ public class BuildRunnable implements Runnable {
 
             stdStream.start();
 
-            // TODO new process stuff
-
             int exitVal = proc.waitFor();
+            LOG.info("Exit value of job was {}", exitVal);
+
+            GHCommitState state = GHCommitState.FAILURE;
+            if (exitVal == 0) {
+                state = GHCommitState.SUCCESS;
+            }
 
             buildService.finished(job);
+
+            try {
+                GitHub gitHub = GitHub.connect();
+                GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
+                GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
+                ghRepo.createCommitStatus(job.getCommit().getId(), state, "http://alfred.gibbsdevops.com", "complete");
+            } catch (IOException e) {
+                LOG.warn("Failed to mark github status as complete", e);
+            }
 
         } catch (Throwable t) {
             LOG.warn("Build failed", t);
