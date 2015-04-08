@@ -49,7 +49,7 @@ public class JobApiController extends ApiController {
     @RequestMapping(method = RequestMethod.POST)
     public Object create(@RequestBody NewJobRequest request) throws IOException {
 
-        GitHub github = GitHub.connect();
+        // GitHub github = GitHub.connect();
 
         // org.kohsuke.github.GHOrganization organization = github.getOrganization(request.getOrganization());
 
