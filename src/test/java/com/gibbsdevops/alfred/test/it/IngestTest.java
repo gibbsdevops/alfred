@@ -1,6 +1,7 @@
 package com.gibbsdevops.alfred.test.it;
 
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,9 +53,12 @@ public class IngestTest {
 
     @Test
     public void testIngest() throws Exception {
+
+        String body = IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream());
+
         mockMvc.perform(post("/ingest")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{}")
+                .content(body)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("X-Github-Delivery", "abc")
                 .header("X-Github-Event", "push"))
