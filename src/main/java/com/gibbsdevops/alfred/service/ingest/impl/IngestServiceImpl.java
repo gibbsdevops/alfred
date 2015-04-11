@@ -1,7 +1,10 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.events.github.PushEvent;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepo;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepoProperties;
+import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
@@ -28,7 +31,7 @@ public class IngestServiceImpl implements IngestService {
     private BuildService buildService;
 
     @Override
-    public void handle(PushEvent event) {
+    public void handle(GHPushEvent event) {
         LOG.info("New GutHub PushEvent {}", event.getGuid());
 
         // send event to client
@@ -41,6 +44,11 @@ public class IngestServiceImpl implements IngestService {
         if (event.getHeadCommit() == null) {
             return;
         }
+
+        AlfredRepoProperties repoProps = AlfredRepoProperties.from(event.getRepository());
+        AlfredUser org = null;
+        if (event.getOrganization() != null) org = AlfredUser.from(event.getOrganization());
+        AlfredUser sender = AlfredUser.from(event.getSender());
 
         Job job = new Job();
         job.setOrganization(event.getOrganization());

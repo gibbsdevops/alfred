@@ -1,9 +1,9 @@
-package com.gibbsdevops.alfred.model.events.github;
+package com.gibbsdevops.alfred.model.github;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Commit {
+public class GHCommit {
 
     private String id;
     private String message;

@@ -1,14 +1,14 @@
 package com.gibbsdevops.alfred.model.job;
 
-import com.gibbsdevops.alfred.model.events.github.*;
+import com.gibbsdevops.alfred.model.github.*;
 
 public class Job {
 
     private Integer id;
     private Integer version;
     private GHOrganization organization;
-    private Repository repository;
-    private Commit commit;
+    private GHRepository repository;
+    private GHCommit commit;
     private String ref;
     private GHPersonRef pusher;
     private String status;
@@ -43,19 +43,19 @@ public class Job {
         this.organization = organization;
     }
 
-    public Repository getRepository() {
+    public GHRepository getRepository() {
         return repository;
     }
 
-    public void setRepository(Repository repository) {
+    public void setRepository(GHRepository repository) {
         this.repository = repository;
     }
 
-    public Commit getCommit() {
+    public GHCommit getCommit() {
         return commit;
     }
 
-    public void setCommit(Commit commit) {
+    public void setCommit(GHCommit commit) {
         this.commit = commit;
     }
 

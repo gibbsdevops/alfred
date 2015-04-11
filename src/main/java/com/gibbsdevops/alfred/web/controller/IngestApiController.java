@@ -2,7 +2,7 @@ package com.gibbsdevops.alfred.web.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.events.github.PushEvent;
+import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class IngestApiController extends ApiController {
         writeEvent(guid, type, json);
 
         if ("push".equals(type)) {
-            PushEvent event = mapper.treeToValue(json, PushEvent.class);
+            GHPushEvent event = mapper.treeToValue(json, GHPushEvent.class);
             event.setGuid(guid);
             ingestService.handle(event);
         }

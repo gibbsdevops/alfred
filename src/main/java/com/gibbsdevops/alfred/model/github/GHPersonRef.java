@@ -1,12 +1,13 @@
-package com.gibbsdevops.alfred.model.events.github;
+package com.gibbsdevops.alfred.model.github;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class GHPerson extends GHUser {
+/**
+ * Created by sgibbs on 4/7/2015.
+ */
+public class GHPersonRef {
 
     private String name;
     private String email;
+    private String username;
 
     public String getName() {
         return name;
@@ -24,4 +25,11 @@ public class GHPerson extends GHUser {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

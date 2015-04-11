@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.service.job.repositories.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.events.job.JobLine;
+import com.gibbsdevops.alfred.model.job.JobLine;
 import com.gibbsdevops.alfred.model.job.JobOutput;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.slf4j.Logger;

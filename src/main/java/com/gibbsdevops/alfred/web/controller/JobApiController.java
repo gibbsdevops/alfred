@@ -1,14 +1,13 @@
 package com.gibbsdevops.alfred.web.controller;
 
-import com.gibbsdevops.alfred.model.events.github.GHOrganization;
-import com.gibbsdevops.alfred.model.events.github.Repository;
+import com.gibbsdevops.alfred.model.github.GHOrganization;
+import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
 import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
-import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class JobApiController extends ApiController {
         organization.setLogin(request.getOrganization());
         job.setOrganization(organization);
 
-        Repository repository = new Repository();
+        GHRepository repository = new GHRepository();
         repository.setName(request.getRepo());
         repository.setHtmlUrl(request.getHtmlUrl());
         repository.setSshUrl(request.getSshUrl());

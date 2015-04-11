@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.model.events.github;
+package com.gibbsdevops.alfred.model.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -6,6 +6,7 @@ public class GHUser {
 
     private long id;
     private String login;
+    private String url;
     @JsonProperty("html_url")
     private String htmlUrl;
     @JsonProperty("avatar_url")
@@ -16,6 +17,7 @@ public class GHUser {
     @JsonProperty("updated_at")
     private String updatedAt;
 
+    //<editor-fold desc="Getters and Setters">
     public long getId() {
         return id;
     }
@@ -30,6 +32,14 @@ public class GHUser {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getHtmlUrl() {
@@ -71,4 +81,6 @@ public class GHUser {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+    //</editor-fold>
+
 }

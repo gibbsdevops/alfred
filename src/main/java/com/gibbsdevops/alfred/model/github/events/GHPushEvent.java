@@ -1,20 +1,21 @@
-package com.gibbsdevops.alfred.model.events.github;
+package com.gibbsdevops.alfred.model.github.events;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gibbsdevops.alfred.model.github.*;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PushEvent extends Event {
+public class GHPushEvent extends GHEvent {
 
     private String ref;
     private GHPersonRef pusher;
     private String compare;
-    private List<Commit> commits;
+    private List<GHCommit> commits;
     @JsonProperty("head_commit")
-    private Commit headCommit;
-    private Repository repository;
+    private GHCommit headCommit;
+    private GHRepository repository;
     private GHOrganization organization;
     private GHPerson sender;
 
@@ -42,27 +43,27 @@ public class PushEvent extends Event {
         this.pusher = pusher;
     }
 
-    public List<Commit> getCommits() {
+    public List<GHCommit> getCommits() {
         return commits;
     }
 
-    public void setCommits(List<Commit> commits) {
+    public void setCommits(List<GHCommit> commits) {
         this.commits = commits;
     }
 
-    public Commit getHeadCommit() {
+    public GHCommit getHeadCommit() {
         return headCommit;
     }
 
-    public void setHeadCommit(Commit headCommit) {
+    public void setHeadCommit(GHCommit headCommit) {
         this.headCommit = headCommit;
     }
 
-    public Repository getRepository() {
+    public GHRepository getRepository() {
         return repository;
     }
 
-    public void setRepository(Repository repository) {
+    public void setRepository(GHRepository repository) {
         this.repository = repository;
     }
 

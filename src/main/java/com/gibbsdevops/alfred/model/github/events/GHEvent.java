@@ -1,6 +1,6 @@
-package com.gibbsdevops.alfred.model.events.github;
+package com.gibbsdevops.alfred.model.github.events;
 
-public abstract class Event {
+public abstract class GHEvent {
 
     private String guid;
 
