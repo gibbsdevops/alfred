@@ -1,9 +1,9 @@
 package com.gibbsdevops.alfred.web.controller;
 
-import com.gibbsdevops.alfred.model.github.GHOrganization;
-import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
 import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
+import com.gibbsdevops.alfred.model.github.GHOrganization;
+import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;

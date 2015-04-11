@@ -26,7 +26,8 @@ public class IngestApiController extends ApiController {
     public static final File INGEST_PATH = new File("ingest");
 
     @PostConstruct
-    public void setup() {
+    public void init() {
+        LOG.info("Initializing up IngestController");
         INGEST_PATH.mkdirs();
     }
 

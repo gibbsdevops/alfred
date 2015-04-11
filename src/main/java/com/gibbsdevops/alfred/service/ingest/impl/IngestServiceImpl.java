@@ -1,7 +1,6 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.alfred.AlfredRepo;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoProperties;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;

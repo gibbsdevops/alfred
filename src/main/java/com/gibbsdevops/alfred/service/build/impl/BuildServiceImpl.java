@@ -2,8 +2,8 @@ package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import com.gibbsdevops.alfred.service.job.JobService;
+import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.kohsuke.github.GHCommitState;
 import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHRepository;
