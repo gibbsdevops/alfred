@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.test.it;
 
+import com.gibbsdevops.alfred.repository.AlfredUserRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
@@ -22,6 +23,11 @@ public class IngestTestConfig {
     @Bean
     public JobService jobService() {
         return mock(JobService.class);
+    }
+
+    @Bean
+    public AlfredUserRepository alfredUserRepository() {
+        return mock(AlfredUserRepository.class);
     }
 
     @Bean

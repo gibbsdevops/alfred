@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.test.it;
 
+import com.gibbsdevops.alfred.repository.AlfredUserRepository;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -27,6 +28,9 @@ public class IngestTest {
 
     @Autowired
     private IngestApiController controller;
+
+    @Autowired
+    private AlfredUserRepository alfredUserRepository;
 
     private MockMvc mockMvc;
 
@@ -61,8 +65,6 @@ public class IngestTest {
                 .header("X-Github-Event", "push"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-
 
     }
 
