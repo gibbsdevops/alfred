@@ -5,6 +5,7 @@ import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredGitUser;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
@@ -58,7 +59,9 @@ public class IngestServiceImpl implements IngestService {
         AlfredUser sender = alfredRepository.save(AlfredUser.from(event.getSender()));
 
         AlfredRepoNode repo = AlfredRepoNode.from(event.getRepository());
-        AlfredGitUser pusher = AlfredGitUser.from(event.getPusher());
+        repo = alfredRepository.save(repo);
+
+        AlfredGitUser pusher = alfredRepository.save(AlfredGitUser.from(event.getPusher()));
 
         String orgName = event.getRepository().getOrganization();
         if (orgName != null) {
@@ -71,17 +74,16 @@ public class IngestServiceImpl implements IngestService {
             repo.setOwner(owner);
         }
         
-        repo = alfredRepository.save(repo);
+        for (GHCommit c : event.getCommits()) {
+            AlfredGitUser author = alfredRepository.save(AlfredGitUser.from(c.getAuthor()));
+            AlfredGitUser committer = alfredRepository.save(AlfredGitUser.from(c.getCommitter()));
 
-        event.getCommits().stream().forEach(c -> {
             AlfredCommitNode commit = AlfredCommitNode.from(c);
-
             commit.setRepo(repo);
             commit.setSender(sender);
             commit.setPusher(pusher);
-            commit.setAuthor(AlfredGitUser.from(c.getAuthor()));
-            commit.setCommitter(AlfredGitUser.from(c.getCommitter()));
-            save(commit);
+            commit.setAuthor(author);
+            commit.setCommitter(committer);
 
             Job job = new Job();
             job.setOrganization(event.getOrganization());
@@ -96,14 +98,7 @@ public class IngestServiceImpl implements IngestService {
 
             // submit job for building
             buildService.submit(job);
-        });
-
-    }
-
-    void save(AlfredCommitNode commit) {
-
-        alfredRepository.save(commit.getRepo().getOrganization());
-        alfredRepository.save(commit.getRepo().normalize());
+        }
 
     }
 

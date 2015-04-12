@@ -24,6 +24,7 @@ public class AlfredUser {
     private String updatedAt;
 
     public static AlfredUser from(GHUser u) {
+        if (u == null) throw new NullPointerException("user is null");
         AlfredUser user = new AlfredUser();
         user.id = u.getId();
         user.login = u.getLogin();
@@ -36,14 +37,16 @@ public class AlfredUser {
     }
 
     public static AlfredUser from(GHOrganization org) {
-        AlfredUser user = from((GHUser)org);
+        if (org == null) throw new NullPointerException("org is null");
+        AlfredUser user = from((GHUser) org);
         user.type = "Organization";
         user.description = org.getDescription();
         return user;
     }
 
     public static AlfredUser from(GHPerson person) {
-        AlfredUser user = from((GHUser)person);
+        if (person == null) throw new NullPointerException("person is null");
+        AlfredUser user = from((GHUser) person);
         user.type = "User";
         user.name = person.getName();
         user.email = person.getEmail();
