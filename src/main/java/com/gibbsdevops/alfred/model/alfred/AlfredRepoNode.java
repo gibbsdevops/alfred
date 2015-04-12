@@ -9,6 +9,12 @@ public class AlfredRepoNode extends AlfredRepoProperties {
     private AlfredUser owner;
     private AlfredUser organization;
 
+    public static AlfredRepoNode from(AlfredRepoProperties repoProps) {
+        AlfredRepoNode node = new AlfredRepoNode();
+        node.properties = repoProps;
+        return node;
+    }
+
     //<editor-fold desc="Getters and Setters">
     @Override
     public long getId() {

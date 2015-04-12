@@ -8,6 +8,13 @@ public class AlfredCommitNode extends AlfredCommitProperties {
     private AlfredUser committer;
     private AlfredUser author;
 
+    public static AlfredCommitNode from(AlfredCommitProperties properties) {
+        AlfredCommitNode node = new AlfredCommitNode();
+        node.properties = properties;
+        return node;
+    }
+
+    //<editor-fold desc="Getters and Setters">
     @Override
     public String getId() {
         return properties.getId();
@@ -29,12 +36,12 @@ public class AlfredCommitNode extends AlfredCommitProperties {
     }
 
     @Override
-    public String getTimestamp() {
+    public long getTimestamp() {
         return properties.getTimestamp();
     }
 
     @Override
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         properties.setTimestamp(timestamp);
     }
 
@@ -58,6 +65,14 @@ public class AlfredCommitNode extends AlfredCommitProperties {
         properties.setDeletions(deletions);
     }
 
+    public AlfredRepoNode getRepo() {
+        return repo;
+    }
+
+    public void setRepo(AlfredRepoNode repo) {
+        this.repo = repo;
+    }
+
     public AlfredUser getCommitter() {
         return committer;
     }
@@ -73,5 +88,6 @@ public class AlfredCommitNode extends AlfredCommitProperties {
     public void setAuthor(AlfredUser author) {
         this.author = author;
     }
+    //</editor-fold>
 
 }

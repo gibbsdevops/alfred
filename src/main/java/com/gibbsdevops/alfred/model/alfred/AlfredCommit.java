@@ -8,6 +8,7 @@ public class AlfredCommit extends AlfredCommitProperties {
     private long committer;
     private long author;
 
+    //<editor-fold desc="Getters and Setters">
     @Override
     public String getId() {
         return properties.getId();
@@ -29,12 +30,12 @@ public class AlfredCommit extends AlfredCommitProperties {
     }
 
     @Override
-    public String getTimestamp() {
+    public long getTimestamp() {
         return properties.getTimestamp();
     }
 
     @Override
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         properties.setTimestamp(timestamp);
     }
 
@@ -81,5 +82,6 @@ public class AlfredCommit extends AlfredCommitProperties {
     public void setAuthor(long author) {
         this.author = author;
     }
+    //</editor-fold>
 
 }

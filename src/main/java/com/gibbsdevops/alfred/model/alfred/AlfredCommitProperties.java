@@ -11,11 +11,12 @@ public class AlfredCommitProperties {
     private int additions;
     private int deletions;
 
-    public static void from(GHCommit commit) {
+    public static AlfredCommitProperties from(GHCommit commit) {
         AlfredCommitProperties props = new AlfredCommitProperties();
         props.id = commit.getId();
         props.message = commit.getMessage();
         props.timestamp = GHTimeFormat.parse(commit.getTimestamp());
+        return props;
     }
 
     //<editor-fold desc="Getters and Setters">
