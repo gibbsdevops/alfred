@@ -27,7 +27,7 @@ public class GHRepository {
     @JsonProperty("created_at")
     private long createdAt;
     @JsonProperty("updated_at")
-    private long updatedAt;
+    private String updatedAt;
     @JsonProperty("pushed_at")
     private long pushedAt;
     private String homepage;
@@ -140,11 +140,11 @@ public class GHRepository {
         this.createdAt = createdAt;
     }
 
-    public long getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

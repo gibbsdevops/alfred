@@ -8,28 +8,30 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import static org.mockito.Mockito.mock;
+
 @Configuration
 @ComponentScan("com.gibbsdevops.alfred.service.ingest")
 public class IngestTestConfig {
 
     @Bean
-    public IngestApiController api() {
+    public IngestApiController ingestApiController() {
         return new IngestApiController();
     }
 
     @Bean
     public JobService jobService() {
-        return null;
+        return mock(JobService.class);
     }
 
     @Bean
     public BuildService buildService() {
-        return null;
+        return mock(BuildService.class);
     }
 
     @Bean
-    public SimpMessagingTemplate simpMessagingTemplate() {
-        return null;
+    public SimpMessagingTemplate simpleMessagingTemplate() {
+        return mock(SimpMessagingTemplate.class);
     }
 
 }

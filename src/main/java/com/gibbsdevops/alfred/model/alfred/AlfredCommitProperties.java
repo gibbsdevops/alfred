@@ -1,12 +1,22 @@
 package com.gibbsdevops.alfred.model.alfred;
 
+import com.gibbsdevops.alfred.model.github.GHCommit;
+import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
+
 public class AlfredCommitProperties {
 
     private String id;
     private String message;
-    private String timestamp;
+    private long timestamp;
     private int additions;
     private int deletions;
+
+    public static void from(GHCommit commit) {
+        AlfredCommitProperties props = new AlfredCommitProperties();
+        props.id = commit.getId();
+        props.message = commit.getMessage();
+        props.timestamp = GHTimeFormat.parse(commit.getTimestamp());
+    }
 
     //<editor-fold desc="Getters and Setters">
     public String getId() {
@@ -25,11 +35,11 @@ public class AlfredCommitProperties {
         this.message = message;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

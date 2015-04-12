@@ -53,17 +53,16 @@ public class IngestTest {
 
     @Test
     public void testIngest() throws Exception {
-
-        String body = IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream());
-
         mockMvc.perform(post("/ingest")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body)
+                .content(IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream()))
                 .accept(MediaType.APPLICATION_JSON)
                 .header("X-Github-Delivery", "abc")
                 .header("X-Github-Event", "push"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+
 
     }
 

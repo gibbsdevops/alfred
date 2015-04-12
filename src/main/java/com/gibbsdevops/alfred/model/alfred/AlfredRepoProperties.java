@@ -2,6 +2,7 @@ package com.gibbsdevops.alfred.model.alfred;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gibbsdevops.alfred.model.github.GHRepository;
+import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
 
 public class AlfredRepoProperties {
 
@@ -47,7 +48,7 @@ public class AlfredRepoProperties {
         properties.setGitUrl(repository.getGitUrl());
         properties.setCloneUrl(repository.getCloneUrl());
         properties.setCreatedAt(repository.getCreatedAt());
-        properties.setUpdatedAt(repository.getUpdatedAt());
+        properties.setUpdatedAt(GHTimeFormat.parse(repository.getUpdatedAt()));
         properties.setPushedAt(repository.getPushedAt());
         properties.setHomepage(repository.getHomepage());
         properties.setLanguage(repository.getLanguage());

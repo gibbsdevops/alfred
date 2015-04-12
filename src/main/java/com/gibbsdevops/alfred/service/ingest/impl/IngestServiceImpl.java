@@ -1,8 +1,10 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitProperties;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoProperties;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.function.Consumer;
 
 @Service
 public class IngestServiceImpl implements IngestService {
@@ -45,9 +49,13 @@ public class IngestServiceImpl implements IngestService {
         }
 
         AlfredRepoProperties repoProps = AlfredRepoProperties.from(event.getRepository());
+
         AlfredUser org = null;
         if (event.getOrganization() != null) org = AlfredUser.from(event.getOrganization());
+
         AlfredUser sender = AlfredUser.from(event.getSender());
+
+        event.getCommits().stream().forEach(c -> AlfredCommitProperties.from(c));
 
         Job job = new Job();
         job.setOrganization(event.getOrganization());
