@@ -1,16 +1,26 @@
 package com.gibbsdevops.alfred.model.alfred;
 
+import com.gibbsdevops.alfred.model.github.GHCommit;
+
 public class AlfredCommitNode extends AlfredCommitProperties {
 
     private AlfredCommitProperties properties;
 
     private AlfredRepoNode repo;
-    private AlfredUser committer;
-    private AlfredUser author;
+    private AlfredGitUser committer;
+    private AlfredGitUser author;
+    private AlfredGitUser pusher;
+    private AlfredUser sender;
 
     public static AlfredCommitNode from(AlfredCommitProperties properties) {
         AlfredCommitNode node = new AlfredCommitNode();
         node.properties = properties;
+        return node;
+    }
+
+    public static AlfredCommitNode from(GHCommit commit) {
+        AlfredCommitNode node = new AlfredCommitNode();
+        node.properties = AlfredCommitProperties.from(commit);
         return node;
     }
 
@@ -73,20 +83,36 @@ public class AlfredCommitNode extends AlfredCommitProperties {
         this.repo = repo;
     }
 
-    public AlfredUser getCommitter() {
+    public AlfredGitUser getCommitter() {
         return committer;
     }
 
-    public void setCommitter(AlfredUser committer) {
+    public void setCommitter(AlfredGitUser committer) {
         this.committer = committer;
     }
 
-    public AlfredUser getAuthor() {
+    public AlfredGitUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(AlfredUser author) {
+    public void setAuthor(AlfredGitUser author) {
         this.author = author;
+    }
+
+    public AlfredGitUser getPusher() {
+        return pusher;
+    }
+
+    public void setPusher(AlfredGitUser pusher) {
+        this.pusher = pusher;
+    }
+
+    public AlfredUser getSender() {
+        return sender;
+    }
+
+    public void setSender(AlfredUser sender) {
+        this.sender = sender;
     }
     //</editor-fold>
 

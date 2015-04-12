@@ -2,7 +2,7 @@ package com.gibbsdevops.alfred.model.alfred;
 
 public class AlfredRepo extends AlfredRepoProperties {
 
-    private AlfredRepoProperties properties;
+    AlfredRepoProperties properties;
 
     private long owner;
     private long organization;

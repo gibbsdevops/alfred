@@ -9,10 +9,24 @@ public class AlfredRepoNode extends AlfredRepoProperties {
     private AlfredUser owner;
     private AlfredUser organization;
 
+    public static AlfredRepoNode from(GHRepository repository) {
+        AlfredRepoNode node = new AlfredRepoNode();
+        node.properties = AlfredRepoProperties.from(repository);
+        return node;
+    }
+
     public static AlfredRepoNode from(AlfredRepoProperties repoProps) {
         AlfredRepoNode node = new AlfredRepoNode();
         node.properties = repoProps;
         return node;
+    }
+
+    public AlfredRepo normalize() {
+        AlfredRepo repo = new AlfredRepo();
+        repo.properties = properties;
+        repo.setOwner(owner.getId());
+        repo.setOrganization(organization.getId());
+        return repo;
     }
 
     //<editor-fold desc="Getters and Setters">

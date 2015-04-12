@@ -3,6 +3,9 @@ package com.gibbsdevops.alfred.model.alfred;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+
 public class AlfredCommitProperties {
 
     private String id;
@@ -15,7 +18,8 @@ public class AlfredCommitProperties {
         AlfredCommitProperties props = new AlfredCommitProperties();
         props.id = commit.getId();
         props.message = commit.getMessage();
-        props.timestamp = GHTimeFormat.parse(commit.getTimestamp());
+        props.timestamp = Instant.from(DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse(
+                commit.getTimestamp())).getEpochSecond();
         return props;
     }
 

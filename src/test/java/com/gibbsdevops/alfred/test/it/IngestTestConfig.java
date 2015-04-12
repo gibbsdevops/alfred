@@ -11,7 +11,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import static org.mockito.Mockito.mock;
 
 @Configuration
-@ComponentScan("com.gibbsdevops.alfred.service.ingest")
+@ComponentScan("com.gibbsdevops.alfred.service.ingest,com.gibbsdevops.alfred.repository")
 public class IngestTestConfig {
 
     @Bean

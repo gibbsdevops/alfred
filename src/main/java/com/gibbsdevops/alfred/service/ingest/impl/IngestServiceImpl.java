@@ -1,10 +1,13 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredGitUser;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
-import com.gibbsdevops.alfred.repository.AlfredUserRepository;
+import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
 import com.gibbsdevops.alfred.service.job.JobService;
@@ -24,7 +27,7 @@ public class IngestServiceImpl implements IngestService {
     private SimpMessagingTemplate template;
 
     @Autowired
-    private AlfredUserRepository alfredUserRepository;
+    private AlfredRepository alfredRepository;
 
     @Autowired
     private JobService jobService;
@@ -47,27 +50,38 @@ public class IngestServiceImpl implements IngestService {
             return;
         }
 
-        AlfredRepoProperties repoProps = AlfredRepoProperties.from(event.getRepository());
-        AlfredRepoNode repo = AlfredRepoNode.from(repoProps);
-
+        AlfredUser org = null;
         if (event.getOrganization() != null) {
-            AlfredUser org = AlfredUser.from(event.getOrganization());
-            alfredUserRepository.save(org);
-            repo.setOrganization(org);
+            org = alfredRepository.save(AlfredUser.from(event.getOrganization()));
         }
 
-        AlfredUser sender = AlfredUser.from(event.getSender());
-        alfredUserRepository.save(sender);
+        AlfredUser sender = alfredRepository.save(AlfredUser.from(event.getSender()));
 
-        event.getCommits().stream().forEach(c ->  {
-            AlfredCommitProperties commitProperties = AlfredCommitProperties.from(c);
-            AlfredCommitNode commit = AlfredCommitNode.from(commitProperties);
+        AlfredRepoNode repo = AlfredRepoNode.from(event.getRepository());
+        AlfredGitUser pusher = AlfredGitUser.from(event.getPusher());
+
+        String orgName = event.getRepository().getOrganization();
+        if (orgName != null) {
+            if (!orgName.equals(org.getName())) {
+                org = alfredRepository.getOrgByName(orgName);
+            }
+            repo.setOrganization(org);
+        } else {
+            AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
+            repo.setOwner(owner);
+        }
+        
+        repo = alfredRepository.save(repo);
+
+        event.getCommits().stream().forEach(c -> {
+            AlfredCommitNode commit = AlfredCommitNode.from(c);
+
             commit.setRepo(repo);
-
-            // commit.setSender?
-            // author? commiter?
-
-            // TODO: stuff with commit
+            commit.setSender(sender);
+            commit.setPusher(pusher);
+            commit.setAuthor(AlfredGitUser.from(c.getAuthor()));
+            commit.setCommitter(AlfredGitUser.from(c.getCommitter()));
+            save(commit);
 
             Job job = new Job();
             job.setOrganization(event.getOrganization());
@@ -83,6 +97,13 @@ public class IngestServiceImpl implements IngestService {
             // submit job for building
             buildService.submit(job);
         });
+
+    }
+
+    void save(AlfredCommitNode commit) {
+
+        alfredRepository.save(commit.getRepo().getOrganization());
+        alfredRepository.save(commit.getRepo().normalize());
 
     }
 

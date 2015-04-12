@@ -34,6 +34,7 @@ public class GHRepository {
     private String language;
     @JsonProperty("default_branch")
     private String defaultBranch;
+    private String organization;
 
     //<editor-fold desc="Getters and Setters">
     public long getId() {
@@ -178,6 +179,14 @@ public class GHRepository {
 
     public void setDefaultBranch(String defaultBranch) {
         this.defaultBranch = defaultBranch;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
     //</editor-fold>
 

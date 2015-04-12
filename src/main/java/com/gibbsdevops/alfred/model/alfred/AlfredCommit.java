@@ -7,6 +7,8 @@ public class AlfredCommit extends AlfredCommitProperties {
     private long repo;
     private long committer;
     private long author;
+    private long pusher;
+    private long sender;
 
     //<editor-fold desc="Getters and Setters">
     @Override
@@ -81,6 +83,22 @@ public class AlfredCommit extends AlfredCommitProperties {
 
     public void setAuthor(long author) {
         this.author = author;
+    }
+
+    public long getPusher() {
+        return pusher;
+    }
+
+    public void setPusher(long pusher) {
+        this.pusher = pusher;
+    }
+
+    public long getSender() {
+        return sender;
+    }
+
+    public void setSender(long sender) {
+        this.sender = sender;
     }
     //</editor-fold>
 

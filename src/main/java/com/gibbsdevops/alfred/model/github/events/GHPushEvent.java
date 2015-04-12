@@ -75,6 +75,8 @@ public class GHPushEvent extends GHEvent {
         this.organization = organization;
     }
 
+
+
     public GHPerson getSender() {
         return sender;
     }
