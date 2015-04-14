@@ -59,21 +59,18 @@ public class IngestServiceImpl implements IngestService {
         AlfredUser sender = alfredRepository.save(AlfredUser.from(event.getSender()));
 
         AlfredRepoNode repo = AlfredRepoNode.from(event.getRepository());
-        repo = alfredRepository.save(repo);
 
-        AlfredGitUser pusher = alfredRepository.save(AlfredGitUser.from(event.getPusher()));
-
-        String orgName = event.getRepository().getOrganization();
-        if (orgName != null) {
-            if (!orgName.equals(org.getName())) {
-                org = alfredRepository.getOrgByName(orgName);
-            }
+        if (org != null) {
             repo.setOrganization(org);
         } else {
             AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
             repo.setOwner(owner);
         }
-        
+
+        repo = alfredRepository.save(repo);
+
+        AlfredGitUser pusher = alfredRepository.save(AlfredGitUser.from(event.getPusher()));
+
         for (GHCommit c : event.getCommits()) {
             AlfredGitUser author = alfredRepository.save(AlfredGitUser.from(c.getAuthor()));
             AlfredGitUser committer = alfredRepository.save(AlfredGitUser.from(c.getCommitter()));
@@ -84,6 +81,7 @@ public class IngestServiceImpl implements IngestService {
             commit.setPusher(pusher);
             commit.setAuthor(author);
             commit.setCommitter(committer);
+            commit = alfredRepository.save(commit);
 
             Job job = new Job();
             job.setOrganization(event.getOrganization());

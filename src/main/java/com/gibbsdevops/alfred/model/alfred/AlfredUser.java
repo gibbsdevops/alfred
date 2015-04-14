@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gibbsdevops.alfred.model.github.GHOrganization;
 import com.gibbsdevops.alfred.model.github.GHPerson;
 import com.gibbsdevops.alfred.model.github.GHUser;
+import com.google.common.base.Objects;
+
+import java.lang.reflect.Field;
 
 public class AlfredUser {
 
@@ -134,5 +137,24 @@ public class AlfredUser {
         this.updatedAt = updatedAt;
     }
     //</editor-fold>
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof AlfredUser)) return false;
+        try {
+            for (Field field : getClass().getDeclaredFields()) {
+                if (!Objects.equal(field.get(this), field.get(obj))) return false;
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Unable to equals objects", e);
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, login, name, email, url, htmlUrl, avatarUrl, type, description, createdAt,
+                updatedAt);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.repository;
 
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredGitUser;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
@@ -12,7 +13,7 @@ public interface AlfredRepository {
 
     AlfredGitUser save(AlfredGitUser user);
 
-    AlfredUser getOrgByName(String name);
+    AlfredCommitNode save(AlfredCommitNode commit);
 
     AlfredUser getUserByName(String name);
 

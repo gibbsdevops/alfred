@@ -22,10 +22,20 @@ public class AlfredRepoNode extends AlfredRepoProperties {
     }
 
     public AlfredRepo normalize() {
+        if (organization == null && owner == null) {
+            throw new NullPointerException("Repo has no org or owner");
+        }
+
         AlfredRepo repo = new AlfredRepo();
         repo.properties = properties;
-        repo.setOwner(owner.getId());
-        repo.setOrganization(organization.getId());
+        if (owner != null) {
+            if (owner.getId() == 0) throw new IllegalArgumentException("owner ID can not be 0");
+            repo.setOwner(owner.getId());
+        }
+        if (organization != null) {
+            if (organization.getId() == 0) throw new IllegalArgumentException("org ID can not be 0");
+            repo.setOrganization(organization.getId());
+        }
         return repo;
     }
 
