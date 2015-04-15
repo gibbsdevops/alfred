@@ -3,9 +3,12 @@ package com.gibbsdevops.alfred.test.it;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
+import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -15,8 +18,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,8 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = IngestTestConfig.class)
 public class IngestTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(IngestTest.class);
+
     @Autowired
     private IngestApiController controller;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     private AlfredRepository alfredRepository;
@@ -40,11 +50,19 @@ public class IngestTest {
             Charset.forName("utf8"));
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws IOException, SQLException {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build();
+
+        dataSource.getConnection().createStatement().execute("drop all objects;");
+
+        LOG.info("Setting up database");
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(dataSource);
+        flyway.migrate();
+
     }
 
     @Test

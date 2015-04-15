@@ -2,8 +2,16 @@ package com.gibbsdevops.alfred.model.alfred;
 
 import com.gibbsdevops.alfred.model.github.GHPersonRef;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity(name = "alfred_git_user")
 public class AlfredGitUser {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;

@@ -6,25 +6,34 @@ import com.gibbsdevops.alfred.model.github.GHPerson;
 import com.gibbsdevops.alfred.model.github.GHUser;
 import com.google.common.base.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 
+@Entity(name = "alfred_user")
 public class AlfredUser {
 
+    @Id
     private long id;
     private String login;
     @JsonProperty("html_url")
     private String name;
     private String email;
     private String url;
+    @Column(name = "html_url")
     private String htmlUrl;
     @JsonProperty("avatar_url")
+    @Column(name = "avatar_url")
     private String avatarUrl;
     private String type;
     private String description;
     @JsonProperty("created_at")
-    private String createdAt;
+    @Column(name = "created_at")
+    private Long createdAt;
     @JsonProperty("updated_at")
-    private String updatedAt;
+    @Column(name = "updated_at")
+    private Long updatedAt;
 
     public static AlfredUser from(GHUser u) {
         if (u == null) throw new NullPointerException("user is null");
@@ -34,8 +43,12 @@ public class AlfredUser {
         user.url = u.getUrl();
         user.htmlUrl = u.getHtmlUrl();
         user.avatarUrl = u.getAvatarUrl();
-        user.createdAt = u.getCreatedAt();
-        user.updatedAt = u.getUpdatedAt();
+        if (u.getCreatedAt() != null && !u.getCreatedAt().isEmpty()) {
+//            user.createdAt = u.getCreatedAt();
+        }
+        if (u.getUpdatedAt() != null && !u.getUpdatedAt().isEmpty()) {
+//            user.updatedAt = u.getUpdatedAt();
+        }
         return user;
     }
 
@@ -121,19 +134,19 @@ public class AlfredUser {
         this.description = description;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
     //</editor-fold>

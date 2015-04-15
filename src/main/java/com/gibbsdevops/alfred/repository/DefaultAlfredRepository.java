@@ -1,9 +1,12 @@
 package com.gibbsdevops.alfred.repository;
 
+import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
+import com.gibbsdevops.alfred.dao.AlfredUserDao;
 import com.gibbsdevops.alfred.model.alfred.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -23,6 +26,12 @@ public class DefaultAlfredRepository implements AlfredRepository {
     private SimpleJdbcInsert insertUser;
 
     @Autowired
+    private AlfredUserDao alfredUserDao;
+
+    @Autowired
+    private AlfredGitUserDao alfredGitUserDao;
+
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         insertUser = new SimpleJdbcInsert(dataSource)
@@ -31,15 +40,19 @@ public class DefaultAlfredRepository implements AlfredRepository {
     }
 
     public AlfredUser getById(long id) {
-        return jdbcTemplate.queryForObject("select * from alfred_user where id = ?",
-                new Object[]{id}, AlfredUser.class);
+        return alfredUserDao.findOne(id);
     }
 
     @Override
     public AlfredUser save(AlfredUser user) {
         LOG.info("Saving user login={}, name={}", user.getLogin(), user.getName());
 
-        AlfredUser existing = getById(user.getId());
+        AlfredUser existing;
+        try {
+            existing = alfredUserDao.findOne(user.getId());
+        } catch (EmptyResultDataAccessException e) {
+            existing = null;
+        }
 
         if (existing != null) {
             if (existing.equals(user)) {
@@ -58,15 +71,14 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
                 if (hashCode != existing.hashCode()) {
                     LOG.info("Updating user {}", user.getLogin());
-                    // jdbcTemplate.exe
+                    existing = alfredUserDao.save(existing);
                 }
 
                 return existing;
             }
 
         } else {
-            SqlParameterSource params = new BeanPropertySqlParameterSource(user);
-            insertUser.execute(params);
+            user = alfredUserDao.save(user);
             return user;
         }
     }
@@ -81,6 +93,10 @@ public class DefaultAlfredRepository implements AlfredRepository {
     @Override
     public AlfredGitUser save(AlfredGitUser user) {
         LOG.info("Saving git user {}", user.getName());
+        AlfredGitUser existing = alfredGitUserDao.getByNameAndEmail(user.getName(), user.getEmail());
+        if (existing != null) return existing;
+
+        user = alfredGitUserDao.save(user);
         return user;
     }
 
