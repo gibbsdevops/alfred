@@ -4,8 +4,8 @@ public class AlfredRepo extends AlfredRepoProperties {
 
     AlfredRepoProperties properties;
 
-    private long owner;
-    private long organization;
+    private Long owner;
+    private Long organization;
 
     //<editor-fold desc="Getters and Setters">
     @Override
@@ -178,19 +178,19 @@ public class AlfredRepo extends AlfredRepoProperties {
         properties.setDefaultBranch(defaultBranch);
     }
 
-    public long getOwner() {
+    public Long getOwner() {
         return owner;
     }
 
-    public void setOwner(long owner) {
+    public void setOwner(Long owner) {
         this.owner = owner;
     }
 
-    public long getOrganization() {
+    public Long getOrganization() {
         return organization;
     }
 
-    public void setOrganization(long organization) {
+    public void setOrganization(Long organization) {
         this.organization = organization;
     }
     //</editor-fold>

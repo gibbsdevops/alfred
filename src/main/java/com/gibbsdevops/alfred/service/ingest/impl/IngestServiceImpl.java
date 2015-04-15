@@ -1,10 +1,7 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredGitUser;
-import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
@@ -58,16 +55,16 @@ public class IngestServiceImpl implements IngestService {
 
         AlfredUser sender = alfredRepository.save(AlfredUser.from(event.getSender()));
 
-        AlfredRepoNode repo = AlfredRepoNode.from(event.getRepository());
+        AlfredRepoNode repoNode = AlfredRepoNode.from(event.getRepository());
 
         if (org != null) {
-            repo.setOrganization(org);
+            repoNode.setOrganization(org);
         } else {
             AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
-            repo.setOwner(owner);
+            repoNode.setOwner(owner);
         }
 
-        repo = alfredRepository.save(repo);
+        repoNode = alfredRepository.save(repoNode);
 
         AlfredGitUser pusher = alfredRepository.save(AlfredGitUser.from(event.getPusher()));
 
@@ -76,7 +73,7 @@ public class IngestServiceImpl implements IngestService {
             AlfredGitUser committer = alfredRepository.save(AlfredGitUser.from(c.getCommitter()));
 
             AlfredCommitNode commit = AlfredCommitNode.from(c);
-            commit.setRepo(repo);
+            commit.setRepo(repoNode);
             commit.setSender(sender);
             commit.setPusher(pusher);
             commit.setAuthor(author);
