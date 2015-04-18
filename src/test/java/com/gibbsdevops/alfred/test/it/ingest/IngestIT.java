@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.test.it;
+package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
@@ -35,9 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = IngestTestConfig.class)
-public class IngestTest {
+public class IngestIT {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IngestTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IngestIT.class);
 
     @Autowired
     private IngestApiController controller;
@@ -68,7 +68,9 @@ public class IngestTest {
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build();
 
-        dataSource.getConnection().createStatement().execute("drop all objects;");
+        Connection connection = dataSource.getConnection();
+        connection.createStatement().execute("drop all objects;");
+        connection.close();
 
         LOG.info("Setting up database");
         Flyway flyway = new Flyway();
@@ -100,27 +102,54 @@ public class IngestTest {
         ResultSet resultSet;
 
         resultSet = connection.createStatement().executeQuery("select * from alfred_git_user;");
-        resultSet.next();
-        assertThat(stringize(resultSet), equalTo("ID=1 NAME=shanegibbs EMAIL=shane@hands.net.nz"));
-        resultSet.next();
-        assertThat(stringize(resultSet), equalTo("ID=2 NAME=Shane Gibbs EMAIL=shane@hands.net.nz"));
+        assertThat(stringize(resultSet, " "), equalTo("ID=1 NAME=shanegibbs EMAIL=shane@hands.net.nz "));
+        assertThat(stringize(resultSet, " "), equalTo("ID=2 NAME=Shane Gibbs EMAIL=shane@hands.net.nz "));
+        resultSet.close();
+
+        resultSet = connection.createStatement().executeQuery("select * from alfred_user;");
+        assertThat(stringize(resultSet), equalTo("ID=2838876\n" +
+                "LOGIN=shanegibbs\n" +
+                "NAME=null\n" +
+                "EMAIL=null\n" +
+                "URL=https://api.github.com/users/shanegibbs\n" +
+                "HTML_URL=https://github.com/shanegibbs\n" +
+                "AVATAR_URL=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
+                "TYPE=User\n" +
+                "DESCRIPTION=null\n" +
+                "CREATED_AT=null\n" +
+                "UPDATED_AT=null\n"));
+        assertThat(stringize(resultSet), equalTo("ID=10710439\n" +
+                "LOGIN=gibbsdevops\n" +
+                "NAME=null\n" +
+                "EMAIL=null\n" +
+                "URL=https://api.github.com/orgs/gibbsdevops\n" +
+                "HTML_URL=null\n" +
+                "AVATAR_URL=https://avatars.githubusercontent.com/u/10710439?v=3\n" +
+                "TYPE=Organization\n" +
+                "DESCRIPTION=null\n" +
+                "CREATED_AT=null\n" +
+                "UPDATED_AT=null\n"));
         resultSet.close();
 
         connection.close();
     }
 
     String stringize(ResultSet rs) {
-        StringBuilder sb = new StringBuilder("");
+        return stringize(rs, "\n");
+    }
+
+    String stringize(ResultSet rs, String sep) {
         try {
+            rs.next();
+            StringBuilder sb = new StringBuilder("");
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                if (i != 1) sb.append(' ');
                 sb.append(rs.getMetaData().getColumnName(i)).append("=");
-                sb.append(rs.getString(i));
+                sb.append(rs.getString(i)).append(sep);
             }
+            return sb.toString();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to stringize ResultSet", e);
         }
-        return sb.toString();
     }
 
 }

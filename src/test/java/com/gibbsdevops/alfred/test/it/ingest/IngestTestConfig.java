@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.test.it;
+package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.cache.AlfredCache;
 import com.gibbsdevops.alfred.service.build.BuildService;
