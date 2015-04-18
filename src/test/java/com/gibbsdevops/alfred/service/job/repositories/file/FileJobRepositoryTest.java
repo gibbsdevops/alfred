@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 public class FileJobRepositoryTest {

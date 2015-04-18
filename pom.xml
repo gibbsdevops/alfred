@@ -11,7 +11,8 @@
     <properties>
         <jetty.version>9.2.7.v20150116</jetty.version>
         <jetty.jsp.version>9.2.7.v20150116</jetty.jsp.version>
-        <spring.version>4.1.4.RELEASE</spring.version>
+        <spring.version>4.1.6.RELEASE</spring.version>
+        <hibernate.version>4.3.8.Final</hibernate.version>
     </properties>
 
     <dependencies>
@@ -66,7 +67,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.2.0.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

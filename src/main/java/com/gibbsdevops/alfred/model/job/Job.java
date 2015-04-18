@@ -1,6 +1,9 @@
 package com.gibbsdevops.alfred.model.job;
 
-import com.gibbsdevops.alfred.model.github.*;
+import com.gibbsdevops.alfred.model.github.GHCommit;
+import com.gibbsdevops.alfred.model.github.GHOrganization;
+import com.gibbsdevops.alfred.model.github.GHPersonRef;
+import com.gibbsdevops.alfred.model.github.GHRepository;
 
 public class Job {
 

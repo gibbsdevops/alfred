@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.test.it;
 
+import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,8 +23,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,7 +46,13 @@ public class IngestTest {
     private DataSource dataSource;
 
     @Autowired
+    private AlfredGitUserDao alfredGitUserDao;
+
+    @Autowired
     private AlfredRepository alfredRepository;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     private MockMvc mockMvc;
 
@@ -84,6 +96,31 @@ public class IngestTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
+        Connection connection = dataSource.getConnection();
+        ResultSet resultSet;
+
+        resultSet = connection.createStatement().executeQuery("select * from alfred_git_user;");
+        resultSet.next();
+        assertThat(stringize(resultSet), equalTo("ID=1 NAME=shanegibbs EMAIL=shane@hands.net.nz"));
+        resultSet.next();
+        assertThat(stringize(resultSet), equalTo("ID=2 NAME=Shane Gibbs EMAIL=shane@hands.net.nz"));
+        resultSet.close();
+
+        connection.close();
+    }
+
+    String stringize(ResultSet rs) {
+        StringBuilder sb = new StringBuilder("");
+        try {
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                if (i != 1) sb.append(' ');
+                sb.append(rs.getMetaData().getColumnName(i)).append("=");
+                sb.append(rs.getString(i));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to stringize ResultSet", e);
+        }
+        return sb.toString();
     }
 
 }

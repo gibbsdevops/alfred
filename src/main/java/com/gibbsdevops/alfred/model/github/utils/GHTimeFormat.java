@@ -1,7 +1,5 @@
 package com.gibbsdevops.alfred.model.github.utils;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 

@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -85,16 +83,22 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Override
     public AlfredRepoNode save(AlfredRepoNode node) {
-        LOG.info("Saving repo {}", node.getName());
-        AlfredRepo normal = node.normalize();
+        save(node.normalize());
         return node;
     }
 
     @Override
+    public AlfredRepo save(AlfredRepo repo) {
+        LOG.info("Saving repo {}", repo.getName());
+        return repo;
+    }
+
+    @Override
     public AlfredGitUser save(AlfredGitUser user) {
-        LOG.info("Saving git user {}", user.getName());
         AlfredGitUser existing = alfredGitUserDao.getByNameAndEmail(user.getName(), user.getEmail());
         if (existing != null) return existing;
+
+        LOG.info("Saving new git user {}", user.getName());
 
         user = alfredGitUserDao.save(user);
         return user;

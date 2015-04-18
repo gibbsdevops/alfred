@@ -76,7 +76,6 @@ public class GHPushEvent extends GHEvent {
     }
 
 
-
     public GHPerson getSender() {
         return sender;
     }

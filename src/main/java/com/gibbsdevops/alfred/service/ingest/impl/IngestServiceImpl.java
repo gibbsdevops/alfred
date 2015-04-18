@@ -1,7 +1,10 @@
 package com.gibbsdevops.alfred.service.ingest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredGitUser;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
