@@ -5,6 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AlfredUserDao extends CrudRepository<AlfredUser, String> {
+public interface AlfredUserDao extends CrudRepository<AlfredUser, Long> {
+
+    AlfredUser getByLogin(String login);
 
 }

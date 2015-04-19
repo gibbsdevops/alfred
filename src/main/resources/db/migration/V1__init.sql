@@ -1,7 +1,8 @@
 create table alfred_user (
+    id serial,
     login varchar(256) not null,
     version int not null,
-    id int not null,
+    github_id int not null,
     name varchar(256),
     email varchar(256),
     url varchar(256),

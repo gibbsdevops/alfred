@@ -26,12 +26,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -100,18 +98,16 @@ public class IngestIT {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        Connection connection = dataSource.getConnection();
-        ResultSet resultSet;
+        assertThat(stringifyRowQuery("select * from alfred_git_user where name='shanegibbs'"),
+                equalTo("NAME=shanegibbs\nEMAIL=shane@hands.net.nz\n"));
+        assertThat(stringifyRowQuery("select * from alfred_git_user where name='Shane Gibbs'"),
+                equalTo("NAME=Shane Gibbs\nEMAIL=shane@hands.net.nz\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_git_user"),
+                equalTo("COUNT=2\n"));
 
-        resultSet = connection.createStatement().executeQuery("select * from alfred_git_user;");
-        assertThat(stringize(resultSet, " "), equalTo("ID=1 NAME=shanegibbs EMAIL=shane@hands.net.nz "));
-        assertThat(stringize(resultSet, " "), equalTo("ID=2 NAME=Shane Gibbs EMAIL=shane@hands.net.nz "));
-        resultSet.close();
-
-        resultSet = connection.createStatement().executeQuery("select * from alfred_user;");
-        assertThat(stringize(resultSet), equalTo("LOGIN=shanegibbs\n" +
+        assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("LOGIN=shanegibbs\n" +
                 "VERSION=0\n" +
-                "ID=2838876\n" +
+                "GITHUB_ID=2838876\n" +
                 "NAME=null\n" +
                 "EMAIL=null\n" +
                 "URL=https://api.github.com/users/shanegibbs\n" +
@@ -121,9 +117,9 @@ public class IngestIT {
                 "DESCRIPTION=null\n" +
                 "CREATED_AT=null\n" +
                 "UPDATED_AT=null\n"));
-        assertThat(stringize(resultSet), equalTo("LOGIN=gibbsdevops\n" +
+        assertThat(stringifyRowQuery("select * from alfred_user where login='gibbsdevops'"), equalTo("LOGIN=gibbsdevops\n" +
                 "VERSION=0\n" +
-                "ID=10710439\n" +
+                "GITHUB_ID=10710439\n" +
                 "NAME=null\n" +
                 "EMAIL=null\n" +
                 "URL=https://api.github.com/orgs/gibbsdevops\n" +
@@ -133,26 +129,44 @@ public class IngestIT {
                 "DESCRIPTION=null\n" +
                 "CREATED_AT=null\n" +
                 "UPDATED_AT=null\n"));
-        resultSet.close();
-
-        connection.close();
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
+                equalTo("COUNT=2\n"));
     }
 
-    String stringize(ResultSet rs) {
-        return stringize(rs, "\n");
-    }
+    String stringifyRowQuery(String sql) {
+        ResultSet rs = null;
+        Connection connection = null;
 
-    String stringize(ResultSet rs, String sep) {
         try {
+            connection = dataSource.getConnection();
+            rs = connection.createStatement().executeQuery(sql);
             rs.next();
+
             StringBuilder sb = new StringBuilder("");
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                if ("id".equals(rs.getMetaData().getColumnName(i).toLowerCase())) continue;
                 sb.append(rs.getMetaData().getColumnName(i)).append("=");
-                sb.append(rs.getString(i)).append(sep);
+                sb.append(rs.getString(i)).append("\n");
             }
+
+            assertFalse("Expecting single row but there is >1", rs.next());
+
             return sb.toString();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to stringize ResultSet", e);
+            throw new RuntimeException("Failed to stringify ResultSet", e);
+        } finally {
+            assert connection != null;
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            assert connection != null;
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

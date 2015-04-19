@@ -5,19 +5,19 @@ import com.gibbsdevops.alfred.model.github.GHPerson;
 import com.gibbsdevops.alfred.model.github.GHUser;
 import com.google.common.base.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.lang.reflect.Field;
 
 @Entity(name = "alfred_user")
 public class AlfredUser {
 
     @Id
-    private String login;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Version
-    private int version;
-    private long id;
+    private Integer version;
+    private String login;
+    private Long githubId;
     private String name;
     private String email;
     private String url;
@@ -31,7 +31,7 @@ public class AlfredUser {
     public static AlfredUser from(GHUser u) {
         if (u == null) throw new NullPointerException("user is null");
         AlfredUser user = new AlfredUser();
-        user.id = u.getId();
+        user.githubId = u.getId();
         user.login = u.getLogin();
         user.url = u.getUrl();
         user.htmlUrl = u.getHtmlUrl();
@@ -63,28 +63,20 @@ public class AlfredUser {
     }
 
     //<editor-fold desc="Getters and Setters">
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getLogin() {
@@ -93,6 +85,22 @@ public class AlfredUser {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Long getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(Long githubId) {
+        this.githubId = githubId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {

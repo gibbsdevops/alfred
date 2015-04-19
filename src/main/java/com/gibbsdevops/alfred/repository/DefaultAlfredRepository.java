@@ -42,7 +42,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
     }
 
     public AlfredUser getByLogin(String login) {
-        return alfredUserDao.findOne(login);
+        return alfredUserDao.getByLogin(login);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
         AlfredUser existing;
         try {
-            existing = alfredUserDao.findOne(user.getLogin());
+            existing = alfredUserDao.getByLogin(user.getLogin());
         } catch (EmptyResultDataAccessException e) {
             existing = null;
         }
