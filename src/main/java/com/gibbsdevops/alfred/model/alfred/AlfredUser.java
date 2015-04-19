@@ -7,14 +7,17 @@ import com.google.common.base.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Version;
 import java.lang.reflect.Field;
 
 @Entity(name = "alfred_user")
 public class AlfredUser {
 
     @Id
-    private long id;
     private String login;
+    @Version
+    private int version;
+    private long id;
     private String name;
     private String email;
     private String url;
@@ -66,6 +69,22 @@ public class AlfredUser {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getLogin() {

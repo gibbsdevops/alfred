@@ -109,8 +109,9 @@ public class IngestIT {
         resultSet.close();
 
         resultSet = connection.createStatement().executeQuery("select * from alfred_user;");
-        assertThat(stringize(resultSet), equalTo("ID=2838876\n" +
-                "LOGIN=shanegibbs\n" +
+        assertThat(stringize(resultSet), equalTo("LOGIN=shanegibbs\n" +
+                "VERSION=0\n" +
+                "ID=2838876\n" +
                 "NAME=null\n" +
                 "EMAIL=null\n" +
                 "URL=https://api.github.com/users/shanegibbs\n" +
@@ -120,8 +121,9 @@ public class IngestIT {
                 "DESCRIPTION=null\n" +
                 "CREATED_AT=null\n" +
                 "UPDATED_AT=null\n"));
-        assertThat(stringize(resultSet), equalTo("ID=10710439\n" +
-                "LOGIN=gibbsdevops\n" +
+        assertThat(stringize(resultSet), equalTo("LOGIN=gibbsdevops\n" +
+                "VERSION=0\n" +
+                "ID=10710439\n" +
                 "NAME=null\n" +
                 "EMAIL=null\n" +
                 "URL=https://api.github.com/orgs/gibbsdevops\n" +

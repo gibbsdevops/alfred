@@ -1,6 +1,7 @@
 create table alfred_user (
+    login varchar(256) not null,
+    version int not null,
     id int not null,
-    login varchar(256),
     name varchar(256),
     email varchar(256),
     url varchar(256),
@@ -12,6 +13,7 @@ create table alfred_user (
     updated_at int,
     constraint alfred_user_pkey primary key (id)
 );
+create unique index alfred_user_unique_login on alfred_user (login);
 
 create table alfred_git_user (
     id serial,
@@ -19,7 +21,6 @@ create table alfred_git_user (
     email varchar(256),
     constraint alfred_git_user_pkey primary key (id)
 );
-
 create unique index alfred_git_user_unique on alfred_git_user (name, email);
 
 create table alfred_repo (

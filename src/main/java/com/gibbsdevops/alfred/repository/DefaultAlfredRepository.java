@@ -41,8 +41,8 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     }
 
-    public AlfredUser getById(long id) {
-        return alfredUserDao.findOne(id);
+    public AlfredUser getByLogin(String login) {
+        return alfredUserDao.findOne(login);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
         AlfredUser existing;
         try {
-            existing = alfredUserDao.findOne(user.getId());
+            existing = alfredUserDao.findOne(user.getLogin());
         } catch (EmptyResultDataAccessException e) {
             existing = null;
         }
@@ -96,7 +96,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
         AlfredGitUser existing = alfredGitUserDao.getByNameAndEmail(user.getName(), user.getEmail());
         if (existing != null) return existing;
 
-        LOG.info("Saving new git user {}", user.getName());
+        LOG.info("Saving new git user {} <{}>", user.getName(), user.getEmail());
 
         user = alfredGitUserDao.save(user);
         return user;
