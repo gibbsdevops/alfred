@@ -7,7 +7,6 @@ public class AlfredRepoNode extends AlfredRepoProperties {
     private AlfredRepoProperties properties;
 
     private AlfredUser owner;
-    private AlfredUser organization;
 
     public static AlfredRepoNode from(GHRepository repository) {
         AlfredRepoNode node = new AlfredRepoNode();
@@ -22,32 +21,46 @@ public class AlfredRepoNode extends AlfredRepoProperties {
     }
 
     public AlfredRepo normalize() {
-        if (organization == null && owner == null) {
-            throw new NullPointerException("Repo has no org or owner");
-        }
+        if (owner == null) throw new NullPointerException("Repo has no owner");
+        if (owner.getId() == null) throw new NullPointerException("Owner has no ID");
 
         AlfredRepo repo = new AlfredRepo();
         repo.properties = properties;
         if (owner != null) {
-            if (owner.getId() == 0) throw new IllegalArgumentException("owner ID can not be 0");
             repo.setOwner(owner.getId());
-        }
-        if (organization != null) {
-            if (organization.getId() == 0) throw new IllegalArgumentException("org ID can not be 0");
-            repo.setOrganization(organization.getId());
         }
         return repo;
     }
 
     //<editor-fold desc="Getters and Setters">
     @Override
-    public long getId() {
+    public Long getId() {
         return properties.getId();
     }
 
     @Override
-    public void setId(long id) {
+    public void setId(Long id) {
         properties.setId(id);
+    }
+
+    @Override
+    public Integer getVersion() {
+        return properties.getVersion();
+    }
+
+    @Override
+    public void setVersion(Integer version) {
+        properties.setVersion(version);
+    }
+
+    @Override
+    public Long getGithubId() {
+        return properties.getGithubId();
+    }
+
+    @Override
+    public void setGithubId(Long githubId) {
+        properties.setGithubId(githubId);
     }
 
     @Override
@@ -216,14 +229,6 @@ public class AlfredRepoNode extends AlfredRepoProperties {
 
     public void setOwner(AlfredUser owner) {
         this.owner = owner;
-    }
-
-    public AlfredUser getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(AlfredUser organization) {
-        this.organization = organization;
     }
     //</editor-fold>
 

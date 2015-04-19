@@ -106,7 +106,6 @@ public class IngestIT {
                 equalTo("COUNT=2\n"));
 
         assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("LOGIN=shanegibbs\n" +
-                "VERSION=0\n" +
                 "GITHUB_ID=2838876\n" +
                 "NAME=Shane Gibbs\n" +
                 "EMAIL=\n" +
@@ -118,7 +117,6 @@ public class IngestIT {
                 "CREATED_AT=null\n" +
                 "UPDATED_AT=null\n"));
         assertThat(stringifyRowQuery("select * from alfred_user where login='gibbsdevops'"), equalTo("LOGIN=gibbsdevops\n" +
-                "VERSION=0\n" +
                 "GITHUB_ID=10710439\n" +
                 "NAME=null\n" +
                 "EMAIL=null\n" +
@@ -131,6 +129,25 @@ public class IngestIT {
                 "UPDATED_AT=null\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
                 equalTo("COUNT=2\n"));
+
+        assertThat(stringifyRowQuery("select * from alfred_repo where name = 'alfred'"), equalTo("GITHUB_ID=30513996\n" +
+                "NAME=alfred\n" +
+                "FULL_NAME=gibbsdevops/alfred\n" +
+                "PRIVATE=FALSE\n" +
+                "DESCRIPTION=Alfred CI Server\n" +
+                "FORK=FALSE\n" +
+                "URL=https://api.github.com/repos/gibbsdevops/alfred\n" +
+                "HTML_URL=https://github.com/gibbsdevops/alfred\n" +
+                "SSH_URL=git@github.com:gibbsdevops/alfred.git\n" +
+                "GIT_URL=git://github.com/gibbsdevops/alfred.git\n" +
+                "CLONE_URL=https://github.com/gibbsdevops/alfred.git\n" +
+                "CREATED_AT=1423447114\n" +
+                "UPDATED_AT=1428459143\n" +
+                "PUSHED_AT=1429455933\n" +
+                "HOMEPAGE=\n" +
+                "LANGUAGE=Java\n" +
+                "DEFAULT_BRANCH=master\n" +
+                "OWNER=1\n"));
     }
 
     String stringifyRowQuery(String sql) {
@@ -145,6 +162,7 @@ public class IngestIT {
             StringBuilder sb = new StringBuilder("");
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                 if ("id".equals(rs.getMetaData().getColumnName(i).toLowerCase())) continue;
+                if ("version".equals(rs.getMetaData().getColumnName(i).toLowerCase())) continue;
                 sb.append(rs.getMetaData().getColumnName(i)).append("=");
                 sb.append(rs.getString(i)).append("\n");
             }

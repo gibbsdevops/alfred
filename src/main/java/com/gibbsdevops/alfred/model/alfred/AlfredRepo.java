@@ -1,28 +1,46 @@
 package com.gibbsdevops.alfred.model.alfred;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "alfred_repo")
 public class AlfredRepo extends AlfredRepoProperties {
 
-    AlfredRepoProperties properties;
+    AlfredRepoProperties properties = new AlfredRepoProperties();
 
     private Long owner;
-    private Long organization;
 
     //<editor-fold desc="Getters and Setters">
     @Override
     @Id
-    public long getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
         return properties.getId();
     }
 
     @Override
-    public void setId(long id) {
+    public void setId(Long id) {
         properties.setId(id);
+    }
+
+    @Override
+    @Version
+    public Integer getVersion() {
+        return properties.getVersion();
+    }
+
+    @Override
+    public void setVersion(Integer version) {
+        properties.setVersion(version);
+    }
+
+    @Override
+    public Long getGithubId() {
+        return properties.getGithubId();
+    }
+
+    @Override
+    public void setGithubId(Long githubId) {
+        properties.setGithubId(githubId);
     }
 
     @Override
@@ -46,6 +64,7 @@ public class AlfredRepo extends AlfredRepoProperties {
     }
 
     @Override
+    @Column(name = "private")
     public boolean isPriv() {
         return properties.isPriv();
     }
@@ -191,14 +210,6 @@ public class AlfredRepo extends AlfredRepoProperties {
 
     public void setOwner(Long owner) {
         this.owner = owner;
-    }
-
-    public Long getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Long organization) {
-        this.organization = organization;
     }
     //</editor-fold>
 

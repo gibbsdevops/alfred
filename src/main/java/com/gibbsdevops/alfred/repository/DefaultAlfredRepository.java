@@ -88,7 +88,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
     @Override
     public AlfredRepo save(AlfredRepo repo) {
         LOG.info("Saving repo {}", repo.getName());
-        return repo; // alfredRepoDao.save(repo);
+        return alfredRepoDao.save(repo);
     }
 
     @Override

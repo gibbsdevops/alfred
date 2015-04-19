@@ -5,14 +5,15 @@ import com.gibbsdevops.alfred.model.github.GHHookRepository;
 import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 
 public class AlfredRepoProperties {
 
-    private long id;
+    private Long id;
+    private Integer version;
+    private Long githubId;
     private String name;
     private String fullName;
-    @Column(name = "private")
     @JsonProperty("private")
     private boolean priv;
     private String description;
@@ -31,7 +32,7 @@ public class AlfredRepoProperties {
 
     public static AlfredRepoProperties from(GHRepository repository) {
         AlfredRepoProperties properties = new AlfredRepoProperties();
-        properties.setId(repository.getId());
+        properties.setGithubId(repository.getId());
         properties.setName(repository.getName());
         properties.setFullName(repository.getFullName());
         properties.setPriv(repository.isPriv());
@@ -56,12 +57,28 @@ public class AlfredRepoProperties {
     }
 
     //<editor-fold desc="Getters and Setters">
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Long getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(Long githubId) {
+        this.githubId = githubId;
     }
 
     public String getName() {

@@ -66,7 +66,7 @@ public class DefaultIngestService implements IngestService {
         AlfredRepoNode repoNode = AlfredRepoNode.from(ghRepo);
 
         if (org != null) {
-            repoNode.setOrganization(org);
+            repoNode.setOwner(org);
         } else {
             // AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
             // repoNode.setOwner(owner);
