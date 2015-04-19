@@ -1,6 +1,5 @@
 package com.gibbsdevops.alfred.service.ingest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class DefaultIngestService implements IngestService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultIngestService.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     private SimpMessagingTemplate template;
     private AlfredRepository alfredRepository;

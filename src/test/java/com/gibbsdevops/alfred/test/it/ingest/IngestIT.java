@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
+import com.gibbsdevops.alfred.config.MvcConfig;
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
-import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
@@ -14,31 +14,36 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+//@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = IngestTestConfig.class)
+@ContextConfiguration(classes = {MvcConfig.class, IngestTestConfig.class})
 public class IngestIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(IngestIT.class);
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private IngestApiController controller;
@@ -64,13 +69,7 @@ public class IngestIT {
 
     @Before
     public void setup() throws Exception {
-        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-        messageConverter.setObjectMapper(new AlfredObjectMapperFactory().getObject());
-
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(controller)
-                .setMessageConverters(messageConverter)
-                .build();
+        mockMvc = webAppContextSetup(webApplicationContext).build();
 
         Connection connection = dataSource.getConnection();
         connection.createStatement().execute("drop all objects;");
@@ -88,7 +87,6 @@ public class IngestIT {
         mockMvc.perform(get("/ingest").accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
-
     }
 
     @Test

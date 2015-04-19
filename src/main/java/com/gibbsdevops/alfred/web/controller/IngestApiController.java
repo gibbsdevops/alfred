@@ -2,6 +2,7 @@ package com.gibbsdevops.alfred.web.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IngestApiController extends ApiController {
 
     private static final Logger LOG = LoggerFactory.getLogger(IngestApiController.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = AlfredObjectMapperFactory.get();
     private static final AtomicInteger counter = new AtomicInteger();
     public static final File INGEST_PATH = new File("ingest");
 

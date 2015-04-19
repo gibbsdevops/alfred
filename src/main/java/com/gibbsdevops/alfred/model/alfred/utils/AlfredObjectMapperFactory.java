@@ -9,16 +9,22 @@ import org.springframework.beans.factory.FactoryBean;
 
 public class AlfredObjectMapperFactory implements FactoryBean<ObjectMapper> {
 
-    private ObjectMapper objectMapper = null;
+    private static final ObjectMapper objectMapper;
 
-    @Override
-    public ObjectMapper getObject() throws Exception {
-        if (objectMapper != null) return objectMapper;
+    static {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    }
+
+    public static ObjectMapper get() {
+        return objectMapper;
+    }
+
+    @Override
+    public ObjectMapper getObject() {
         return objectMapper;
     }
 
