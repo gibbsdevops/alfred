@@ -3,14 +3,14 @@ package com.gibbsdevops.alfred.model.job;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.GHOrganization;
 import com.gibbsdevops.alfred.model.github.GHPersonRef;
-import com.gibbsdevops.alfred.model.github.GHRepository;
+import com.gibbsdevops.alfred.model.github.GHHookRepository;
 
 public class Job {
 
     private Integer id;
     private Integer version;
     private GHOrganization organization;
-    private GHRepository repository;
+    private GHHookRepository repository;
     private GHCommit commit;
     private String ref;
     private GHPersonRef pusher;
@@ -46,11 +46,11 @@ public class Job {
         this.organization = organization;
     }
 
-    public GHRepository getRepository() {
+    public GHHookRepository getRepository() {
         return repository;
     }
 
-    public void setRepository(GHRepository repository) {
+    public void setRepository(GHHookRepository repository) {
         this.repository = repository;
     }
 

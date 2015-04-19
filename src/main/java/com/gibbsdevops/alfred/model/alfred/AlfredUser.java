@@ -28,7 +28,7 @@ public class AlfredUser {
     private Long createdAt;
     private Long updatedAt;
 
-    public static AlfredUser from(GHUser u) {
+    private static AlfredUser from(GHUser u) {
         if (u == null) throw new NullPointerException("user is null");
         AlfredUser user = new AlfredUser();
         user.githubId = u.getId();

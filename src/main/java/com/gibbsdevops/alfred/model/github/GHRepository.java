@@ -2,6 +2,7 @@ package com.gibbsdevops.alfred.model.github;
 
 public class GHRepository {
 
+
     private long id;
     private String name;
     private String fullName;
@@ -10,17 +11,18 @@ public class GHRepository {
     private String description;
     private boolean fork;
     private String url;
+    private String forksUrl;
     private String htmlUrl;
     private String sshUrl;
     private String gitUrl;
     private String cloneUrl;
-    private long createdAt;
+    private String createdAt;
     private String updatedAt;
-    private long pushedAt;
+    private String pushedAt;
     private String homepage;
     private String language;
     private String defaultBranch;
-    private String organization;
+    private GHOrganization organization;
 
     //<editor-fold desc="Getters and Setters">
     public long getId() {
@@ -87,6 +89,14 @@ public class GHRepository {
         this.url = url;
     }
 
+    public String getForksUrl() {
+        return forksUrl;
+    }
+
+    public void setForksUrl(String forksUrl) {
+        this.forksUrl = forksUrl;
+    }
+
     public String getHtmlUrl() {
         return htmlUrl;
     }
@@ -119,11 +129,11 @@ public class GHRepository {
         this.cloneUrl = cloneUrl;
     }
 
-    public long getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -135,11 +145,11 @@ public class GHRepository {
         this.updatedAt = updatedAt;
     }
 
-    public long getPushedAt() {
+    public String getPushedAt() {
         return pushedAt;
     }
 
-    public void setPushedAt(long pushedAt) {
+    public void setPushedAt(String pushedAt) {
         this.pushedAt = pushedAt;
     }
 
@@ -167,11 +177,11 @@ public class GHRepository {
         this.defaultBranch = defaultBranch;
     }
 
-    public String getOrganization() {
+    public GHOrganization getOrganization() {
         return organization;
     }
 
-    public void setOrganization(String organization) {
+    public void setOrganization(GHOrganization organization) {
         this.organization = organization;
     }
     //</editor-fold>

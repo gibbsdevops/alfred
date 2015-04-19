@@ -2,10 +2,14 @@ package com.gibbsdevops.alfred.service.ingest;
 
 import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.model.github.GHCommit;
+import com.gibbsdevops.alfred.model.github.GHOrganization;
+import com.gibbsdevops.alfred.model.github.GHPerson;
+import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.github.GithubApiService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ public class DefaultIngestService implements IngestService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultIngestService.class);
 
+    private GithubApiService githubApiService;
     private SimpMessagingTemplate template;
     private AlfredRepository alfredRepository;
     private JobService jobService;
@@ -40,18 +45,31 @@ public class DefaultIngestService implements IngestService {
 
         AlfredUser org = null;
         if (event.getOrganization() != null) {
-            org = alfredRepository.save(AlfredUser.from(event.getOrganization()));
+            GHOrganization ghOrg = githubApiService.getOrganization(event.getOrganization().getUrl());
+            org = alfredRepository.save(AlfredUser.from(ghOrg));
         }
 
-        AlfredUser sender = alfredRepository.save(AlfredUser.from(event.getSender()));
+        GHPerson ghSender = githubApiService.getPerson(event.getSender().getUrl());
+        AlfredUser sender = alfredRepository.save(AlfredUser.from(ghSender));
 
-        AlfredRepoNode repoNode = AlfredRepoNode.from(event.getRepository());
+        /* not used yet */
+        /*
+        GHUser ghOwner = null;
+        if (event.getRepository().getOrganization() == null) {
+            ghOwner = githubApiService.getUser(event.getRepository().getOwner().getName());
+        }
+        */
+
+        String repoUrl = AlfredRepoProperties.extractUrlFromForksUrl(event.getRepository().getForksUrl());
+
+        GHRepository ghRepo = githubApiService.getRepository(repoUrl);
+        AlfredRepoNode repoNode = AlfredRepoNode.from(ghRepo);
 
         if (org != null) {
             repoNode.setOrganization(org);
         } else {
-            AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
-            repoNode.setOwner(owner);
+            // AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
+            // repoNode.setOwner(owner);
         }
 
         AlfredRepo repo = repoNode.normalize();
@@ -89,6 +107,11 @@ public class DefaultIngestService implements IngestService {
     }
 
     //<editor-fold desc="Getters and Setters">
+    @Autowired
+    public void setGithubApiService(GithubApiService githubApiService) {
+        this.githubApiService = githubApiService;
+    }
+
     @Autowired
     public void setTemplate(SimpMessagingTemplate template) {
         this.template = template;

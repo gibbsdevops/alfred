@@ -15,7 +15,7 @@ public class GHPushEvent extends GHEvent {
     private List<GHCommit> commits;
     @JsonProperty("head_commit")
     private GHCommit headCommit;
-    private GHRepository repository;
+    private GHHookRepository repository;
     private GHOrganization organization;
     private GHPerson sender;
 
@@ -59,11 +59,11 @@ public class GHPushEvent extends GHEvent {
         this.headCommit = headCommit;
     }
 
-    public GHRepository getRepository() {
+    public GHHookRepository getRepository() {
         return repository;
     }
 
-    public void setRepository(GHRepository repository) {
+    public void setRepository(GHHookRepository repository) {
         this.repository = repository;
     }
 

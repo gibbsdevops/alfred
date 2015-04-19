@@ -108,8 +108,8 @@ public class IngestIT {
         assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("LOGIN=shanegibbs\n" +
                 "VERSION=0\n" +
                 "GITHUB_ID=2838876\n" +
-                "NAME=null\n" +
-                "EMAIL=null\n" +
+                "NAME=Shane Gibbs\n" +
+                "EMAIL=\n" +
                 "URL=https://api.github.com/users/shanegibbs\n" +
                 "HTML_URL=https://github.com/shanegibbs\n" +
                 "AVATAR_URL=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
@@ -123,7 +123,7 @@ public class IngestIT {
                 "NAME=null\n" +
                 "EMAIL=null\n" +
                 "URL=https://api.github.com/orgs/gibbsdevops\n" +
-                "HTML_URL=null\n" +
+                "HTML_URL=https://github.com/gibbsdevops\n" +
                 "AVATAR_URL=https://avatars.githubusercontent.com/u/10710439?v=3\n" +
                 "TYPE=Organization\n" +
                 "DESCRIPTION=null\n" +

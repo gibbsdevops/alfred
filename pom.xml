@@ -60,6 +60,12 @@
             <version>2.5.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>commons-dbcp</groupId>

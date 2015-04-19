@@ -1,59 +1,27 @@
-package com.gibbsdevops.alfred.model.alfred;
+package com.gibbsdevops.alfred.model.github;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gibbsdevops.alfred.model.github.GHHookRepository;
-import com.gibbsdevops.alfred.model.github.GHRepository;
-import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
-
-import javax.persistence.Column;
-
-public class AlfredRepoProperties {
+public class GHHookRepository {
 
     private long id;
     private String name;
     private String fullName;
-    @Column(name = "private")
-    @JsonProperty("private")
+    private GHPersonRef owner;
     private boolean priv;
     private String description;
     private boolean fork;
     private String url;
+    private String forksUrl;
     private String htmlUrl;
     private String sshUrl;
     private String gitUrl;
     private String cloneUrl;
     private long createdAt;
-    private long updatedAt;
+    private String updatedAt;
     private long pushedAt;
     private String homepage;
     private String language;
     private String defaultBranch;
-
-    public static AlfredRepoProperties from(GHRepository repository) {
-        AlfredRepoProperties properties = new AlfredRepoProperties();
-        properties.setId(repository.getId());
-        properties.setName(repository.getName());
-        properties.setFullName(repository.getFullName());
-        properties.setPriv(repository.isPriv());
-        properties.setDescription(repository.getDescription());
-        properties.setFork(repository.isFork());
-        properties.setUrl(extractUrlFromForksUrl(repository.getForksUrl()));
-        properties.setHtmlUrl(repository.getHtmlUrl());
-        properties.setSshUrl(repository.getSshUrl());
-        properties.setGitUrl(repository.getGitUrl());
-        properties.setCloneUrl(repository.getCloneUrl());
-        properties.setCreatedAt(GHTimeFormat.parse(repository.getCreatedAt()));
-        properties.setUpdatedAt(GHTimeFormat.parse(repository.getUpdatedAt()));
-        properties.setPushedAt(GHTimeFormat.parse(repository.getPushedAt()));
-        properties.setHomepage(repository.getHomepage());
-        properties.setLanguage(repository.getLanguage());
-        properties.setDefaultBranch(repository.getDefaultBranch());
-        return properties;
-    }
-
-    public static String extractUrlFromForksUrl(String forksUrl) {
-        return forksUrl.substring(0, forksUrl.length() - 6);
-    }
+    private String organization;
 
     //<editor-fold desc="Getters and Setters">
     public long getId() {
@@ -78,6 +46,14 @@ public class AlfredRepoProperties {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public GHPersonRef getOwner() {
+        return owner;
+    }
+
+    public void setOwner(GHPersonRef owner) {
+        this.owner = owner;
     }
 
     public boolean isPriv() {
@@ -110,6 +86,14 @@ public class AlfredRepoProperties {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getForksUrl() {
+        return forksUrl;
+    }
+
+    public void setForksUrl(String forksUrl) {
+        this.forksUrl = forksUrl;
     }
 
     public String getHtmlUrl() {
@@ -152,11 +136,11 @@ public class AlfredRepoProperties {
         this.createdAt = createdAt;
     }
 
-    public long getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -191,14 +175,14 @@ public class AlfredRepoProperties {
     public void setDefaultBranch(String defaultBranch) {
         this.defaultBranch = defaultBranch;
     }
-    //</editor-fold>
 
-    @Override
-    public String toString() {
-        return "AlfredRepoProperties{" +
-                "id=" + getId() +
-                ", fullName='" + getFullName() + '\'' +
-                '}';
+    public String getOrganization() {
+        return organization;
     }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+    //</editor-fold>
 
 }
