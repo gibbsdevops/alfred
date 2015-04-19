@@ -1,12 +1,10 @@
 package com.gibbsdevops.alfred.model.alfred;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gibbsdevops.alfred.model.github.GHOrganization;
 import com.gibbsdevops.alfred.model.github.GHPerson;
 import com.gibbsdevops.alfred.model.github.GHUser;
 import com.google.common.base.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.lang.reflect.Field;
@@ -20,15 +18,11 @@ public class AlfredUser {
     private String name;
     private String email;
     private String url;
-    @JsonProperty("html_url")
     private String htmlUrl;
-    @JsonProperty("avatar_url")
     private String avatarUrl;
     private String type;
     private String description;
-    @JsonProperty("created_at")
     private Long createdAt;
-    @JsonProperty("updated_at")
     private Long updatedAt;
 
     public static AlfredUser from(GHUser u) {

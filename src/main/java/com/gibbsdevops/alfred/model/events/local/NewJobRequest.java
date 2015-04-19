@@ -1,19 +1,13 @@
 package com.gibbsdevops.alfred.model.events.local;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class NewJobRequest {
 
     private String repo;
     private String organization;
     private String spec;
-    @JsonProperty("html_url")
     private String htmlUrl;
-    @JsonProperty("ssh_url")
     private String sshUrl;
-    @JsonProperty("git_url")
     private String gitUrl;
-    @JsonProperty("clone_url")
     private String cloneUrl;
 
     public String getRepo() {

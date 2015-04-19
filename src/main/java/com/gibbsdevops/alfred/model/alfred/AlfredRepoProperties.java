@@ -4,34 +4,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
 
+import javax.persistence.Column;
+
 public class AlfredRepoProperties {
 
     private long id;
     private String name;
-    @JsonProperty("full_name")
     private String fullName;
+    @Column(name = "private")
     @JsonProperty("private")
     private boolean priv;
     private String description;
     private boolean fork;
     private String url;
-    @JsonProperty("html_url")
     private String htmlUrl;
-    @JsonProperty("ssh_url")
     private String sshUrl;
-    @JsonProperty("git_url")
     private String gitUrl;
-    @JsonProperty("clone_url")
     private String cloneUrl;
-    @JsonProperty("created_at")
     private long createdAt;
-    @JsonProperty("updated_at")
     private long updatedAt;
-    @JsonProperty("pushed_at")
     private long pushedAt;
     private String homepage;
     private String language;
-    @JsonProperty("default_branch")
     private String defaultBranch;
 
     public static AlfredRepoProperties from(GHRepository repository) {

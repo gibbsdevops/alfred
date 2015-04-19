@@ -1,8 +1,5 @@
 package com.gibbsdevops.alfred.model.github;
 
-/**
- * Created by sgibbs on 4/7/2015.
- */
 public class GHPersonRef {
 
     private String name;

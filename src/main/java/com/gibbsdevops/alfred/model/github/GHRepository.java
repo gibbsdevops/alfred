@@ -1,38 +1,24 @@
 package com.gibbsdevops.alfred.model.github;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class GHRepository {
 
     private long id;
     private String name;
-    @JsonProperty("full_name")
     private String fullName;
     private GHPersonRef owner;
-    @JsonProperty("private")
     private boolean priv;
     private String description;
     private boolean fork;
     private String url;
-    @JsonProperty("html_url")
     private String htmlUrl;
-    @JsonProperty("ssh_url")
     private String sshUrl;
-    @JsonProperty("git_url")
     private String gitUrl;
-    @JsonProperty("clone_url")
     private String cloneUrl;
-    @JsonProperty("created_at")
     private long createdAt;
-    @JsonProperty("updated_at")
     private String updatedAt;
-    @JsonProperty("pushed_at")
     private long pushedAt;
     private String homepage;
     private String language;
-    @JsonProperty("default_branch")
     private String defaultBranch;
     private String organization;
 
