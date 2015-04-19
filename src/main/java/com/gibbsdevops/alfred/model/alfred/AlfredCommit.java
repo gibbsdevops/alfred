@@ -12,13 +12,13 @@ public class AlfredCommit extends AlfredCommitProperties {
 
     //<editor-fold desc="Getters and Setters">
     @Override
-    public String getId() {
-        return properties.getId();
+    public String getHash() {
+        return properties.getHash();
     }
 
     @Override
-    public void setId(String id) {
-        properties.setId(id);
+    public void setHash(String id) {
+        properties.setHash(id);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.time.temporal.TemporalAccessor;
 
 public class AlfredCommitProperties {
 
-    private String id;
+    private String hash;
     private String message;
     private long timestamp;
     private int additions;
@@ -16,7 +16,7 @@ public class AlfredCommitProperties {
 
     public static AlfredCommitProperties from(GHCommit commit) {
         AlfredCommitProperties props = new AlfredCommitProperties();
-        props.id = commit.getId();
+        props.hash = commit.getId();
         props.message = commit.getMessage();
 
         TemporalAccessor parsed = DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse(commit.getTimestamp());
@@ -28,12 +28,12 @@ public class AlfredCommitProperties {
     }
 
     //<editor-fold desc="Getters and Setters">
-    public String getId() {
-        return id;
+    public String getHash() {
+        return hash;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public String getMessage() {

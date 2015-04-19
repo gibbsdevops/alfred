@@ -106,7 +106,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Override
     public AlfredCommitNode save(AlfredCommitNode commit) {
-        LOG.info("Saving commit {}", commit.getId());
+        LOG.info("Saving commit {}", commit.getHash());
         return commit;
     }
 
