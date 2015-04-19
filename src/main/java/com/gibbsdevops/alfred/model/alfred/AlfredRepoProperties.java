@@ -194,4 +194,12 @@ public class AlfredRepoProperties {
     }
     //</editor-fold>
 
+    @Override
+    public String toString() {
+        return "AlfredRepoProperties{" +
+                "id=" + getId() +
+                ", fullName='" + getFullName() + '\'' +
+                '}';
+    }
+
 }

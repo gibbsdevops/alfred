@@ -1,16 +1,12 @@
-package com.gibbsdevops.alfred.service.ingest.impl;
+package com.gibbsdevops.alfred.service.ingest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredGitUser;
-import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.ingest.IngestService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,21 +15,14 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IngestServiceImpl implements IngestService {
+public class DefaultIngestService implements IngestService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IngestServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultIngestService.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
     private SimpMessagingTemplate template;
-
-    @Autowired
     private AlfredRepository alfredRepository;
-
-    @Autowired
     private JobService jobService;
-
-    @Autowired
     private BuildService buildService;
 
     @Override
@@ -67,7 +56,8 @@ public class IngestServiceImpl implements IngestService {
             repoNode.setOwner(owner);
         }
 
-        repoNode = alfredRepository.save(repoNode);
+        AlfredRepo repo = repoNode.normalize();
+        alfredRepository.save(repo);
 
         AlfredGitUser pusher = alfredRepository.save(AlfredGitUser.from(event.getPusher()));
 
@@ -99,5 +89,27 @@ public class IngestServiceImpl implements IngestService {
         }
 
     }
+
+    //<editor-fold desc="Getters and Setters">
+    @Autowired
+    public void setTemplate(SimpMessagingTemplate template) {
+        this.template = template;
+    }
+
+    @Autowired
+    public void setAlfredRepository(AlfredRepository alfredRepository) {
+        this.alfredRepository = alfredRepository;
+    }
+
+    @Autowired
+    public void setJobService(JobService jobService) {
+        this.jobService = jobService;
+    }
+
+    @Autowired
+    public void setBuildService(BuildService buildService) {
+        this.buildService = buildService;
+    }
+    //</editor-fold>
 
 }

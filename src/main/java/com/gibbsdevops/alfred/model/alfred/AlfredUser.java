@@ -170,4 +170,12 @@ public class AlfredUser {
                 updatedAt);
     }
 
+    @Override
+    public String toString() {
+        return "AlfredUser{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                '}';
+    }
+
 }
