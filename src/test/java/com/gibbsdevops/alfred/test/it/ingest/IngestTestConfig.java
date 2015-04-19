@@ -81,6 +81,7 @@ public class IngestTestConfig {
         props.setProperty("hibernate.format_sql", "true");
         // props.setProperty("hibernate.hbm2ddl.auto", "validate");
         props.setProperty("hibernate.hbm2ddl.auto", "");
+        props.setProperty("hibernate.ejb.naming_strategy", "com.gibbsdevops.alfred.dao.AlfredNamingStrategy");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);

@@ -1,6 +1,7 @@
 package com.gibbsdevops.alfred.repository;
 
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
+import com.gibbsdevops.alfred.dao.AlfredRepoDao;
 import com.gibbsdevops.alfred.dao.AlfredUserDao;
 import com.gibbsdevops.alfred.model.alfred.*;
 import org.slf4j.Logger;
@@ -28,6 +29,9 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Autowired
     private AlfredGitUserDao alfredGitUserDao;
+
+    @Autowired
+    private AlfredRepoDao alfredRepoDao;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -82,15 +86,9 @@ public class DefaultAlfredRepository implements AlfredRepository {
     }
 
     @Override
-    public AlfredRepoNode save(AlfredRepoNode node) {
-        save(node.normalize());
-        return node;
-    }
-
-    @Override
     public AlfredRepo save(AlfredRepo repo) {
         LOG.info("Saving repo {}", repo.getName());
-        return repo;
+        return repo; // alfredRepoDao.save(repo);
     }
 
     @Override
@@ -105,7 +103,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
     }
 
     @Override
-    public AlfredCommitNode save(AlfredCommitNode commit) {
+    public AlfredCommit save(AlfredCommit commit) {
         LOG.info("Saving commit {}", commit.getHash());
         return commit;
     }

@@ -24,6 +24,10 @@ public class AlfredCommitNode extends AlfredCommitProperties {
         return node;
     }
 
+    public AlfredCommit normalize() {
+        return null;
+    }
+
     //<editor-fold desc="Getters and Setters">
     @Override
     public String getHash() {

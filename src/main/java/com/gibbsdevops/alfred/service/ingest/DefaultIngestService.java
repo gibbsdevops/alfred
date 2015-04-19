@@ -71,7 +71,7 @@ public class DefaultIngestService implements IngestService {
             commit.setPusher(pusher);
             commit.setAuthor(author);
             commit.setCommitter(committer);
-            commit = alfredRepository.save(commit);
+            // alfredRepository.save(commit.normalize());
 
             Job job = new Job();
             job.setOrganization(event.getOrganization());

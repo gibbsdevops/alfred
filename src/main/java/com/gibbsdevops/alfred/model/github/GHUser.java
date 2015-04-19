@@ -1,20 +1,14 @@
 package com.gibbsdevops.alfred.model.github;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class GHUser {
 
     private long id;
     private String login;
     private String url;
-    @JsonProperty("html_url")
     private String htmlUrl;
-    @JsonProperty("avatar_url")
     private String avatarUrl;
     private String type;
-    @JsonProperty("created_at")
     private String createdAt;
-    @JsonProperty("updated_at")
     private String updatedAt;
 
     //<editor-fold desc="Getters and Setters">

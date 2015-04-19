@@ -17,22 +17,18 @@ public class AlfredUser {
     @Id
     private long id;
     private String login;
-    @JsonProperty("html_url")
     private String name;
     private String email;
     private String url;
-    @Column(name = "html_url")
+    @JsonProperty("html_url")
     private String htmlUrl;
     @JsonProperty("avatar_url")
-    @Column(name = "avatar_url")
     private String avatarUrl;
     private String type;
     private String description;
     @JsonProperty("created_at")
-    @Column(name = "created_at")
     private Long createdAt;
     @JsonProperty("updated_at")
-    @Column(name = "updated_at")
     private Long updatedAt;
 
     public static AlfredUser from(GHUser u) {

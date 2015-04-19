@@ -1,6 +1,7 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
+import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
@@ -62,10 +63,13 @@ public class IngestIT {
             Charset.forName("utf8"));
 
     @Before
-    public void setup() throws IOException, SQLException {
+    public void setup() throws Exception {
+        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+        messageConverter.setObjectMapper(new AlfredObjectMapperFactory().getObject());
+
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
-                .setMessageConverters(new MappingJackson2HttpMessageConverter())
+                .setMessageConverters(messageConverter)
                 .build();
 
         Connection connection = dataSource.getConnection();

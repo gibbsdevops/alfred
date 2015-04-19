@@ -1,5 +1,11 @@
 package com.gibbsdevops.alfred.model.alfred;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity(name = "alfred_repo")
 public class AlfredRepo extends AlfredRepoProperties {
 
     AlfredRepoProperties properties;
@@ -9,6 +15,7 @@ public class AlfredRepo extends AlfredRepoProperties {
 
     //<editor-fold desc="Getters and Setters">
     @Override
+    @Id
     public long getId() {
         return properties.getId();
     }

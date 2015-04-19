@@ -6,13 +6,11 @@ public interface AlfredRepository {
 
     AlfredUser save(AlfredUser user);
 
-    AlfredRepoNode save(AlfredRepoNode repo);
-
     AlfredRepo save(AlfredRepo repo);
 
     AlfredGitUser save(AlfredGitUser user);
 
-    AlfredCommitNode save(AlfredCommitNode commit);
+    AlfredCommit save(AlfredCommit commit);
 
     AlfredUser getUserByName(String name);
 
