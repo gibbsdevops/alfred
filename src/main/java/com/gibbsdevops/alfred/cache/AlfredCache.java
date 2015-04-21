@@ -26,19 +26,17 @@ public class AlfredCache extends ConcurrentMapCache implements Cache {
     @Override
     public ValueWrapper get(Object key) {
         ValueWrapper valueWrapper = super.get(key);
-        if (LOG.isDebugEnabled()) {
-            if (valueWrapper != null && valueWrapper.get() != null) {
-                LOG.debug("get: {} -> {}", key, valueWrapper.get().toString());
-            } else {
-                LOG.debug("get: {} -> null", key);
-            }
+        if (valueWrapper != null && valueWrapper.get() != null) {
+            LOG.debug("{} Cache HIT on {}", getName(), key);
+        } else {
+            LOG.debug("{} Cache MISS on {}", getName(), key);
         }
         return valueWrapper;
     }
 
     @Override
     public void put(Object key, Object value) {
-        LOG.debug("put: {} -> {}", key, value);
+        LOG.debug("{} Cache NEW on {}", getName(), key);
         super.put(key, value);
     }
 
@@ -57,7 +55,7 @@ public class AlfredCache extends ConcurrentMapCache implements Cache {
 
     @Override
     public void evict(Object key) {
-        LOG.debug("evict: {}", key);
+        LOG.info("{} Cache evict on {}", getName(), key);
         super.evict(key);
     }
 

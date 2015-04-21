@@ -84,13 +84,6 @@ public class IngestIT {
     }
 
     @Test
-    public void testStatus() throws Exception {
-        mockMvc.perform(get("/ingest").accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
-    }
-
-    @Test
     public void testIngestPushToOrgRepo() throws Exception {
         mockMvc.perform(post("/ingest")
                 .contentType(MediaType.APPLICATION_JSON)
