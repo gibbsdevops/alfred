@@ -2,8 +2,6 @@ package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.config.CacheConfig;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.github.DefaultGithubApiService;
-import com.gibbsdevops.alfred.service.github.GithubApiService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
@@ -21,18 +19,13 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 @Import({TestDatabaseConfig.class, CacheConfig.class})
-@ComponentScan("com.gibbsdevops.alfred.service.ingest,com.gibbsdevops.alfred.repository")
+@ComponentScan("com.gibbsdevops.alfred.service.ingest,com.gibbsdevops.alfred.repository,com.gibbsdevops.alfred.service.github")
 @EnableJpaRepositories("com.gibbsdevops.alfred.dao")
 public class IngestTestConfig {
 
     @Bean
     public IngestApiController ingestApiController() {
         return new IngestApiController();
-    }
-
-    @Bean
-    public GithubApiService githubApiService() {
-        return new DefaultGithubApiService();
     }
 
     @Bean
