@@ -5,22 +5,17 @@ import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.github.DefaultGithubApiService;
 import com.gibbsdevops.alfred.service.github.GithubApiService;
 import com.gibbsdevops.alfred.service.job.JobService;
+import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.MockJsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.persistence.EntityManagerFactory;
 
 import static org.mockito.Mockito.mock;
 
@@ -28,7 +23,6 @@ import static org.mockito.Mockito.mock;
 @Import({TestDatabaseConfig.class, CacheConfig.class})
 @ComponentScan("com.gibbsdevops.alfred.service.ingest,com.gibbsdevops.alfred.repository")
 @EnableJpaRepositories("com.gibbsdevops.alfred.dao")
-@EnableTransactionManagement
 public class IngestTestConfig {
 
     @Bean
@@ -65,16 +59,6 @@ public class IngestTestConfig {
     @Bean
     public SimpMessagingTemplate simpleMessagingTemplate() {
         return mock(SimpMessagingTemplate.class);
-    }
-
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory);
-        return txManager;
     }
 
 }
