@@ -26,10 +26,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -146,6 +148,20 @@ public class IngestIT {
                 "OWNER=1\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
                 equalTo("COUNT=1\n"));
+
+        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO=1\n" +
+                "COMMITTER=2\n" +
+                "AUTHOR=2\n" +
+                "PUSHER=1\n" +
+                "SENDER=2\n" +
+                "HASH=ea77d7ca8ef5d31ad9b2ac6bd1cd0376656a5fe3\n" +
+                "MESSAGE=Add org and repo pages\n" +
+                "TIMESTAMP=1427055873\n" +
+                "ADDITIONS=0\n" +
+                "DELETIONS=0\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
+                equalTo("COUNT=1\n"));
+
     }
 
     @Test
@@ -199,6 +215,19 @@ public class IngestIT {
                 "DEFAULT_BRANCH=master\n" +
                 "OWNER=1\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
+                equalTo("COUNT=1\n"));
+
+        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO=1\n" +
+                "COMMITTER=2\n" +
+                "AUTHOR=2\n" +
+                "PUSHER=1\n" +
+                "SENDER=1\n" +
+                "HASH=49dc5f48b404770698bc5ecca0c9a11485b32915\n" +
+                "MESSAGE=Update README.md\n" +
+                "TIMESTAMP=1423194259\n" +
+                "ADDITIONS=0\n" +
+                "DELETIONS=0\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
                 equalTo("COUNT=1\n"));
     }
 

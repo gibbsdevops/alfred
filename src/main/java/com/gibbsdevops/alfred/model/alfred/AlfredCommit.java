@@ -1,8 +1,11 @@
 package com.gibbsdevops.alfred.model.alfred;
 
+import javax.persistence.*;
+
+@Entity(name = "alfred_commit")
 public class AlfredCommit extends AlfredCommitProperties {
 
-    private AlfredCommitProperties properties;
+    AlfredCommitProperties properties = new AlfredCommitProperties();
 
     private long repo;
     private long committer;
@@ -11,6 +14,29 @@ public class AlfredCommit extends AlfredCommitProperties {
     private long sender;
 
     //<editor-fold desc="Getters and Setters">
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Override
+    public Long getId() {
+        return properties.getId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        properties.setId(id);
+    }
+
+    @Override
+    @Version
+    public Integer getVersion() {
+        return properties.getVersion();
+    }
+
+    @Override
+    public void setVersion(Integer version) {
+        properties.setVersion(version);
+    }
+
     @Override
     public String getHash() {
         return properties.getHash();

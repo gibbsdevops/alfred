@@ -8,6 +8,8 @@ import java.time.temporal.TemporalAccessor;
 
 public class AlfredCommitProperties {
 
+    private Long id;
+    private Integer version;
     private String hash;
     private String message;
     private long timestamp;
@@ -28,6 +30,22 @@ public class AlfredCommitProperties {
     }
 
     //<editor-fold desc="Getters and Setters">
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public String getHash() {
         return hash;
     }

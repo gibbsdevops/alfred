@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.repository;
 
+import com.gibbsdevops.alfred.dao.AlfredCommitDao;
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
 import com.gibbsdevops.alfred.dao.AlfredRepoDao;
 import com.gibbsdevops.alfred.dao.AlfredUserDao;
@@ -32,6 +33,10 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Autowired
     private AlfredRepoDao alfredRepoDao;
+
+    @Autowired
+    private AlfredCommitDao alfredCommitDao;
+
     private NullAwareBeanUtilsBean nullAwareBeanUtils;
 
     public DefaultAlfredRepository() {
@@ -109,7 +114,9 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Override
     public AlfredCommit save(AlfredCommit commit) {
+        if (commit == null) throw new NullPointerException();
         LOG.info("Saving commit {}", commit.getHash());
+        alfredCommitDao.save(commit);
         return commit;
     }
 

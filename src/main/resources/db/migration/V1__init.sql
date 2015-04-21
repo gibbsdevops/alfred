@@ -47,3 +47,20 @@ create table alfred_repo (
     owner int,
     constraint alfred_repo_pkey primary key (id)
 );
+
+create table alfred_commit (
+    id serial,
+    version int not null,
+    repo int not null,
+    committer int not null,
+    author int not null,
+    pusher int not null,
+    sender int not null,
+    hash char(40) not null,
+    message varchar(512),
+    timestamp int not null,
+    additions int,
+    deletions int,
+    constraint alfred_commit_pkey primary key (id)
+);
+create unique index alfred_commit_unique on alfred_commit (repo, hash);

@@ -25,7 +25,14 @@ public class AlfredCommitNode extends AlfredCommitProperties {
     }
 
     public AlfredCommit normalize() {
-        return null;
+        AlfredCommit commit = new AlfredCommit();
+        commit.properties = properties;
+        commit.setRepo(repo.getId());
+        commit.setCommitter(committer.getId());
+        commit.setAuthor(author.getId());
+        commit.setPusher(pusher.getId());
+        commit.setSender(sender.getId());
+        return commit;
     }
 
     //<editor-fold desc="Getters and Setters">
