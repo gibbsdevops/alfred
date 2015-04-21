@@ -32,6 +32,11 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Autowired
     private AlfredRepoDao alfredRepoDao;
+    private NullAwareBeanUtilsBean nullAwareBeanUtils;
+
+    public DefaultAlfredRepository() {
+        nullAwareBeanUtils = new NullAwareBeanUtilsBean();
+    }
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -64,7 +69,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
                 int hashCode = existing.hashCode();
 
                 try {
-                    NullAwareBeanUtilsBean.getInstance().copyProperties(existing, user);
+                    nullAwareBeanUtils.copyProperties(existing, user);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException("Unable to copy properties", e);
                 } catch (InvocationTargetException e) {

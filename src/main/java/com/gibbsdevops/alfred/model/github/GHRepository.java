@@ -6,7 +6,7 @@ public class GHRepository {
     private long id;
     private String name;
     private String fullName;
-    private GHPersonRef owner;
+    private GHUser owner;
     private boolean priv;
     private String description;
     private boolean fork;
@@ -49,11 +49,11 @@ public class GHRepository {
         this.fullName = fullName;
     }
 
-    public GHPersonRef getOwner() {
+    public GHUser getOwner() {
         return owner;
     }
 
-    public void setOwner(GHPersonRef owner) {
+    public void setOwner(GHUser owner) {
         this.owner = owner;
     }
 

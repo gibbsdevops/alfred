@@ -43,33 +43,28 @@ public class DefaultIngestService implements IngestService {
             return;
         }
 
-        AlfredUser org = null;
+        AlfredUser owner = null;
         if (event.getOrganization() != null) {
             GHOrganization ghOrg = githubApiService.getOrganization(event.getOrganization().getUrl());
-            org = alfredRepository.save(AlfredUser.from(ghOrg));
+            owner = alfredRepository.save(AlfredUser.from(ghOrg));
         }
 
         GHPerson ghSender = githubApiService.getPerson(event.getSender().getUrl());
         AlfredUser sender = alfredRepository.save(AlfredUser.from(ghSender));
-
-        /* not used yet */
-        /*
-        GHUser ghOwner = null;
-        if (event.getRepository().getOrganization() == null) {
-            ghOwner = githubApiService.getUser(event.getRepository().getOwner().getName());
-        }
-        */
 
         String repoUrl = AlfredRepoProperties.extractUrlFromForksUrl(event.getRepository().getForksUrl());
 
         GHRepository ghRepo = githubApiService.getRepository(repoUrl);
         AlfredRepoNode repoNode = AlfredRepoNode.from(ghRepo);
 
-        if (org != null) {
-            repoNode.setOwner(org);
+        if (owner != null) {
+            // owned by organization
+            repoNode.setOwner(owner);
         } else {
-            // AlfredUser owner = alfredRepository.getUserByName(event.getRepository().getOwner().getName());
-            // repoNode.setOwner(owner);
+            // owned by user
+            GHPerson ghOwner = githubApiService.getPerson(ghRepo.getOwner().getUrl());
+            owner = alfredRepository.save(AlfredUser.from(ghOwner));
+            repoNode.setOwner(owner);
         }
 
         AlfredRepo repo = repoNode.normalize();

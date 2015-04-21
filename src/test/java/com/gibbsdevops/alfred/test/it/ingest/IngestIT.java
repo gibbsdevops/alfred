@@ -69,11 +69,14 @@ public class IngestIT {
     public void setup() throws Exception {
         mockMvc = webAppContextSetup(webApplicationContext).build();
 
+        LOG.info("Clearing cache");
+        cacheManager.getCacheNames().stream().forEach(c -> cacheManager.getCache(c).clear());
+
+        LOG.info("Setting up new database");
         Connection connection = dataSource.getConnection();
         connection.createStatement().execute("drop all objects;");
         connection.close();
 
-        LOG.info("Setting up database");
         Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
         flyway.migrate();
@@ -88,7 +91,7 @@ public class IngestIT {
     }
 
     @Test
-    public void testIngest() throws Exception {
+    public void testIngestPushToOrgRepo() throws Exception {
         mockMvc.perform(post("/ingest")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream()))
@@ -148,6 +151,62 @@ public class IngestIT {
                 "LANGUAGE=Java\n" +
                 "DEFAULT_BRANCH=master\n" +
                 "OWNER=1\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
+                equalTo("COUNT=1\n"));
+    }
+
+    @Test
+    public void testIngestPushToUserRepo() throws Exception {
+        mockMvc.perform(post("/ingest")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(IOUtils.toString(getClass().getResource("push-to-user-repo.json").openStream()))
+                .accept(MediaType.APPLICATION_JSON)
+                .header("X-Github-Delivery", "abc")
+                .header("X-Github-Event", "push"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        assertThat(stringifyRowQuery("select * from alfred_git_user where name='shanegibbs'"),
+                equalTo("NAME=shanegibbs\nEMAIL=shane@hands.net.nz\n"));
+        assertThat(stringifyRowQuery("select * from alfred_git_user where name='Shane Gibbs'"),
+                equalTo("NAME=Shane Gibbs\nEMAIL=shane@hands.net.nz\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_git_user"),
+                equalTo("COUNT=2\n"));
+
+        assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("LOGIN=shanegibbs\n" +
+                "GITHUB_ID=2838876\n" +
+                "NAME=Shane Gibbs\n" +
+                "EMAIL=\n" +
+                "URL=https://api.github.com/users/shanegibbs\n" +
+                "HTML_URL=https://github.com/shanegibbs\n" +
+                "AVATAR_URL=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
+                "TYPE=User\n" +
+                "DESCRIPTION=null\n" +
+                "CREATED_AT=null\n" +
+                "UPDATED_AT=null\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
+                equalTo("COUNT=1\n"));
+
+        assertThat(stringifyRowQuery("select * from alfred_repo"), equalTo("GITHUB_ID=30393711\n" +
+                "NAME=alfred-test-repo\n" +
+                "FULL_NAME=shanegibbs/alfred-test-repo\n" +
+                "PRIVATE=FALSE\n" +
+                "DESCRIPTION=\n" +
+                "FORK=FALSE\n" +
+                "URL=https://api.github.com/repos/shanegibbs/alfred-test-repo\n" +
+                "HTML_URL=https://github.com/shanegibbs/alfred-test-repo\n" +
+                "SSH_URL=git@github.com:shanegibbs/alfred-test-repo.git\n" +
+                "GIT_URL=git://github.com/shanegibbs/alfred-test-repo.git\n" +
+                "CLONE_URL=https://github.com/shanegibbs/alfred-test-repo.git\n" +
+                "CREATED_AT=1423194200\n" +
+                "UPDATED_AT=1423194200\n" +
+                "PUSHED_AT=1424659550\n" +
+                "HOMEPAGE=null\n" +
+                "LANGUAGE=null\n" +
+                "DEFAULT_BRANCH=master\n" +
+                "OWNER=1\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
+                equalTo("COUNT=1\n"));
     }
 
     String stringifyRowQuery(String sql) {
@@ -157,7 +216,7 @@ public class IngestIT {
         try {
             connection = dataSource.getConnection();
             rs = connection.createStatement().executeQuery(sql);
-            rs.next();
+            if (!rs.next()) throw new RuntimeException("No record found for query: " + sql);
 
             StringBuilder sb = new StringBuilder("");
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
