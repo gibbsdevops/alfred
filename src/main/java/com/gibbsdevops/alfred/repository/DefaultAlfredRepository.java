@@ -1,9 +1,6 @@
 package com.gibbsdevops.alfred.repository;
 
-import com.gibbsdevops.alfred.dao.AlfredCommitDao;
-import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
-import com.gibbsdevops.alfred.dao.AlfredRepoDao;
-import com.gibbsdevops.alfred.dao.AlfredUserDao;
+import com.gibbsdevops.alfred.dao.*;
 import com.gibbsdevops.alfred.model.alfred.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +33,9 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
     @Autowired
     private AlfredCommitDao alfredCommitDao;
+
+    @Autowired
+    private AlfredJobDao alfredJobDao;
 
     private NullAwareBeanUtilsBean nullAwareBeanUtils;
 
@@ -118,6 +118,14 @@ public class DefaultAlfredRepository implements AlfredRepository {
         LOG.info("Saving commit {}", commit.getHash());
         alfredCommitDao.save(commit);
         return commit;
+    }
+
+    @Override
+    public AlfredJob save(AlfredJob job) {
+        if (job == null) throw new NullPointerException();
+        LOG.info("Saving job {}", job.getId());
+        alfredJobDao.save(job);
+        return job;
     }
 
     @Override

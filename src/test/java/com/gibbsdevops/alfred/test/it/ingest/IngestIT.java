@@ -88,13 +88,13 @@ public class IngestIT {
     @Test
     public void testIngestPushToOrgRepo() throws Exception {
         mockMvc.perform(post("/ingest")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(APPLICATION_JSON_UTF8)
                 .content(IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream()))
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(APPLICATION_JSON_UTF8)
                 .header("X-Github-Delivery", "abc")
                 .header("X-Github-Event", "push"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
 
         assertThat(stringifyRowQuery("select * from alfred_git_user where name='shanegibbs'"),
                 equalTo("NAME=shanegibbs\nEMAIL=shane@hands.net.nz\n"));

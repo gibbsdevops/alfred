@@ -1,6 +1,8 @@
 package com.gibbsdevops.alfred.service.ingest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.model.github.GHCommit;
 import com.gibbsdevops.alfred.model.github.GHOrganization;
 import com.gibbsdevops.alfred.model.github.GHPerson;
@@ -84,19 +86,16 @@ public class DefaultIngestService implements IngestService {
             commit.setCommitter(committer);
             alfredRepository.save(commit.normalize());
 
-            Job job = new Job();
-            job.setOrganization(event.getOrganization());
-            job.setRepository(event.getRepository());
-            job.setRef(event.getRef());
-            job.setCommit(event.getHeadCommit());
-            job.setPusher(event.getPusher());
+            AlfredJobNode job = new AlfredJobNode();
+            job.setCommit(commit);
             job.setStatus("queued");
 
+            alfredRepository.save(job.normalize());
             // save job
-            jobService.save(job);
+            // jobService.save(job);
 
             // submit job for building
-            buildService.submit(job);
+            // buildService.submit(job);
         }
 
     }

@@ -12,6 +12,8 @@ public interface AlfredRepository {
 
     AlfredCommit save(AlfredCommit commit);
 
+    AlfredJob save(AlfredJob job);
+
     AlfredUser getUserByName(String name);
 
 }
