@@ -2,13 +2,19 @@ package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.config.MvcConfig;
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
+import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +33,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,6 +65,9 @@ public class IngestIT {
     private AlfredRepository alfredRepository;
 
     @Autowired
+    private BuildService buildService;
+
+    @Autowired
     private CacheManager cacheManager;
 
     private MockMvc mockMvc;
@@ -70,6 +80,8 @@ public class IngestIT {
     @Before
     public void setup() throws Exception {
         mockMvc = webAppContextSetup(webApplicationContext).build();
+
+        reset(buildService);
 
         LOG.info("Clearing cache");
         cacheManager.getCacheNames().stream().forEach(c -> cacheManager.getCache(c).clear());
@@ -162,6 +174,32 @@ public class IngestIT {
         assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
                 equalTo("COUNT=1\n"));
 
+        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT=1\n" +
+                "STATUS=queued\n" +
+                "ERROR=null\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_job"),
+                equalTo("COUNT=1\n"));
+
+        ArgumentCaptor<AlfredJobNode> argument = ArgumentCaptor.forClass(AlfredJobNode.class);
+        verify(buildService).submit(argument.capture());
+
+        AlfredJobNode job = argument.getValue();
+        assertNotNull(job);
+        assertEquals("queued", job.getStatus());
+        assertNull(job.getError());
+
+        AlfredCommitNode commit = job.getCommit();
+        assertNotNull(commit);
+        assertEquals("ea77d7ca8ef5d31ad9b2ac6bd1cd0376656a5fe3", commit.getHash());
+
+        AlfredRepoNode repo = commit.getRepo();
+        assertNotNull(repo);
+        assertEquals("https://github.com/gibbsdevops/alfred.git", repo.getCloneUrl());
+        assertEquals("alfred", repo.getName());
+
+        AlfredUser owner = repo.getOwner();
+        assertNotNull(owner);
+        assertEquals("gibbsdevops", owner.getLogin());
     }
 
     @Test
@@ -229,6 +267,33 @@ public class IngestIT {
                 "DELETIONS=0\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
                 equalTo("COUNT=1\n"));
+
+        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT=1\n" +
+                "STATUS=queued\n" +
+                "ERROR=null\n"));
+        assertThat(stringifyRowQuery("select count(*) as count from alfred_job"),
+                equalTo("COUNT=1\n"));
+
+        ArgumentCaptor<AlfredJobNode> argument = ArgumentCaptor.forClass(AlfredJobNode.class);
+        verify(buildService).submit(argument.capture());
+
+        AlfredJobNode job = argument.getValue();
+        assertNotNull(job);
+        assertEquals("queued", job.getStatus());
+        assertNull(job.getError());
+
+        AlfredCommitNode commit = job.getCommit();
+        assertNotNull(commit);
+        assertEquals("49dc5f48b404770698bc5ecca0c9a11485b32915", commit.getHash());
+
+        AlfredRepoNode repo = commit.getRepo();
+        assertNotNull(repo);
+        assertEquals("https://github.com/shanegibbs/alfred-test-repo.git", repo.getCloneUrl());
+        assertEquals("alfred-test-repo", repo.getName());
+
+        AlfredUser owner = repo.getOwner();
+        assertNotNull(owner);
+        assertEquals("shanegibbs", owner.getLogin());
     }
 
     String stringifyRowQuery(String sql) {

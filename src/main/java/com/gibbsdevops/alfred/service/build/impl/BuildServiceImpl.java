@@ -1,13 +1,12 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
-import com.gibbsdevops.alfred.model.job.Job;
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
-import org.kohsuke.github.GHCommitState;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
+import org.kohsuke.github.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +26,31 @@ public class BuildServiceImpl implements BuildService {
     ExecutorService buildExecutor;
 
     @Autowired
-    private JobService jobService;
+    private AlfredRepository alfredRepository;
 
     @Autowired
     private JobOutputRepository jobOutputRepository;
 
     @Override
-    public void submit(Job job) {
+    public void submit(AlfredJobNode job) {
+        AlfredRepoNode repo = job.getCommit().getRepo();
+        AlfredUser owner = repo.getOwner();
 
         try {
             GitHub gitHub = GitHub.connect();
-            GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
-            GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
-            ghRepo.createCommitStatus(job.getCommit().getId(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "Building...");
+            GHRepository ghRepo = null;
+            if ("Organization".equals(owner.getType())) {
+                GHOrganization ghOrg = gitHub.getOrganization(owner.getLogin());
+                ghRepo = ghOrg.getRepositories().get(repo.getName());
+            } else if ("User".equals(owner.getType())) {
+                GHUser ghUser = gitHub.getUser(owner.getName());
+                ghRepo = ghUser.getRepository(repo.getName());
+            } else {
+                throw new IllegalArgumentException("Unexpected user type: " + owner.getType());
+            }
+
+            ghRepo.createCommitStatus(job.getCommit().getHash(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "Building...");
+
         } catch (IOException e) {
             LOG.warn("Failed to mark github status as pending", e);
         }
@@ -49,31 +60,31 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public void starting(Job job) {
+    public void starting(AlfredJobNode job) {
         LOG.info("Started building job {}", job);
 
         job.setStatus("in-progress");
-        jobService.save(job);
+        alfredRepository.save(job.normalize());
     }
 
     @Override
-    public void finished(Job job) {
+    public void finished(AlfredJobNode job) {
         LOG.info("Building job {} complete", job);
 
         job.setStatus("complete");
-        jobService.save(job);
+        alfredRepository.save(job.normalize());
     }
 
     @Override
-    public void failed(Job job, String reason) {
+    public void failed(AlfredJobNode job, String reason) {
         LOG.info("Building job {} failed: {}", job, reason);
         job.setStatus("failed");
         job.setError(reason);
-        jobService.save(job);
+        alfredRepository.save(job.normalize());
     }
 
     @Override
-    public void logOutput(Job job, String line) {
+    public void logOutput(AlfredJobNode job, String line) {
         LOG.info("Build Output {}: {}", job, line);
         jobOutputRepository.append(job.getId(), line);
     }

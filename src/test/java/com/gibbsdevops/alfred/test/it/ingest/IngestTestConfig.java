@@ -41,11 +41,6 @@ public class IngestTestConfig {
     }
 
     @Bean
-    public JobService jobService() {
-        return mock(JobService.class);
-    }
-
-    @Bean
     public BuildService buildService() {
         return mock(BuildService.class);
     }

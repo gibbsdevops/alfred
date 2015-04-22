@@ -1,5 +1,9 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredJob;
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import org.apache.commons.io.FileUtils;
@@ -18,10 +22,10 @@ public class BuildRunnable implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger(BuildRunnable.class);
 
-    private final Job job;
+    private final AlfredJobNode job;
     private final BuildService buildService;
 
-    public BuildRunnable(Job job, BuildService buildService) {
+    public BuildRunnable(AlfredJobNode job, BuildService buildService) {
         this.job = job;
         this.buildService = buildService;
     }
@@ -54,30 +58,29 @@ public class BuildRunnable implements Runnable {
 
             String fullCommand = new File(command).getAbsolutePath();
 
-            if (job.getRepository() == null) {
-                throw new RuntimeException("Job has no repo");
-            }
-
             /*
             if (job.getOrganization() == null) {
                 throw new RuntimeException("Job has no org");
             }
             */
 
-            if (job.getCommit() == null) {
+            AlfredCommitNode commit = job.getCommit();
+            if (commit == null) {
                 throw new RuntimeException("Job has no commit");
             }
+
+            AlfredRepoNode repo = commit.getRepo();
 
             ProcessBuilder pb = new ProcessBuilder(fullCommand);
             pb.directory(workspace);
             pb.environment().put("ALFRED_JOB_ID", job.getId().toString());
-            pb.environment().put("ALFRED_REPO_NAME", job.getRepository().getName());
+            pb.environment().put("ALFRED_REPO_NAME", repo.getName());
             // pb.environment().put("ALFRED_ORG_NAME", job.getOrganization().getLogin());
-            pb.environment().put("ALFRED_HTML_URL", job.getRepository().getHtmlUrl());
-            pb.environment().put("ALFRED_SSH_URL", job.getRepository().getSshUrl());
-            pb.environment().put("ALFRED_GIT_URL", job.getRepository().getGitUrl());
-            pb.environment().put("ALFRED_CLONE_URL", job.getRepository().getCloneUrl());
-            pb.environment().put("ALFRED_COMMIT", job.getCommit().getId());
+            pb.environment().put("ALFRED_HTML_URL", repo.getHtmlUrl());
+            pb.environment().put("ALFRED_SSH_URL", repo.getSshUrl());
+            pb.environment().put("ALFRED_GIT_URL", repo.getGitUrl());
+            pb.environment().put("ALFRED_CLONE_URL", repo.getCloneUrl());
+            pb.environment().put("ALFRED_COMMIT", commit.getHash());
             pb.redirectErrorStream(true);
 
             Process proc = pb.start();
@@ -97,9 +100,9 @@ public class BuildRunnable implements Runnable {
 
             try {
                 GitHub gitHub = GitHub.connect();
-                GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
-                GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
-                ghRepo.createCommitStatus(job.getCommit().getId(), state, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "complete");
+                // GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
+                // GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
+                // ghRepo.createCommitStatus(commit.getId(), state, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "complete");
             } catch (IOException e) {
                 LOG.warn("Failed to mark github status as complete", e);
             }

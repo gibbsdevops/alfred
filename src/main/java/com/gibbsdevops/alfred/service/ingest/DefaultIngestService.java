@@ -27,7 +27,6 @@ public class DefaultIngestService implements IngestService {
     private GithubApiService githubApiService;
     private SimpMessagingTemplate template;
     private AlfredRepository alfredRepository;
-    private JobService jobService;
     private BuildService buildService;
 
     @Override
@@ -116,11 +115,6 @@ public class DefaultIngestService implements IngestService {
     @Autowired
     public void setAlfredRepository(AlfredRepository alfredRepository) {
         this.alfredRepository = alfredRepository;
-    }
-
-    @Autowired
-    public void setJobService(JobService jobService) {
-        this.jobService = jobService;
     }
 
     @Autowired

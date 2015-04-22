@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.web.controller;
 
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
 import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
 import com.gibbsdevops.alfred.model.github.GHOrganization;
@@ -53,7 +54,8 @@ public class JobApiController extends ApiController {
         // org.kohsuke.github.GHOrganization organization = github.getOrganization(request.getOrganization());
 
 
-        Job job = new Job();
+        /* TODO
+        AlfredJobNode job = new AlfredJobNode();
 
         GHOrganization organization = new GHOrganization();
         organization.setLogin(request.getOrganization());
@@ -80,6 +82,9 @@ public class JobApiController extends ApiController {
         response.setRequest(request);
         response.setId(job.getId());
         return response;
+        */
+
+        return "TODO";
     }
 
 }
