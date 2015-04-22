@@ -16,4 +16,6 @@ public interface AlfredRepository {
 
     AlfredUser getUserByName(String name);
 
+    AlfredCommitNode getCommitNode(Long id);
+
 }

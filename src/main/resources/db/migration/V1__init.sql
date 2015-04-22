@@ -64,3 +64,12 @@ create table alfred_commit (
     constraint alfred_commit_pkey primary key (id)
 );
 create unique index alfred_commit_unique on alfred_commit (repo, hash);
+
+create table alfred_job (
+    id serial,
+    version int not null,
+    commit int not null,
+    status varchar(32) not null,
+    error varchar(512),
+    constraint alfred_job_pkey primary key (id)
+);

@@ -18,7 +18,7 @@ public interface AlfredGitUserDao extends CrudRepository<AlfredGitUser, Long> {
     AlfredGitUser save(AlfredGitUser u);
 
     @Override
-    @Cacheable(key = "#id")
+    @Cacheable(key = "#p0")
     AlfredGitUser findOne(Long id);
 
     @Cacheable(key = "#p0 + '|' + #p1")

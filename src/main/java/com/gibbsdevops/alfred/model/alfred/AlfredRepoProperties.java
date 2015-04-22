@@ -52,6 +52,12 @@ public class AlfredRepoProperties {
         return properties;
     }
 
+    public static AlfredRepoNode fromRepo(AlfredRepo repo) {
+        AlfredRepoNode node = new AlfredRepoNode();
+        node.properties = repo.properties;
+        return node;
+    }
+
     public static String extractUrlFromForksUrl(String forksUrl) {
         return forksUrl.substring(0, forksUrl.length() - 6);
     }
@@ -217,5 +223,4 @@ public class AlfredRepoProperties {
                 ", fullName='" + getFullName() + '\'' +
                 '}';
     }
-
 }

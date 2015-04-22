@@ -78,24 +78,26 @@ public class DefaultIngestService implements IngestService {
             AlfredGitUser author = alfredRepository.save(AlfredGitUser.from(c.getAuthor()));
             AlfredGitUser committer = alfredRepository.save(AlfredGitUser.from(c.getCommitter()));
 
-            AlfredCommitNode commit = AlfredCommitNode.from(c);
-            commit.setRepo(repoNode);
-            commit.setSender(sender);
-            commit.setPusher(pusher);
-            commit.setAuthor(author);
-            commit.setCommitter(committer);
-            alfredRepository.save(commit.normalize());
+            AlfredCommitNode commitNode = AlfredCommitNode.from(c);
+            commitNode.setRepo(repoNode);
+            commitNode.setSender(sender);
+            commitNode.setPusher(pusher);
+            commitNode.setAuthor(author);
+            commitNode.setCommitter(committer);
+            AlfredCommit commit = alfredRepository.save(commitNode.normalize());
+            commitNode = alfredRepository.getCommitNode(commit.getId());
 
             AlfredJobNode job = new AlfredJobNode();
-            job.setCommit(commit);
+            job.setCommit(commitNode);
             job.setStatus("queued");
 
             alfredRepository.save(job.normalize());
+
             // save job
             // jobService.save(job);
 
             // submit job for building
-            // buildService.submit(job);
+            buildService.submit(job);
         }
 
     }

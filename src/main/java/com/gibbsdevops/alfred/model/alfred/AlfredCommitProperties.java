@@ -29,6 +29,12 @@ public class AlfredCommitProperties {
         return props;
     }
 
+    public static AlfredCommitNode fromCommit(AlfredCommit commit) {
+        AlfredCommitNode node = new AlfredCommitNode();
+        node.properties = commit.properties;
+        return node;
+    }
+
     //<editor-fold desc="Getters and Setters">
     public Long getId() {
         return id;

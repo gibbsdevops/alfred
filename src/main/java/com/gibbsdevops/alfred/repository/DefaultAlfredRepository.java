@@ -123,8 +123,9 @@ public class DefaultAlfredRepository implements AlfredRepository {
     @Override
     public AlfredJob save(AlfredJob job) {
         if (job == null) throw new NullPointerException();
+        if (job.getCommit() == null) throw new IllegalArgumentException("Commit can not be null");
         LOG.info("Saving job {}", job.getId());
-        alfredJobDao.save(job);
+        job = alfredJobDao.save(job);
         return job;
     }
 
@@ -132,6 +133,34 @@ public class DefaultAlfredRepository implements AlfredRepository {
     public AlfredUser getUserByName(String name) {
         LOG.info("Getting user {}", name);
         return null;
+    }
+
+    @Override
+    public AlfredCommitNode getCommitNode(Long id) {
+        LOG.info("Get commit node {}", id);
+
+        AlfredCommit commit = alfredCommitDao.findOne(id);
+
+        if (commit.getCommitter() == null) throw new NullPointerException();
+        AlfredGitUser committer = alfredGitUserDao.findOne(commit.getCommitter());
+        AlfredGitUser author = alfredGitUserDao.findOne(commit.getAuthor());
+        AlfredGitUser pusher = alfredGitUserDao.findOne(commit.getPusher());
+        AlfredUser sender = alfredUserDao.findOne(commit.getSender());
+
+        AlfredRepo repo = alfredRepoDao.findOne(commit.getRepo());
+        AlfredUser owner = alfredUserDao.findOne(repo.getOwner());
+
+        AlfredRepoNode repoNode = AlfredRepoProperties.fromRepo(repo);
+        repoNode.setOwner(owner);
+
+        AlfredCommitNode node = AlfredCommitProperties.fromCommit(commit);
+        node.setCommitter(committer);
+        node.setAuthor(author);
+        node.setPusher(pusher);
+        node.setSender(sender);
+        node.setRepo(repoNode);
+
+        return node;
     }
 
 }
