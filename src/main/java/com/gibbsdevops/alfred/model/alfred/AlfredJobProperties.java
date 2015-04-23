@@ -2,16 +2,16 @@ package com.gibbsdevops.alfred.model.alfred;
 
 public class AlfredJobProperties {
 
-    private Integer id;
+    private Long id;
     private Integer version;
     private String status;
     private String error;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

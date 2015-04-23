@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/history/jobs")
 public class HistoryController extends ApiController {
 
-    @Autowired
-    private JobService jobService;
+    // @Autowired
+    // private JobService jobService;
 
     @RequestMapping(method = RequestMethod.GET)
     public Object history() {
-        return jobService.getJobs();
+        return null; // jobService.getJobs();
     }
 
 }

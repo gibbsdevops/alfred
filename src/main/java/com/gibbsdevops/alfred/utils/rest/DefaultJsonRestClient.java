@@ -7,9 +7,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.jetty.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+@Service
 public class DefaultJsonRestClient implements JsonRestClient {
 
     @Override

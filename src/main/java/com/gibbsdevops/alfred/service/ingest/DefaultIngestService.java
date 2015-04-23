@@ -92,9 +92,6 @@ public class DefaultIngestService implements IngestService {
 
             alfredRepository.save(job.normalize());
 
-            // save job
-            // jobService.save(job);
-
             // submit job for building
             buildService.submit(job);
         }

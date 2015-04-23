@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class DefaultJobService implements JobService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultJobService.class);

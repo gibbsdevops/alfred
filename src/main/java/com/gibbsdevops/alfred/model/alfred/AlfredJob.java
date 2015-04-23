@@ -11,11 +11,11 @@ public class AlfredJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    public Long getId() {
         return properties.getId();
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         properties.setId(id);
     }
 

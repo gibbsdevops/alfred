@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
@@ -32,6 +34,9 @@ public class App {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("com.gibbsdevops.alfred.config");
 
+        ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
+        errorHandler.addErrorPage(404, "/not-found");
+
         /* API Handler */
         ServletContextHandler apiHandler = new ServletContextHandler();
         apiHandler.setErrorHandler(null);
@@ -39,6 +44,7 @@ public class App {
         apiHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/");
         apiHandler.addEventListener(new ContextLoaderListener(context));
         apiHandler.setResourceBase("src/main/resources/api");
+        apiHandler.setErrorHandler(errorHandler);
 
         /* Resource Handler */
         List<Resource> resourceList = Lists.newArrayList();

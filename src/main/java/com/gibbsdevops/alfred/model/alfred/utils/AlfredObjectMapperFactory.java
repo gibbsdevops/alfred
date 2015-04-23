@@ -17,6 +17,7 @@ public class AlfredObjectMapperFactory implements FactoryBean<ObjectMapper> {
         objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 
     public static ObjectMapper get() {

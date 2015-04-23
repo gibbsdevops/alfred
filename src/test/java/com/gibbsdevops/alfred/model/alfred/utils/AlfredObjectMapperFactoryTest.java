@@ -19,14 +19,14 @@ public class AlfredObjectMapperFactoryTest {
     public void testJsonAllPropertySerialization() throws Exception {
         JsonTestObject user = new JsonTestObject(2L, "albert", "Albert Einstein");
         String s = factory.getObject().writeValueAsString(user);
-        assertThat(s, equalTo("{\"id\":2,\"name\":\"albert\",\"full_name\":\"Albert Einstein\"}"));
+        assertThat(s, equalTo("{\n  \"id\" : 2,\n  \"name\" : \"albert\",\n  \"full_name\" : \"Albert Einstein\"\n}"));
     }
 
     @Test
     public void testJsonMissingPropertySerialization() throws Exception {
         JsonTestObject user = new JsonTestObject(2L, "albert", null);
         String s = factory.getObject().writeValueAsString(user);
-        assertThat(s, equalTo("{\"id\":2,\"name\":\"albert\"}"));
+        assertThat(s, equalTo("{\n  \"id\" : 2,\n  \"name\" : \"albert\"\n}"));
     }
 
     @Test

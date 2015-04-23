@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
+import com.gibbsdevops.alfred.model.alfred.AlfredJob;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,6 +28,9 @@ public class BuildServiceImpl implements BuildService {
     ExecutorService buildExecutor;
 
     @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
     private AlfredRepository alfredRepository;
 
     @Autowired
@@ -36,6 +41,7 @@ public class BuildServiceImpl implements BuildService {
         AlfredRepoNode repo = job.getCommit().getRepo();
         AlfredUser owner = repo.getOwner();
 
+        /*
         try {
             GitHub gitHub = GitHub.connect();
             GHRepository ghRepo = null;
@@ -54,6 +60,7 @@ public class BuildServiceImpl implements BuildService {
         } catch (IOException e) {
             LOG.warn("Failed to mark github status as pending", e);
         }
+        */
 
         LOG.info("Submitted job {}", job);
         buildExecutor.execute(new BuildRunnable(job, this));
@@ -62,17 +69,15 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public void starting(AlfredJobNode job) {
         LOG.info("Started building job {}", job);
-
         job.setStatus("in-progress");
-        alfredRepository.save(job.normalize());
+        saveAndSend(job);
     }
 
     @Override
     public void finished(AlfredJobNode job) {
         LOG.info("Building job {} complete", job);
-
         job.setStatus("complete");
-        alfredRepository.save(job.normalize());
+        saveAndSend(job);
     }
 
     @Override
@@ -80,13 +85,22 @@ public class BuildServiceImpl implements BuildService {
         LOG.info("Building job {} failed: {}", job, reason);
         job.setStatus("failed");
         job.setError(reason);
-        alfredRepository.save(job.normalize());
+        saveAndSend(job);
     }
 
     @Override
     public void logOutput(AlfredJobNode job, String line) {
         LOG.info("Build Output {}: {}", job, line);
-        jobOutputRepository.append(job.getId(), line);
+        // jobOutputRepository.append(job.getId(), line);
+    }
+
+    AlfredJobNode saveAndSend(AlfredJobNode job) {
+        AlfredJob normal = job.normalize();
+        normal = alfredRepository.save(normal);
+
+        LOG.info("Sending Job to /topic/jobs: {}", job);
+        messagingTemplate.convertAndSend("/topic/jobs", normal);
+        return job;
     }
 
 }

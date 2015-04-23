@@ -1,16 +1,18 @@
 package com.gibbsdevops.alfred.model.alfred;
 
+import java.util.Objects;
+
 public class AlfredJobNode {
 
     private AlfredJobProperties properties = new AlfredJobProperties();
 
     private AlfredCommitNode commit;
 
-    public Integer getId() {
+    public Long getId() {
         return properties.getId();
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         properties.setId(id);
     }
 
@@ -51,6 +53,11 @@ public class AlfredJobNode {
         job.properties = properties;
         job.setCommit(getCommit().getId());
         return job;
+    }
+
+    @Override
+    public String toString() {
+        return "Job #" + getId();
     }
 
 }

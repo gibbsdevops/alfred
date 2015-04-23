@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.OptimisticLockException;
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
 
@@ -125,7 +126,12 @@ public class DefaultAlfredRepository implements AlfredRepository {
         if (job == null) throw new NullPointerException();
         if (job.getCommit() == null) throw new IllegalArgumentException("Commit can not be null");
         LOG.info("Saving job {}", job.getId());
-        job = alfredJobDao.save(job);
+        try {
+            job = alfredJobDao.save(job);
+        } catch (OptimisticLockException e) {
+            LOG.warn("Failed to save job", e);
+        }
+
         return job;
     }
 
