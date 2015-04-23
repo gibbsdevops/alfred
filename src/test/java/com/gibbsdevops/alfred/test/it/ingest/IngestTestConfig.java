@@ -1,6 +1,7 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.config.CacheConfig;
+import com.gibbsdevops.alfred.config.MvcConfig;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import static org.mockito.Mockito.mock;
 
 @Configuration
-@Import({TestDatabaseConfig.class, CacheConfig.class})
+@Import({TestDatabaseConfig.class, MvcConfig.class, CacheConfig.class})
 @ComponentScan("com.gibbsdevops.alfred.service.ingest,com.gibbsdevops.alfred.repository,com.gibbsdevops.alfred.service.github")
 @EnableJpaRepositories("com.gibbsdevops.alfred.dao")
 public class IngestTestConfig {

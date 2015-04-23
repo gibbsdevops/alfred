@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
 
 @Configuration
 @Import({MvcConfig.class, DatabaseConfig.class, CacheConfig.class})
-@EnableWebMvc
 @ComponentScan("com.gibbsdevops.alfred")
 @EnableJpaRepositories("com.gibbsdevops.alfred.dao")
 public class AppConfig extends WebMvcConfigurerAdapter {
