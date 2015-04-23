@@ -37,43 +37,43 @@ public class AlfredDaoController extends ApiController {
     @RequestMapping("/not-found")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundRuntimeException.class)
-    public Map exceptionHandler(HttpServletRequest req, Exception ex) {
-        LOG.warn("Resource not found", ex);
+    public Map exceptionHandler(HttpServletRequest req, ResourceNotFoundRuntimeException ex) {
+        LOG.warn("Requested resource not found: {}", ex.getMessage());
         return Collections.singletonMap("error", "not found");
     }
 
     @RequestMapping("/job/{id}")
     public AlfredJob getJob(@PathVariable Long id) {
         AlfredJob job = alfredJobDao.findOne(id);
-        if (job == null) throw new ResourceNotFoundRuntimeException();
+        if (job == null) throw new ResourceNotFoundRuntimeException(String.format("Job with id %d", id));
         return job;
     }
 
     @RequestMapping("/commit/{id}")
     public AlfredCommit getCommit(@PathVariable Long id) {
         AlfredCommit commit = alfredCommitDao.findOne(id);
-        if (commit == null) throw new ResourceNotFoundRuntimeException();
+        if (commit == null) throw new ResourceNotFoundRuntimeException(String.format("Commit with id %d", id));
         return commit;
     }
 
     @RequestMapping("/repo/{id}")
     public AlfredRepo getRepo(@PathVariable Long id) {
         AlfredRepo repo = alfredRepoDao.findOne(id);
-        if (repo == null) throw new ResourceNotFoundRuntimeException();
+        if (repo == null) throw new ResourceNotFoundRuntimeException(String.format("Repo with id %d", id));
         return repo;
     }
 
     @RequestMapping("/person/{id}")
     public AlfredGitUser getPerson(@PathVariable Long id) {
         AlfredGitUser gitUser = alfredGitUserDao.findOne(id);
-        if (gitUser == null) throw new ResourceNotFoundRuntimeException();
+        if (gitUser == null) throw new ResourceNotFoundRuntimeException(String.format("Person with id %d", id));
         return gitUser;
     }
 
     @RequestMapping("/user/{id}")
     public AlfredUser getUser(@PathVariable Long id) {
         AlfredUser user = alfredUserDao.findOne(id);
-        if (user == null) throw new ResourceNotFoundRuntimeException();
+        if (user == null) throw new ResourceNotFoundRuntimeException(String.format("User with id %d", id));
         return user;
     }
 

@@ -1,5 +1,6 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
+import com.gibbsdevops.alfred.dao.AlfredJobDao;
 import com.gibbsdevops.alfred.model.alfred.AlfredJob;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
@@ -7,7 +8,6 @@ import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
-import org.kohsuke.github.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 @Service
@@ -32,6 +31,9 @@ public class BuildServiceImpl implements BuildService {
 
     @Autowired
     private AlfredRepository alfredRepository;
+
+    @Autowired
+    private AlfredJobDao alfredJobDao;
 
     @Autowired
     private JobOutputRepository jobOutputRepository;
@@ -69,23 +71,34 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public void starting(AlfredJobNode job) {
         LOG.info("Started building job {}", job);
-        job.setStatus("in-progress");
-        saveAndSend(job);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("in-progress");
+        });
     }
 
     @Override
-    public void finished(AlfredJobNode job) {
-        LOG.info("Building job {} complete", job);
-        job.setStatus("complete");
-        saveAndSend(job);
+    public void succeeded(AlfredJobNode job) {
+        LOG.info("Building job {} succeeded", job);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("complete");
+        });
     }
 
     @Override
-    public void failed(AlfredJobNode job, String reason) {
-        LOG.info("Building job {} failed: {}", job, reason);
-        job.setStatus("failed");
-        job.setError(reason);
-        saveAndSend(job);
+    public void failed(AlfredJobNode job) {
+        LOG.info("Building job {} completed with failure", job);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("failed");
+        });
+    }
+
+    @Override
+    public void errored(AlfredJobNode job, String error) {
+        LOG.info("Building job {} errored: {}", job, error);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("failed");
+            j.setError(error);
+        });
     }
 
     @Override
@@ -94,13 +107,20 @@ public class BuildServiceImpl implements BuildService {
         // jobOutputRepository.append(job.getId(), line);
     }
 
-    AlfredJobNode saveAndSend(AlfredJobNode job) {
-        AlfredJob normal = job.normalize();
-        normal = alfredRepository.save(normal);
-
-        LOG.info("Sending Job to /topic/jobs: {}", job);
-        messagingTemplate.convertAndSend("/topic/jobs", normal);
+    AlfredJob updateAndSend(Long id, AlfredJobUpdate update) {
+        AlfredJob job = alfredJobDao.findOne(id);
+        update.exec(job);
+        job = alfredRepository.save(job);
+        send(job);
         return job;
     }
 
+    void send(AlfredJob node) {
+        LOG.info("Sending Job to /topic/jobs: {}", node);
+        messagingTemplate.convertAndSend("/topic/jobs", node);
+    }
+
+    interface AlfredJobUpdate {
+        void exec(AlfredJob j);
+    }
 }

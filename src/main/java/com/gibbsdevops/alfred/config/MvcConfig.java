@@ -26,12 +26,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // addDefaultHttpMessageConverters(converters);
-
-        // remove any existing Jackson converters
-        // converters.stream().filter(c -> c instanceof MappingJackson2HttpMessageConverter)
-        //         .collect(Collectors.toList()).stream().forEach(c -> converters.remove(c));
-
         StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
         stringConverter.setWriteAcceptCharset(false);
         converters.add(new ByteArrayHttpMessageConverter());

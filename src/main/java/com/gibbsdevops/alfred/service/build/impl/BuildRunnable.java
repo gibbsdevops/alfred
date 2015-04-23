@@ -1,17 +1,12 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredJob;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
-import com.gibbsdevops.alfred.model.job.Job;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.kohsuke.github.GHCommitState;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,9 +89,10 @@ public class BuildRunnable implements Runnable {
             GHCommitState state = GHCommitState.FAILURE;
             if (exitVal == 0) {
                 state = GHCommitState.SUCCESS;
+                buildService.succeeded(job);
+            } else {
+                buildService.failed(job);
             }
-
-            buildService.finished(job);
 
             /*
             try {
@@ -110,8 +106,8 @@ public class BuildRunnable implements Runnable {
             */
 
         } catch (Throwable t) {
-            LOG.warn("Build failed", t);
-            buildService.failed(job, t.getMessage());
+            LOG.warn("Build errored", t);
+            buildService.errored(job, t.getMessage());
         } finally {
             Thread.currentThread().setName("Builder - Open");
             if (workspace != null) {
