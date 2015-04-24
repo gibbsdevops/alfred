@@ -51,4 +51,10 @@ public class AlfredJob {
     public void setError(String error) {
         properties.setError(error);
     }
+
+    @Override
+    public String toString() {
+        return "Job #" + getId();
+    }
+
 }

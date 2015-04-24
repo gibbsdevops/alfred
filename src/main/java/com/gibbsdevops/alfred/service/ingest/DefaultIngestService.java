@@ -69,7 +69,8 @@ public class DefaultIngestService implements IngestService {
         }
 
         AlfredRepo repo = repoNode.normalize();
-        alfredRepository.save(repo);
+        repo = alfredRepository.save(repo);
+        repoNode.setId(repo.getId()); // for use when normalizing
 
         AlfredGitUser pusher = alfredRepository.save(AlfredGitUser.from(event.getPusher()));
 

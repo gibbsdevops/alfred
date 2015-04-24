@@ -47,6 +47,7 @@ create table alfred_repo (
     owner int,
     constraint alfred_repo_pkey primary key (id)
 );
+create unique index alfred_repo_unique on alfred_repo (owner, name);
 
 create table alfred_commit (
     id serial,

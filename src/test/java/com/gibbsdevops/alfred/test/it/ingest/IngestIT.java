@@ -32,13 +32,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -294,6 +293,29 @@ public class IngestIT {
         AlfredUser owner = repo.getOwner();
         assertNotNull(owner);
         assertEquals("shanegibbs", owner.getLogin());
+    }
+
+    @Test
+    public void testIngestTwice() throws Exception {
+
+        mockMvc.perform(post("/ingest")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream()))
+                .accept(APPLICATION_JSON_UTF8)
+                .header("X-Github-Delivery", "abc")
+                .header("X-Github-Event", "push"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
+
+        mockMvc.perform(post("/ingest")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(IOUtils.toString(getClass().getResource("push-to-org-repo.json").openStream()))
+                .accept(APPLICATION_JSON_UTF8)
+                .header("X-Github-Delivery", "abc")
+                .header("X-Github-Event", "push"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
+
     }
 
     String stringifyRowQuery(String sql) {

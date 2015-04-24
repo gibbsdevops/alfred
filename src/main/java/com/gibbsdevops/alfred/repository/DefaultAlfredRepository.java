@@ -5,7 +5,6 @@ import com.gibbsdevops.alfred.model.alfred.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -49,7 +48,6 @@ public class DefaultAlfredRepository implements AlfredRepository {
         jdbcTemplate = new JdbcTemplate(dataSource);
         insertUser = new SimpleJdbcInsert(dataSource)
                 .withTableName("alfred_user");
-
     }
 
     public AlfredUser getByLogin(String login) {
@@ -60,45 +58,26 @@ public class DefaultAlfredRepository implements AlfredRepository {
     public AlfredUser save(AlfredUser user) {
         LOG.info("Saving user login={}, name={}", user.getLogin(), user.getName());
 
-        AlfredUser existing;
-        try {
-            existing = alfredUserDao.getByLogin(user.getLogin());
-        } catch (EmptyResultDataAccessException e) {
-            existing = null;
-        }
-
-        if (existing != null) {
-            if (existing.equals(user)) {
-                return existing;
-            } else {
-
-                int hashCode = existing.hashCode();
-
-                try {
-                    nullAwareBeanUtils.copyProperties(existing, user);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException("Unable to copy properties", e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException("Unable to copy properties", e);
-                }
-
-                if (hashCode != existing.hashCode()) {
-                    LOG.info("Updating user {}", user.getLogin());
-                    existing = alfredUserDao.save(existing);
-                }
-
-                return existing;
+        if (user.getId() == null) {
+            AlfredUser existing = alfredUserDao.getByLogin(user.getLogin());
+            if (existing != null) {
+                copyProperties(user, existing);
+                return alfredUserDao.save(existing);
             }
-
-        } else {
-            user = alfredUserDao.save(user);
-            return user;
         }
+        return alfredUserDao.save(user);
     }
 
     @Override
     public AlfredRepo save(AlfredRepo repo) {
         LOG.info("Saving repo {}", repo.getName());
+        if (repo.getId() == null) {
+            AlfredRepo existing = alfredRepoDao.findByOwnerAndName(repo.getOwner(), repo.getName());
+            if (existing != null) {
+                copyProperties(repo, existing);
+                return alfredRepoDao.save(existing);
+            }
+        }
         return alfredRepoDao.save(repo);
     }
 
@@ -117,8 +96,15 @@ public class DefaultAlfredRepository implements AlfredRepository {
     public AlfredCommit save(AlfredCommit commit) {
         if (commit == null) throw new NullPointerException();
         LOG.info("Saving commit {}", commit.getHash());
-        alfredCommitDao.save(commit);
-        return commit;
+
+        if (commit.getId() == null) {
+            AlfredCommit existing = alfredCommitDao.findByRepoAndHash(commit.getRepo(), commit.getHash());
+            if (existing != null) {
+                copyProperties(commit, existing);
+                return alfredCommitDao.save(existing);
+            }
+        }
+        return alfredCommitDao.save(commit);
     }
 
     @Override
@@ -167,6 +153,16 @@ public class DefaultAlfredRepository implements AlfredRepository {
         node.setRepo(repoNode);
 
         return node;
+    }
+
+    void copyProperties(Object source, Object destination) {
+        try {
+            nullAwareBeanUtils.copyProperties(destination, source);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to copy bean properties", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Failed to copy bean properties", e);
+        }
     }
 
 }

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AlfredCommitDao extends CrudRepository<AlfredCommit, Long> {
 
+    AlfredCommit findByRepoAndHash(Long repo, String hash);
+
 }

@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlfredRepoDao extends CrudRepository<AlfredRepo, Long> {
+
+    AlfredRepo findByOwnerAndName(Long owner, String name);
+
 }
