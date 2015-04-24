@@ -155,7 +155,7 @@
             </td>
             <td>{{job.pusher.name}}</td>
             <td>{{job.commit.message}}</td>
-            <td>{{job.commit.shortId}} ({{job.branch}})</td>
+            <td>{{job.commit.shortHash}} ({{job.branch}})</td>
             <td>{{job.status}}</td>
           {{/link-to}}
           {{/each}}
@@ -334,6 +334,7 @@
     <script src="js/alfred/job.js"></script>
     <script src="js/alfred/org.js"></script>
     <script src="js/alfred/repo.js"></script>
+    <script src="js/alfred/commit.js"></script>
     <script src="js/alfred/misc.js"></script>
     <script src="js/alfred/router.js"></script>
     <script src="js/alfred.js"></script>

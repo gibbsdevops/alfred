@@ -53,9 +53,12 @@ function disconnect() {
 }
 
 function load_history() {
-    $.getJSON("api/jobs?limit=100", function(data) {
+    $.getJSON("api/latest", function(data) {
         console.log('Loading history');
-        $.each(data, function(index, j) {
+        $.each(data.commits, function(index, commit) {
+            handleCommit(commit);
+        });
+        $.each(data.jobs, function(index, j) {
             handleJob(j);
         });
     });
@@ -63,6 +66,13 @@ function load_history() {
 
 function JobIdsCompare(a, b) {
   return parseInt(a) - parseInt(b);
+}
+
+function handleCommit(c) {
+    existing = Alfred.CommitsById[c.id];
+    if (existing != null) return;
+
+    Alfred.CommitsById[c.id] = Alfred.Commit.build(c);
 }
 
 function handleJob(j) {

@@ -21,16 +21,6 @@ function update_time() {
 }
 window.setInterval(update_time, 1000);
 
-Alfred.Commit = Ember.Object.extend({
-    id: null,
-    shortId: function() {
-        if (this.get('id') == null) {
-            return "";
-        }
-        return this.get('id').substring(0,7);
-    }.property('id')
-});
-
 Alfred.OutputLine = Ember.Object.extend({
     index: null,
     line: null,

@@ -54,10 +54,12 @@ Alfred.ParseRawOrg = function(raw) {
 
 Alfred.Job.build = function(j) {
     job = Alfred.Job.create(j);
-    job.set('id', parseInt(job.get('id')));
-    job.set('commit', Alfred.Commit.create(job.commit));
     job.set('output', []);
 
+    job.set('commit_id', job.commit);
+    job.set('commit', Alfred.CommitsById[job.commit_id]);
+
+    /*
     var plainOrg = Alfred.ParseRawOrg(j);
     var org = Alfred.Org.find(plainOrg.login, plainOrg);
     if (org == null) throw "org is null"
@@ -67,6 +69,7 @@ Alfred.Job.build = function(j) {
     // parse repo into tree
     var repo = Alfred.Repo.findByOrgAndName(org, j['repository']['name'], j['repository']);
     job.set('repository', repo);
+    */
 
     return job;
 };
