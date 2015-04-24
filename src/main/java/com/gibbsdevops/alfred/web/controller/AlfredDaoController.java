@@ -90,6 +90,8 @@ public class AlfredDaoController extends ApiController {
         List<AlfredJob> jobs = Lists.newArrayList();
         Map<Long, AlfredCommit> commits = Maps.newHashMap();
         Map<Long, AlfredRepo> repos = Maps.newHashMap();
+        Map<Long, AlfredUser> users = Maps.newHashMap();
+        Map<Long, AlfredGitUser> gitUsers = Maps.newHashMap();
 
         jobsSlice.forEach(j -> {
             jobs.add(j);
@@ -106,12 +108,33 @@ public class AlfredDaoController extends ApiController {
                 repos.put(repo.getId(), repo);
             }
 
+            Long[] userIds = new Long[]{repo.getOwner(), commit.getPusher()};
+            Long[] gitUserIds = new Long[]{commit.getPusher(), commit.getCommitter(), commit.getAuthor()};
+
+            for (Long id : userIds) {
+                AlfredUser u = users.get(id);
+                if (u == null) {
+                    u = alfredUserDao.findOne(id);
+                }
+                users.put(id, u);
+            }
+
+            for (Long id : gitUserIds) {
+                AlfredGitUser u = gitUsers.get(id);
+                if (u == null) {
+                    u = alfredGitUserDao.findOne(id);
+                }
+                gitUsers.put(id, u);
+            }
+
         });
 
         Map<String, Object> latest = Maps.newHashMap();
         latest.put("jobs", jobs);
         latest.put("commits", commits);
         latest.put("repos", repos);
+        latest.put("users", users);
+        latest.put("persons", gitUsers);
 
         return latest;
     }
