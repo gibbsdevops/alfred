@@ -55,6 +55,12 @@ function disconnect() {
 function load_history() {
     $.getJSON("api/latest", function(data) {
         console.log('Loading history');
+        $.each(data.users, function(index, user) {
+            handleUser(user);
+        });
+        $.each(data.repos, function(index, repo) {
+            handleRepo(repo);
+        });
         $.each(data.commits, function(index, commit) {
             handleCommit(commit);
         });
@@ -68,11 +74,23 @@ function JobIdsCompare(a, b) {
   return parseInt(a) - parseInt(b);
 }
 
+function handleUser(user) {
+    existing = Alfred.UsersById[user.id];
+    if (existing != null) return;
+    Alfred.UsersById[user.id] = Ember.Object.create(user);
+}
+
+function handleRepo(repo) {
+    existing = Alfred.ReposById[repo.id];
+    if (existing != null) return;
+    Alfred.Repo.build(repo);
+}
+
 function handleCommit(c) {
     existing = Alfred.CommitsById[c.id];
     if (existing != null) return;
 
-    Alfred.CommitsById[c.id] = Alfred.Commit.build(c);
+    Alfred.Commit.build(c);
 }
 
 function handleJob(j) {
@@ -80,7 +98,8 @@ function handleJob(j) {
 
     existing = Alfred.JobsById[job.get('id')];
     if (existing != null) {
-        Alfred.Job.merge(existing, job);
+        throw "todo"
+        // Alfred.Job.merge(existing, job);
     } else {
         Alfred.JobsById[job.get('id')] = job;
         Alfred.Jobs.pushObject(job);

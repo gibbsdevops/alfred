@@ -3,8 +3,8 @@ Alfred.Org = Ember.Object.extend({
     login: null,
     all_jobs: Alfred.SortedJobs,
     jobs: function() {
-        return this.get('all_jobs').filterBy('organization.login', this.get('login')).slice(0, 10);
-    }.property('all_jobs.@each.organization.login', 'login')
+        return this.get('all_jobs').filterBy('owner.login', this.get('login')).slice(0, 10);
+    }.property('all_jobs.@each.owner.login', 'login')
 });
 
 Alfred.Org.find = function(id, data) {

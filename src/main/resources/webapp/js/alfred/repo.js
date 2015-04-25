@@ -1,19 +1,24 @@
+Alfred.ReposById = Ember.A([]);
+
 Alfred.Repo = Ember.Object.extend({
     name: null,
-    organization: null,
+    owner: null,
+    all_jobs: Alfred.SortedJobs,
     jobs: function() {
-        var org = this.get('organization');
-        if (org == null) throw "Repo is missing organization";
+        return this.get('all_jobs');
+        var owner = this.get('owner');
+        if (owner == null) throw "Repo is missing owner";
 
-        var jobs = org.get('jobs');
+        var jobs = owner.get('jobs');
+        if (jobs == null) throw "Jobs is null";
         // if (jobs.get('length') < 1) throw "No jobs in org";
 
         var name = this.get('name');
         if (name == null) throw "Repository has no name";
 
-        var filtered = jobs.filterBy('repository.name', name);
+        var filtered = jobs.filterBy('repo.name', name);
         return filtered.slice(0, 10);
-    }.property('organization', 'organization.jobs.@each.repository.name', 'name'),
+    }.property('owner', 'owner.jobs.@each.repository.name', 'name'),
     branches: function() {
         var jobs = this.get('jobs');
 
@@ -21,11 +26,13 @@ Alfred.Repo = Ember.Object.extend({
 
         // jobs is ordered
         $.each(jobs, function(index, job) {
+            /*
             var branch = job.get('branch');
             var current = latest_jobs_by_branch[branch];
             if (current == null) {
                 latest_jobs_by_branch[branch] = job;
             }
+            */
         });
 
         var latest_jobs = Ember.A([]);
@@ -36,6 +43,16 @@ Alfred.Repo = Ember.Object.extend({
         return latest_jobs;
     }.property('jobs', 'jobs.@each.branch'),
 });
+
+Alfred.Repo.build = function(r) {
+    repo = Alfred.Repo.create(r);
+    Alfred.ReposById[repo.id] = repo;
+
+    repo.set('owner_id', repo.owner);
+    repo.set('owner', Alfred.UsersById[repo.owner_id]);
+
+    return repo;
+};
 
 Alfred.Repo.findByOrgAndName = function(org, name, data) {
     // console.log("Alfred.Repo.findByOrgAndName " + org.login + ', ' + name + ', ' + (data != null));
@@ -126,9 +143,9 @@ Alfred.RepoRoute = Ember.Route.extend({
     serialize: function(/* repo */ model) {
         if (model == null) return null;
         if (typeof model.get == 'function') {
-            return { org_id: 'devops', repo_id: model.get('name') };
+            return { org_id: model.get('owner').get('login'), repo_id: model.get('name') };
         }
-        return { org_id: 'devops', repo_id: model.name };
+        return { org_id: model.owner.login, repo_id: model.name };
     }
 });
 

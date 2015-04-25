@@ -151,11 +151,11 @@
           {{#link-to 'job' job tagName="tr"}}
             <th>{{job.id}}</th>
             <td>
-              {{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}} / {{#link-to 'repo' job.organization job.repository }}{{job.repository.name}}{{/link-to}}
+              {{#link-to 'org' job.commit.repo.owner}}{{job.commit.repo.owner.login}}{{/link-to}} / {{#link-to 'repo' job.commit.repo.owner job.commit.repo }}{{job.commit.repo.name}}{{/link-to}}
             </td>
-            <td>{{job.pusher.name}}</td>
+            <td>{{job.commit.sender.name}}</td>
             <td>{{job.commit.message}}</td>
-            <td>{{job.commit.shortHash}} ({{job.branch}})</td>
+            <td>{{job.commit.shortHash}}</td>
             <td>{{job.status}}</td>
           {{/link-to}}
           {{/each}}
@@ -206,7 +206,7 @@
 
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li>{{#link-to 'org' repo.organization}}{{repo.organization.login}}{{/link-to}}</li>
+            <li>{{#link-to 'org' repo.owner}}{{repo.owner.login}}{{/link-to}}</li>
             <li class="active">{{repo.name}}</li>
         </ol>
 
@@ -287,8 +287,8 @@
 
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li>{{#link-to 'org' job.organization}}{{job.organization.login}}{{/link-to}}</li>
-            <li>{{#link-to 'repo' job.organization job.repository}}{{job.repository.name}}{{/link-to}}</li>
+            <li>{{#link-to 'org' job.commit.repo.owner}}{{job.commit.repo.owner.login}}{{/link-to}}</li>
+            <li>{{#link-to 'repo' job.commit.repo.owner job.commit.repo}}{{job.commit.repo.name}}{{/link-to}}</li>
             <li class="active">{{job.id}}</li>
         </ol>
 
@@ -300,14 +300,19 @@
 
     <script type="text/x-handlebars" data-template-name="job/index">
 
-        <h4>Ref</h4>
-        <pre>{{ref}}</pre>
+        <h4>Hash</h4>
+        <pre>{{commit.hash}}</pre>
+
+        <h4>Sender</h4>
+        <pre>{{commit.sender.name}} ({{commit.sender.login}})</pre>
         
         <h4>Status</h4>
         <pre>{{status}}</pre>
 
+        {{#if isErrored}}
         <h4>Error</h4>
         <pre>{{error}}</pre>
+        {{/if}}
 
         <h4>Output</h4>
           <div class="running-job">

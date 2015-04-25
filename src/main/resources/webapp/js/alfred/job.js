@@ -12,7 +12,10 @@ Alfred.Job = Ember.Object.extend({
         l = output.get('lastObject');
         console.log("Last line is " + l)
         return l;
-    }.property('output', 'output.@each')
+    }.property('output', 'output.@each'),
+    isErrored: function() {
+        return this.get('status') == 'errored';
+    }.property('status')
 });
 
 Alfred.Job.AddLine = function(job, l) {

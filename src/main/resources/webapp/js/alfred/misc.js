@@ -1,3 +1,5 @@
+Alfred.UsersById = Ember.A([]);
+
 Alfred.SocketClass = Ember.Object.extend({
     time_now: new Date().getTime(),
     last_received: new Date().getTime(),
