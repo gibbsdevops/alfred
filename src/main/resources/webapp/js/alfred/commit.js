@@ -2,6 +2,14 @@ Alfred.CommitsById = Ember.A([]);
 
 Alfred.Commit = Ember.Object.extend({
     id: null,
+    sender_id: null,
+    sender: function() {
+        return Alfred.UsersById[this.sender_id];
+    }.property('sender_id'),
+    repo_id: null,
+    repo: function() {
+        return Alfred.ReposById[this.repo_id];
+    }.property('repo_id'),
     shortHash: function() {
         if (this.get('hash') == null) {
             return "N/A";
@@ -10,15 +18,7 @@ Alfred.Commit = Ember.Object.extend({
     }.property('hash')
 });
 
-Alfred.Commit.build = function(c) {
-    commit = Alfred.Commit.create(c);
-
-    commit.set('sender_id', commit.sender);
-    commit.set('sender', Alfred.UsersById[commit.sender_id]);
-
-    commit.set('repo_id', commit.repo);
-    commit.set('repo', Alfred.ReposById[commit.repo_id]);
-
-    Alfred.CommitsById[commit.id] = commit;
-    return commit;
-};
+Alfred.Commit.find = function(id, data) {
+    var finder = new Alfred.Finder(Alfred.Commit, Alfred.CommitsById);
+    return finder.find(id, data);
+}

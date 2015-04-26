@@ -90,7 +90,7 @@ function handleCommit(c) {
     existing = Alfred.CommitsById[c.id];
     if (existing != null) return;
 
-    Alfred.Commit.build(c);
+    Alfred.Commit.find(c.id, c);
 }
 
 function handleJob(j) {
@@ -132,5 +132,3 @@ function alfred_main(live) {
         load_history();
     }
 }
-
-alfred_main(true);

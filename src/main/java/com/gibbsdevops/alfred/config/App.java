@@ -28,6 +28,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         String devResources = "src/main/resources/webapp";
+        String testResources = "src/test/resources/webapp";
         boolean devMode = new File(devResources).exists();
 
         /* Spring Config */
@@ -52,6 +53,7 @@ public class App {
         if (devMode) {
             LOG.info("Adding dev resources");
             resourceList.add(Resource.newResource(devResources));
+            resourceList.add(Resource.newResource(testResources));
             resourceList.add(Resource.newResource("target/classes/webapp"));
         } else {
             resourceList.add(Resource.newClassPathResource("/webapp"));
