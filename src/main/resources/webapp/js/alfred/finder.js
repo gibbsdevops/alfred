@@ -4,11 +4,15 @@ Alfred.Finder = function(clazz, index, list) {
     this.list = list;
 };
 
+Alfred.Finder.prototype.className = function() {
+    return this.class.toString().split(".")[1];
+};
+
 Alfred.Finder.prototype.find = function(id, data) {
+    if (id == null) return null;
+
     var existing = this.index[id];
     var obj = null;
-
-    var objName = this.class.toString().split(".")[1];
 
     function transform(data) {
         if (data != null) {
@@ -21,8 +25,8 @@ Alfred.Finder.prototype.find = function(id, data) {
     }
     transform(data);
 
-    var copyProperties = function(source, target) {
-        console.log('Merging ' + objName + '[' + source.id + ']');
+    var copyProperties = function(finder, source, target) {
+        console.log('Merging ' + finder.className() + '[' + source.id + ']');
         for (var key in source) {
             console.log('Set [' + id + '].' + key + ' = source.' + key);
             target.set(key, source[key]);
@@ -30,25 +34,26 @@ Alfred.Finder.prototype.find = function(id, data) {
     };
 
     if (existing != null && data != null) {
-        copyProperties(data, existing);
+        copyProperties(this, data, existing);
         return existing;
     } else if (existing == null && data != null) {
-        console.log('Creating new with data ' + objName + '[' + id + ']');
+        console.log('Creating new with data ' + this.className() + '[' + id + ']');
         obj = this.class.create(data);
         this.list.pushObject(obj);
     } else if (existing != null && data == null) {
-        console.log('Returning existing ' + id);
+        console.log('Returning existing ' + this.className() + '[' + id + ']');
         return existing;
     } else if (existing == null && data == null) {
-        console.log('Creating shell ' + objName + '[' + id + ']');
+        console.log('Creating shell ' + this.className() + '[' + id + ']');
         obj = this.class.create({ 'id': id });
         this.list.pushObject(obj);
 
+        var finder = this;
         Alfred.Finder.fetch({
-            'path': '/api/' + objName.toLowerCase() + '/' + id,
+            'path': '/api/' + this.className().toLowerCase() + '/' + id,
             'handle': function(response) {
                 transform(response);
-                copyProperties(response, obj);
+                copyProperties(finder, response, obj);
             }
         });
     }
@@ -62,6 +67,5 @@ Alfred.Finder.fetch = function(req) {
     $.get(req.path, function(response) {
         console.log('GET ' + req.path + ' Response: ' + JSON.stringify(response));
         req.handle(response);
-        for (var func in Alfred.Finder.hooks.after) func(response);
     }, 'json');
 };

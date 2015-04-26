@@ -99,6 +99,7 @@ function handleGitHubEvent(event) {
 }
 
 function alfred_main(live) {
+    Alfred.resetStores();
     if (live) {
         connect();
         load_history();

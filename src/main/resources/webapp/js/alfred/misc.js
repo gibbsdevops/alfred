@@ -1,9 +1,16 @@
+Alfred.Models = [
+    'Job',
+    'Commit',
+    'Repo',
+    'User',
+    'Person',
+];
+
 Alfred.resetStores = function() {
-    Alfred.JobsById = {};
-    Alfred.CommitsById = {};
-    Alfred.ReposById = {};
-    Alfred.UsersById = {};
-    Alfred.PersonsById = {};
+    for (var model in Alfred.Models) {
+        Alfred[model + 's'] = Ember.A([]);
+        Alfred[model + 'sById'] = {};
+    }
 };
 
 Alfred.SocketClass = Ember.Object.extend({
