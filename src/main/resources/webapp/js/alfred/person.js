@@ -8,6 +8,6 @@ Alfred.Person = Ember.Object.extend({
 });
 
 Alfred.Person.find = function(id, data) {
-    var finder = new Alfred.Finder(Alfred.Person, Alfred.PersonsById);
+    var finder = new Alfred.Finder(Alfred.Person, Alfred.PersonsById, Alfred.Persons);
     return finder.find(id, data);
 }

@@ -1,3 +1,6 @@
+Alfred.Jobs = Ember.A([]);
+Alfred.JobsById = {};
+
 Alfred.Job = Ember.Object.extend({
     id: null,
     commit_id: null,
@@ -34,28 +37,8 @@ Alfred.Job.AddLine = function(job, l) {
     $(".mini-console").scrollTop(10000);
 }
 
-Alfred.Job.find = function(id) {
-    id = parseInt(id);
-
-    // console.log("Alfred.Org.find " + id + ', ' + (data != null));
-    var job = Alfred.JobsById[id];
-    if (job == null) {
-        console.log('New job: ' + id);
-        job = Alfred.Job.create({ 'id': id, 'version': -1, 'output': Ember.A([]) });
-        Alfred.Jobs.pushObject(job);
-        Alfred.JobsById[id] = job;
-
-        $.get("api/jobs/" + id, function(response) {
-            console.log('GET Job Response: ' + JSON.stringify(response));
-            Alfred.Job.merge(job, response);
-        }, 'json');
-
-    }
-    return job;
-};
-
 Alfred.Job.find = function(id, data) {
-    var finder = new Alfred.Finder(Alfred.Job, Alfred.JobsById);
+    var finder = new Alfred.Finder(Alfred.Job, Alfred.JobsById, Alfred.Jobs);
     return finder.find(id, data);
 }
 
@@ -129,9 +112,6 @@ Alfred.Job.LoadOutput = function(job) {
 
     }, 'json');
 };
-
-Alfred.Jobs = Ember.A([]);
-Alfred.JobsById = {};
 
 Alfred.SortedJobs = Ember.ArrayController.create({
   model: Alfred.Jobs,

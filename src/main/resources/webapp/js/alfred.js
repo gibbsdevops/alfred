@@ -87,28 +87,7 @@ function handleCommit(c) {
 }
 
 function handleJob(j) {
-    job = Alfred.Job.build(j);
-
-    existing = Alfred.JobsById[job.get('id')];
-    if (existing != null) {
-        throw "todo"
-        // Alfred.Job.merge(existing, job);
-    } else {
-        Alfred.JobsById[job.get('id')] = job;
-        Alfred.Jobs.pushObject(job);
-    }
-
-    /*
-    if (Alfred.Jobs.length > 100) {
-        var ids = Object.keys(Alfred.JobsById);
-        ids.sort(JobIdsCompare);
-        id = ids[0];
-
-        var obj = Alfred.Jobs.findProperty('id', parseInt(id));
-        Alfred.Jobs.removeObject(obj);
-        delete Alfred.JobsById[id];
-    }
-    */
+    Alfred.Job.find(j.id, j);
 }
 
 function handleJobLine(l) {

@@ -1,4 +1,5 @@
-Alfred.ReposById = Ember.A([]);
+Alfred.Repos = Ember.A([]);
+Alfred.ReposById = {};
 
 Alfred.Repo = Ember.Object.extend({
     name: null,
@@ -49,19 +50,9 @@ Alfred.Repo = Ember.Object.extend({
 });
 
 Alfred.Repo.find = function(id, data) {
-    var finder = new Alfred.Finder(Alfred.Repo, Alfred.ReposById);
+    var finder = new Alfred.Finder(Alfred.Repo, Alfred.ReposById, Alfred.Repos);
     return finder.find(id, data);
 }
-
-Alfred.Repo.build = function(r) {
-    repo = Alfred.Repo.create(r);
-    Alfred.ReposById[repo.id] = repo;
-
-    repo.set('owner_id', repo.owner);
-    repo.set('owner', Alfred.UsersById[repo.owner_id]);
-
-    return repo;
-};
 
 Alfred.Repo.findByOrgAndName = function(org, name, data) {
     // console.log("Alfred.Repo.findByOrgAndName " + org.login + ', ' + name + ', ' + (data != null));

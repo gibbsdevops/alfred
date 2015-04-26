@@ -1,4 +1,5 @@
-Alfred.CommitsById = Ember.A([]);
+Alfred.Commits = Ember.A([]);
+Alfred.CommitsById = {};
 
 Alfred.Commit = Ember.Object.extend({
     id: null,
@@ -31,6 +32,6 @@ Alfred.Commit = Ember.Object.extend({
 });
 
 Alfred.Commit.find = function(id, data) {
-    var finder = new Alfred.Finder(Alfred.Commit, Alfred.CommitsById);
+    var finder = new Alfred.Finder(Alfred.Commit, Alfred.CommitsById, Alfred.Commits);
     return finder.find(id, data);
 }
