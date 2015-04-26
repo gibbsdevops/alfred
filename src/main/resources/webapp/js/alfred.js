@@ -75,21 +75,14 @@ function JobIdsCompare(a, b) {
 }
 
 function handleUser(user) {
-    existing = Alfred.UsersById[user.id];
-    if (existing != null) return;
-    Alfred.UsersById[user.id] = Ember.Object.create(user);
+    Alfred.User.find(user.id, user);
 }
 
 function handleRepo(repo) {
-    existing = Alfred.ReposById[repo.id];
-    if (existing != null) return;
-    Alfred.Repo.build(repo);
+    Alfred.Repo.find(repo.id, repo);
 }
 
 function handleCommit(c) {
-    existing = Alfred.CommitsById[c.id];
-    if (existing != null) return;
-
     Alfred.Commit.find(c.id, c);
 }
 

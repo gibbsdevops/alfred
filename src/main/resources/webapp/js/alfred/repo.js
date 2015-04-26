@@ -42,7 +42,16 @@ Alfred.Repo = Ember.Object.extend({
 
         return latest_jobs;
     }.property('jobs', 'jobs.@each.branch'),
+    owner_id: null,
+    owner: function() {
+        return Alfred.User.find(this.get('owner_id'));
+    }.property('owner_id'),
 });
+
+Alfred.Repo.find = function(id, data) {
+    var finder = new Alfred.Finder(Alfred.Repo, Alfred.ReposById);
+    return finder.find(id, data);
+}
 
 Alfred.Repo.build = function(r) {
     repo = Alfred.Repo.create(r);

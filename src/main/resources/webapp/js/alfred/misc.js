@@ -1,4 +1,10 @@
-Alfred.UsersById = Ember.A([]);
+Alfred.resetStores = function() {
+    Alfred.JobsById = {};
+    Alfred.CommitsById = {};
+    Alfred.ReposById = {};
+    Alfred.UsersById = {};
+    Alfred.PersonsById = {};
+};
 
 Alfred.SocketClass = Ember.Object.extend({
     time_now: new Date().getTime(),

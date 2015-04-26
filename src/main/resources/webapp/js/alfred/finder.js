@@ -20,7 +20,12 @@ Alfred.Finder.prototype.find = function(id, data) {
         for (var key in source) {
             var targetKey = key;
             if (key == 'sender') targetKey = 'sender_id';
+            if (key == 'committer') targetKey = 'committer_id';
+            if (key == 'author') targetKey = 'author_id';
+            if (key == 'pusher') targetKey = 'pusher_id';
+            if (key == 'owner') targetKey = 'owner_id';
             if (key == 'repo') targetKey = 'repo_id';
+            if (key == 'commit') targetKey = 'commit_id';
             console.log('Set [' + id + '].' + targetKey + ' = source.' + key);
             target.set(targetKey, source[key]);
         }
@@ -38,8 +43,10 @@ Alfred.Finder.prototype.find = function(id, data) {
     } else if (existing == null && data == null) {
         console.log('Fetching ' + id);
         obj = this.class.create({ 'id': id });
+        var objName = this.class.toString().split(".")[1].toLowerCase();
+
         Alfred.Finder.fetch({
-            'path': '/api/commit/' + id,
+            'path': '/api/' + objName + '/' + id,
             'handle': function(response) {
                 copyProperties(response, obj);
             }

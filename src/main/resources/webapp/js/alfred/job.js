@@ -1,5 +1,9 @@
 Alfred.Job = Ember.Object.extend({
     id: null,
+    commit_id: null,
+    commit: function() {
+        return Alfred.Commit.find(this.get('commit_id'));
+    }.property('commit_id'),
     ref: null,
     branch: function() {
         var ref = this.get('ref');
@@ -49,6 +53,11 @@ Alfred.Job.find = function(id) {
     }
     return job;
 };
+
+Alfred.Job.find = function(id, data) {
+    var finder = new Alfred.Finder(Alfred.Job, Alfred.JobsById);
+    return finder.find(id, data);
+}
 
 Alfred.ParseRawOrg = function(raw) {
     if (raw['organization'] && raw['organization']['login']) return raw['organization'];
