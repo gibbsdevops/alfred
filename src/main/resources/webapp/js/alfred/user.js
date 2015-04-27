@@ -1,6 +1,3 @@
-Alfred.Users = Ember.A([]);
-Alfred.UsersById = {};
-
 Alfred.User = Ember.Object.extend({
     id: null,
     all_jobs: Alfred.SortedJobs,

@@ -23,12 +23,16 @@ Alfred.Models = [
     'Person',
 ];
 
+for (var i in Alfred.Models) {
+    var model = Alfred.Models[i];
+    Alfred[model + 's'] = Ember.A([]);
+    Alfred[model + 'sById'] = {};
+}
+
 Alfred.resetStores = function() {
-    for (var model in Alfred.Models) {
-        Alfred[model + 's'] = Ember.A([]);
+    for (var i in Alfred.Models) {
+        var model = Alfred.Models[i];
+        Alfred[model + 's'].clear();
         Alfred[model + 'sById'] = {};
     }
-    // TODO revert this to explicit for now
 };
-
-// Alfred.resetStores();

@@ -1,6 +1,3 @@
-Alfred.Persons = Ember.A([]);
-Alfred.PersonsById = {};
-
 Alfred.Person = Ember.Object.extend({
     id: null,
     name: null,

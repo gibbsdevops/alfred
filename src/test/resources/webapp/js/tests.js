@@ -2,6 +2,10 @@ Alfred.rootElement = '#qunit-fixture';
 Alfred.setupForTesting();
 Alfred.injectTestHelpers();
 
+Alfred.debug = function(msg) {
+  console.log(msg);
+};
+
 Alfred.Fixtures = {};
 Alfred.Fixtures.Finder = {};
 Alfred.Fixtures.Finder['/api/job/122'] = { 'id': 122, 'commit': 123 };
@@ -14,5 +18,6 @@ Alfred.Finder.fetch = function(req) {
   console.log('Mock request GET ' + req.path)
   var response = Alfred.Fixtures.Finder[req.path];
   if (response == null) throw "Unexpected fetch request " + req.path;
+  console.log('Mock request GET ' + req.path + ' done')
   req.handle(response);
 };

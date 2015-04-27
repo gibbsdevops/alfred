@@ -1,6 +1,3 @@
-Alfred.Repos = Ember.A([]);
-Alfred.ReposById = {};
-
 Alfred.Repo = Ember.Object.extend({
     name: null,
     owner: null,

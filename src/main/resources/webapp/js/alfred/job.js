@@ -1,6 +1,3 @@
-Alfred.Jobs = Ember.A([]);
-Alfred.JobsById = {};
-
 Alfred.Job = Ember.Object.extend({
     id: null,
     commit_id: null,

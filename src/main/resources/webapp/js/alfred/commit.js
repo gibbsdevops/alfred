@@ -1,6 +1,3 @@
-Alfred.Commits = Ember.A([]);
-Alfred.CommitsById = {};
-
 Alfred.Commit = Ember.Object.extend({
     id: null,
     sender_id: null,
