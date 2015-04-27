@@ -3,20 +3,8 @@ Alfred.Repo = Ember.Object.extend({
     owner: null,
     all_jobs: Alfred.SortedJobs,
     jobs: function() {
-        return this.get('all_jobs');
-        var owner = this.get('owner');
-        if (owner == null) throw "Repo is missing owner";
-
-        var jobs = owner.get('jobs');
-        if (jobs == null) throw "Jobs is null";
-        // if (jobs.get('length') < 1) throw "No jobs in org";
-
-        var name = this.get('name');
-        if (name == null) throw "Repository has no name";
-
-        var filtered = jobs.filterBy('repo.name', name);
-        return filtered.slice(0, 10);
-    }.property('owner', 'owner.jobs.@each.repository.name', 'name'),
+        return this.get('all_jobs').filterBy('commit.repo.id', this.get('id')).slice(0, 10);
+    }.property('all_jobs.@each.commit.repo.id', 'id'),
     branches: function() {
         var jobs = this.get('jobs');
 
@@ -79,9 +67,6 @@ Alfred.Repo.findByOrgAndName = function(org, name, data) {
 
     return repo;
 }
-
-Alfred.Repos = Ember.A([]);
-Alfred.ReposByPath = {};
 
 Alfred.RepoController = Ember.Controller.extend({
     init: function() {

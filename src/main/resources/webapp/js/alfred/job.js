@@ -44,60 +44,6 @@ Alfred.ParseRawOrg = function(raw) {
     return { 'id': raw['repository']['owner']['email'], 'login': raw['repository']['owner']['name'] }
 };
 
-Alfred.Job.build = function(j) {
-    job = Alfred.Job.create(j);
-    job.set('output', []);
-
-    job.set('commit_id', job.commit);
-    job.set('commit', Alfred.CommitsById[job.commit_id]);
-
-    /*
-    var plainOrg = Alfred.ParseRawOrg(j);
-    var org = Alfred.Org.find(plainOrg.login, plainOrg);
-    if (org == null) throw "org is null"
-    if (org.login == null) throw "org.login is null"
-    job.set('organization', org);
-
-    // parse repo into tree
-    var repo = Alfred.Repo.findByOrgAndName(org, j['repository']['name'], j['repository']);
-    job.set('repository', repo);
-    */
-
-    return job;
-};
-
-Alfred.Job.merge = function(job, data) {
-    if (data.id == null) throw "Will not merge job with no id";
-    if (data.version == null) throw "Will not merge job with no version";
-    if (job.get('id') != data.id) throw "Can not merge jobs with different id's";
-
-    if (job.get('version') < data.version) {
-        console.log('Received job update. Version=' + data.version + ', current version=' + job.get('version'));
-        job.set('version', data.version);
-        job.set('status', data.status);
-        job.set('error', data.error);
-        job.set('ref', data.ref);
-
-        if (job.get('commit') == null) {
-            job.set('commit', Alfred.Commit.create(data.commit));
-        }
-        var org = job.get('organization');
-        if (org == null) {
-            var plainOrg = Alfred.ParseRawOrg(data);
-            org = Alfred.Org.find(plainOrg.login, plainOrg);
-            job.set('organization', org);
-        }
-        if (job.get('repository') == null) {
-            job.set('repository', Alfred.Repo.findByOrgAndName(org, data.repository.name, data.repository));
-        }
-        if (job.get('commit') == null) {
-            job.set('commit', Alfred.Commit.create(data.commit));
-        }
-    } else {
-        console.log('Received stale job update. Version=' + data.version + ', current version=' + job.get('version'));
-    }
-};
-
 Alfred.Job.LoadOutput = function(job) {
     $.get("api/jobs/" + job.get('id') + '/output', function(response) {
         console.log('GET Job Output Response: ' + JSON.stringify(response));
@@ -128,7 +74,7 @@ Alfred.JobRoute = Ember.Route.extend({
         console.log('init JobRoute');
     },
     model: function(params) {
-        var job = Alfred.Job.find(params.id);
+        var job = Alfred.Job.find(parseInt(params.id));
         Alfred.Job.LoadOutput(job);
         return job;
     },
