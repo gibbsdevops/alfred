@@ -23,6 +23,7 @@ Alfred.Models = [
     'Person',
 ];
 
+// create stores
 for (var i in Alfred.Models) {
     var model = Alfred.Models[i];
     Alfred[model + 's'] = Ember.A([]);

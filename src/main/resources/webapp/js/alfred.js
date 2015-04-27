@@ -22,7 +22,8 @@ function connect() {
             });
             stompClient.subscribe('/topic/jobs', function(event){
                 Alfred.Socket.receive_message(event);
-                handleJob(JSON.parse(event.body));
+                var body = JSON.parse(event.body);
+                Alfred.Job.find(body.id, body);
             });
             stompClient.subscribe('/topic/job-line', function(event){
                 Alfred.Socket.receive_message(event);
@@ -56,38 +57,22 @@ function load_history() {
     $.getJSON("api/latest", function(data) {
         console.log('Loading history');
         $.each(data.users, function(index, user) {
-            handleUser(user);
+            Alfred.User.find(user.id, user);
         });
         $.each(data.repos, function(index, repo) {
-            handleRepo(repo);
+            Alfred.Repo.find(repo.id, repo);
         });
         $.each(data.commits, function(index, commit) {
-            handleCommit(commit);
+            Alfred.Commit.find(commit.id, commit);
         });
-        $.each(data.jobs, function(index, j) {
-            handleJob(j);
+        $.each(data.jobs, function(index, job) {
+            Alfred.Job.find(job.id, job);
         });
     });
 }
 
 function JobIdsCompare(a, b) {
   return parseInt(a) - parseInt(b);
-}
-
-function handleUser(user) {
-    Alfred.User.find(user.id, user);
-}
-
-function handleRepo(repo) {
-    Alfred.Repo.find(repo.id, repo);
-}
-
-function handleCommit(c) {
-    Alfred.Commit.find(c.id, c);
-}
-
-function handleJob(j) {
-    Alfred.Job.find(j.id, j);
 }
 
 function handleJobLine(l) {
