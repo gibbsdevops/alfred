@@ -151,7 +151,7 @@
           {{#link-to 'job' job tagName="tr"}}
             <th>{{job.id}}</th>
             <td>
-              {{#link-to 'org' job.commit.repo.owner}}{{job.commit.repo.owner.login}}{{/link-to}} / {{#link-to 'repo' job.commit.repo.owner job.commit.repo }}{{job.commit.repo.name}}{{/link-to}}
+              {{#link-to 'owner' job.commit.repo.owner}}{{job.commit.repo.owner.login}}{{/link-to}} / {{#link-to 'repo' job.commit.repo.owner job.commit.repo }}{{job.commit.repo.name}}{{/link-to}}
             </td>
             <td>{{job.commit.sender.name}}</td>
             <td>{{job.commit.message}}</td>
@@ -176,11 +176,11 @@
 
     </script>
 
-    <script type="text/x-handlebars" data-template-name="org">
+    <script type="text/x-handlebars" data-template-name="owner">
       {{outlet}}
     </script>
 
-    <script type="text/x-handlebars" data-template-name="org/index">
+    <script type="text/x-handlebars" data-template-name="owner/index">
 
         <div>
           <h1>{{login}}</h1>
@@ -206,7 +206,7 @@
 
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li>{{#link-to 'org' repo.owner}}{{repo.owner.login}}{{/link-to}}</li>
+            <li>{{#link-to 'owner' repo.owner}}{{repo.owner.login}}{{/link-to}}</li>
             <li class="active">{{repo.name}}</li>
         </ol>
 
@@ -287,7 +287,7 @@
 
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li>{{#link-to 'org' job.commit.repo.owner}}{{job.commit.repo.owner.login}}{{/link-to}}</li>
+            <li>{{#link-to 'owner' job.commit.repo.owner}}{{job.commit.repo.owner.login}}{{/link-to}}</li>
             <li>{{#link-to 'repo' job.commit.repo.owner job.commit.repo}}{{job.commit.repo.name}}{{/link-to}}</li>
             <li class="active">{{job.id}}</li>
         </ol>
@@ -337,9 +337,9 @@
     <script src="js/components/ember/ember.js"></script>
     <script src="js/alfred/app.js"></script>
     <script src="js/alfred/finder.js"></script>
+    <script src="js/alfred/job.js"></script>
     <script src="js/alfred/user.js"></script>
     <script src="js/alfred/person.js"></script>
-    <script src="js/alfred/job.js"></script>
     <script src="js/alfred/org.js"></script>
     <script src="js/alfred/repo.js"></script>
     <script src="js/alfred/commit.js"></script>

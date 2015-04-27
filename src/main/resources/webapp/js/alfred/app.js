@@ -10,3 +10,25 @@ window.Alfred = Ember.Application.create({
   LOG_VIEW_LOOKUPS: false,
   LOG_RESOLVER: false
 });
+
+Alfred.debug = function(msg) {
+  // console.log(msg);
+};
+
+Alfred.Models = [
+    'Job',
+    'Commit',
+    'Repo',
+    'User',
+    'Person',
+];
+
+Alfred.resetStores = function() {
+    for (var model in Alfred.Models) {
+        Alfred[model + 's'] = Ember.A([]);
+        Alfred[model + 'sById'] = {};
+    }
+    // TODO revert this to explicit for now
+};
+
+// Alfred.resetStores();

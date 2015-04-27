@@ -10,6 +10,9 @@ Alfred.Finder.prototype.className = function() {
 
 Alfred.Finder.prototype.find = function(id, data) {
     if (id == null) return null;
+    if (id.substring) {
+        throw "id was string. expecting number.";
+    }
 
     var existing = this.index[id];
     var obj = null;
@@ -26,9 +29,9 @@ Alfred.Finder.prototype.find = function(id, data) {
     transform(data);
 
     var copyProperties = function(finder, source, target) {
-        console.log('Merging ' + finder.className() + '[' + source.id + ']');
+        Alfred.debug('Merging ' + finder.className() + '[' + source.id + ']');
         for (var key in source) {
-            console.log('Set [' + id + '].' + key + ' = source.' + key);
+            Alfred.debug('Set [' + id + '].' + key + ' = source.' + key);
             target.set(key, source[key]);
         }
     };
@@ -37,14 +40,14 @@ Alfred.Finder.prototype.find = function(id, data) {
         copyProperties(this, data, existing);
         return existing;
     } else if (existing == null && data != null) {
-        console.log('Creating new with data ' + this.className() + '[' + id + ']');
+        Alfred.debug('Creating new with data ' + this.className() + '[' + id + ']');
         obj = this.class.create(data);
         this.list.pushObject(obj);
     } else if (existing != null && data == null) {
-        console.log('Returning existing ' + this.className() + '[' + id + ']');
+        Alfred.debug('Returning existing ' + this.className() + '[' + id + ']');
         return existing;
     } else if (existing == null && data == null) {
-        console.log('Creating shell ' + this.className() + '[' + id + ']');
+        Alfred.debug('Creating shell ' + this.className() + '[' + id + ']');
         obj = this.class.create({ 'id': id });
         this.list.pushObject(obj);
 
@@ -63,9 +66,9 @@ Alfred.Finder.prototype.find = function(id, data) {
 };
 
 Alfred.Finder.fetch = function(req) {
-    console.log('Executing GET ' + req.path);
+    Alfred.debug('Executing GET ' + req.path);
     $.get(req.path, function(response) {
-        console.log('GET ' + req.path + ' Response: ' + JSON.stringify(response));
+        Alfred.debug('GET ' + req.path + ' Response: ' + JSON.stringify(response));
         req.handle(response);
     }, 'json');
 };

@@ -4,7 +4,11 @@ Alfred.PersonsById = {};
 Alfred.Person = Ember.Object.extend({
     id: null,
     name: null,
-    email: null
+    email: null,
+    all_jobs: Alfred.SortedJobs,
+    jobs: function() {
+        return this.get('all_jobs').filterBy('owner.login', this.get('login')).slice(0, 10);
+    }.property('all_jobs.@each.owner.login', 'login'),
 });
 
 Alfred.Person.find = function(id, data) {
