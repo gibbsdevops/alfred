@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.service.job.repositories.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.job.JobLine;
+import com.gibbsdevops.alfred.model.alfred.JobLine;
 import com.gibbsdevops.alfred.model.job.JobOutput;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class JobOutputRepositoryImpl implements JobOutputRepository {
         save(output);
 
         JobLine jobLine = new JobLine();
-        jobLine.setId(id);
+        jobLine.setIndex(id);
         jobLine.setIndex(output.getOutput().size() - 1);
         jobLine.setLine(line);
 

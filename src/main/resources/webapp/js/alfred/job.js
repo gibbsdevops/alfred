@@ -45,7 +45,7 @@ Alfred.ParseRawOrg = function(raw) {
 };
 
 Alfred.Job.LoadOutput = function(job) {
-    $.get("api/jobs/" + job.get('id') + '/output', function(response) {
+    $.get("api/job/" + job.get('id') + '/output', function(response) {
         console.log('GET Job Output Response: ' + JSON.stringify(response));
         // Alfred.Job.merge(job, response);
 

@@ -32,8 +32,9 @@ public class BuildInputStream extends Thread {
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
             String line = null;
+            int index = 0;
             while ((line = br.readLine()) != null) {
-                buildService.logOutput(job, line);
+                buildService.logOutput(job, index++, line);
             }
         } catch (IOException e) {
             LOG.warn("Error reading stream for {}", job, e);

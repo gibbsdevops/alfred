@@ -14,6 +14,6 @@ public interface BuildService {
 
     void errored(AlfredJobNode job, String error);
 
-    void logOutput(AlfredJobNode job, String line);
+    void logOutput(AlfredJobNode job, int index, String line);
 
 }

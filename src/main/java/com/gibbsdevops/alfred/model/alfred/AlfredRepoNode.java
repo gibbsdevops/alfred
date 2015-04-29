@@ -73,11 +73,11 @@ public class AlfredRepoNode {
         properties.setFullName(fullName);
     }
 
-    public boolean isPriv() {
+    public Boolean isPriv() {
         return properties.isPriv();
     }
 
-    public void setPriv(boolean priv) {
+    public void setPriv(Boolean priv) {
         properties.setPriv(priv);
     }
 
@@ -89,11 +89,11 @@ public class AlfredRepoNode {
         properties.setDescription(description);
     }
 
-    public boolean isFork() {
+    public Boolean isFork() {
         return properties.isFork();
     }
 
-    public void setFork(boolean fork) {
+    public void setFork(Boolean fork) {
         properties.setFork(fork);
     }
 
@@ -137,27 +137,27 @@ public class AlfredRepoNode {
         properties.setCloneUrl(cloneUrl);
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return properties.getCreatedAt();
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Long createdAt) {
         properties.setCreatedAt(createdAt);
     }
 
-    public long getUpdatedAt() {
+    public Long getUpdatedAt() {
         return properties.getUpdatedAt();
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         properties.setUpdatedAt(updatedAt);
     }
 
-    public long getPushedAt() {
+    public Long getPushedAt() {
         return properties.getPushedAt();
     }
 
-    public void setPushedAt(long pushedAt) {
+    public void setPushedAt(Long pushedAt) {
         properties.setPushedAt(pushedAt);
     }
 

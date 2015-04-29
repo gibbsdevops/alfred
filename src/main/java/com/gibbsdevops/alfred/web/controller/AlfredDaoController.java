@@ -2,6 +2,7 @@ package com.gibbsdevops.alfred.web.controller;
 
 import com.gibbsdevops.alfred.dao.*;
 import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.job.JobOutput;
 import com.gibbsdevops.alfred.web.ResourceNotFoundRuntimeException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -28,6 +29,9 @@ public class AlfredDaoController extends ApiController {
     private AlfredJobDao alfredJobDao;
 
     @Autowired
+    private AlfredJobLineDao alfredJobLineDao;
+
+    @Autowired
     private AlfredCommitDao alfredCommitDao;
 
     @Autowired
@@ -52,6 +56,11 @@ public class AlfredDaoController extends ApiController {
         AlfredJob job = alfredJobDao.findOne(id);
         if (job == null) throw new ResourceNotFoundRuntimeException(String.format("Job with id %d", id));
         return job;
+    }
+
+    @RequestMapping("/job/{id}/output")
+    public Object getJobOutput(@PathVariable Long id) {
+        return alfredJobLineDao.findByJobId(id);
     }
 
     @RequestMapping("/commit/{id}")

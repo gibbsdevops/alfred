@@ -59,10 +59,10 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dbcp = new BasicDataSource();
-        dbcp.setDriverClassName("org.h2.Driver");
-        dbcp.setUrl("jdbc:h2:./target/dev-db;MODE=PostgreSQL");
-        dbcp.setUsername("");
-        dbcp.setPassword("");
+        dbcp.setDriverClassName(System.getenv().getOrDefault("ALFRED_DB_DRIVER", "org.postgresql.Driver"));
+        dbcp.setUrl(System.getenv().getOrDefault("ALFRED_DB_URL", "jdbc:postgresql://localhost/dev"));
+        dbcp.setUsername(System.getenv().getOrDefault("ALFRED_DB_USERNAME", "alfred"));
+        dbcp.setPassword(System.getenv().getOrDefault("ALFRED_DB_PASSWORD", ""));
         dbcp.setMaxActive(5);
         dbcp.setMaxIdle(2);
         dbcp.setInitialSize(2);

@@ -15,17 +15,17 @@ public class AlfredRepoProperties {
     private String name;
     private String fullName;
     @JsonProperty("private")
-    private boolean priv;
+    private Boolean priv;
     private String description;
-    private boolean fork;
+    private Boolean fork;
     private String url;
     private String htmlUrl;
     private String sshUrl;
     private String gitUrl;
     private String cloneUrl;
-    private long createdAt;
-    private long updatedAt;
-    private long pushedAt;
+    private Long createdAt;
+    private Long updatedAt;
+    private Long pushedAt;
     private String homepage;
     private String language;
     private String defaultBranch;
@@ -103,11 +103,11 @@ public class AlfredRepoProperties {
         this.fullName = fullName;
     }
 
-    public boolean isPriv() {
+    public Boolean isPriv() {
         return priv;
     }
 
-    public void setPriv(boolean priv) {
+    public void setPriv(Boolean priv) {
         this.priv = priv;
     }
 
@@ -119,11 +119,11 @@ public class AlfredRepoProperties {
         this.description = description;
     }
 
-    public boolean isFork() {
+    public Boolean isFork() {
         return fork;
     }
 
-    public void setFork(boolean fork) {
+    public void setFork(Boolean fork) {
         this.fork = fork;
     }
 
@@ -167,27 +167,27 @@ public class AlfredRepoProperties {
         this.cloneUrl = cloneUrl;
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public long getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public long getPushedAt() {
+    public Long getPushedAt() {
         return pushedAt;
     }
 
-    public void setPushedAt(long pushedAt) {
+    public void setPushedAt(Long pushedAt) {
         this.pushedAt = pushedAt;
     }
 

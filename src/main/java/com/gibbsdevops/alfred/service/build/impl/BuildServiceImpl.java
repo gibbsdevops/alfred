@@ -1,10 +1,8 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.dao.AlfredJobDao;
-import com.gibbsdevops.alfred.model.alfred.AlfredJob;
-import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
-import com.gibbsdevops.alfred.model.alfred.AlfredUser;
+import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
+import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
@@ -36,7 +34,7 @@ public class BuildServiceImpl implements BuildService {
     private AlfredJobDao alfredJobDao;
 
     @Autowired
-    private JobOutputRepository jobOutputRepository;
+    private AlfredJobLineDao alfredJobLineDao;
 
     @Override
     public void submit(AlfredJobNode job) {
@@ -102,9 +100,14 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public void logOutput(AlfredJobNode job, String line) {
+    public void logOutput(AlfredJobNode job, int index, String line) {
         LOG.info("Build Output {}: {}", job, line);
-        // jobOutputRepository.append(job.getId(), line);
+        JobLine jobLine = new JobLine();
+        jobLine.setJobId(job.getId());
+        jobLine.setIndex(index);
+        jobLine.setLine(line);
+        alfredJobLineDao.save(jobLine);
+        messagingTemplate.convertAndSend("/topic/job-line", jobLine);
     }
 
     AlfredJob updateAndSend(Long id, AlfredJobUpdate update) {

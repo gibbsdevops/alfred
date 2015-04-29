@@ -30,9 +30,9 @@ create table alfred_repo (
     github_id int not null,
     name varchar(256),
     full_name varchar(256),
-    private bit,
+    private boolean,
     description varchar(256),
-    fork bit,
+    fork boolean,
     url varchar(256),
     html_url varchar(256),
     ssh_url varchar(256),
@@ -73,4 +73,12 @@ create table alfred_job (
     status varchar(32) not null,
     error varchar(512),
     constraint alfred_job_pkey primary key (id)
+);
+
+create table alfred_job_line (
+    id serial,
+    job_id int not null,
+    index int not null,
+    line varchar(1024),
+    constraint alfred_job_line_pkey primary key (id)
 );
