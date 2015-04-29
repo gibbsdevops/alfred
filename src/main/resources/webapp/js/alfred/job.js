@@ -1,4 +1,7 @@
 Alfred.Job = Ember.Object.extend({
+    init: function() {
+        this.set('output', Ember.A([]));
+    },
     id: null,
     commit_id: null,
     commit: function() {
@@ -49,8 +52,8 @@ Alfred.Job.LoadOutput = function(job) {
         console.log('GET Job Output Response: ' + JSON.stringify(response));
         // Alfred.Job.merge(job, response);
 
-        $.each(response.output, function(index, line) {
-            Alfred.Job.AddLine(job, { 'index': index, 'line': line });
+        $.each(response, function(index, line) {
+            Alfred.Job.AddLine(job, line);
         });
 
     }, 'json');
