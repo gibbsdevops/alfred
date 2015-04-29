@@ -1,7 +1,5 @@
 package com.gibbsdevops.alfred.model.alfred;
 
-import java.util.Objects;
-
 public class AlfredJobNode {
 
     private AlfredJobProperties properties = new AlfredJobProperties();
@@ -51,7 +49,7 @@ public class AlfredJobNode {
     public AlfredJob normalize() {
         AlfredJob job = new AlfredJob();
         job.properties = properties;
-        job.setCommit(getCommit().getId());
+        job.setCommitId(getCommit().getId());
         return job;
     }
 

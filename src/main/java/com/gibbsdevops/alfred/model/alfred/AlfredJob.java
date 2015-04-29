@@ -7,7 +7,7 @@ public class AlfredJob {
 
     AlfredJobProperties properties = new AlfredJobProperties();
 
-    private Long commit;
+    private Long commitId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +28,12 @@ public class AlfredJob {
         properties.setVersion(version);
     }
 
-    public Long getCommit() {
-        return commit;
+    public Long getCommitId() {
+        return commitId;
     }
 
-    public void setCommit(Long commit) {
-        this.commit = commit;
+    public void setCommitId(Long commitId) {
+        this.commitId = commitId;
     }
 
     public String getStatus() {

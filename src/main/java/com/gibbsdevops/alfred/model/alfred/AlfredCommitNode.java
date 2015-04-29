@@ -27,11 +27,11 @@ public class AlfredCommitNode {
     public AlfredCommit normalize() {
         AlfredCommit commit = new AlfredCommit();
         commit.properties = properties;
-        commit.setRepo(repo.getId());
-        commit.setCommitter(committer.getId());
-        commit.setAuthor(author.getId());
-        commit.setPusher(pusher.getId());
-        commit.setSender(sender.getId());
+        commit.setRepoId(repo.getId());
+        commit.setCommitterId(committer.getId());
+        commit.setAuthorId(author.getId());
+        commit.setPusherId(pusher.getId());
+        commit.setSenderId(sender.getId());
         return commit;
     }
 

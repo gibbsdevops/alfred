@@ -7,7 +7,7 @@ public class AlfredRepo {
 
     AlfredRepoProperties properties = new AlfredRepoProperties();
 
-    private Long owner;
+    private Long ownerId;
 
     //<editor-fold desc="Getters and Setters">
     @Id
@@ -166,12 +166,12 @@ public class AlfredRepo {
         properties.setDefaultBranch(defaultBranch);
     }
 
-    public Long getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(Long owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
     //</editor-fold>
 

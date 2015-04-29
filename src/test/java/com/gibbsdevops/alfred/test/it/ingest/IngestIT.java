@@ -139,7 +139,8 @@ public class IngestIT {
         assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
                 equalTo("COUNT=2\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_repo where name = 'alfred'"), equalTo("GITHUB_ID=30513996\n" +
+        assertThat(stringifyRowQuery("select * from alfred_repo where name = 'alfred'"), equalTo("OWNER_ID=1\n" +
+                "GITHUB_ID=30513996\n" +
                 "NAME=alfred\n" +
                 "FULL_NAME=gibbsdevops/alfred\n" +
                 "PRIVATE=FALSE\n" +
@@ -155,16 +156,15 @@ public class IngestIT {
                 "PUSHED_AT=1429455933\n" +
                 "HOMEPAGE=\n" +
                 "LANGUAGE=Java\n" +
-                "DEFAULT_BRANCH=master\n" +
-                "OWNER=1\n"));
+                "DEFAULT_BRANCH=master\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
                 equalTo("COUNT=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO=1\n" +
-                "COMMITTER=2\n" +
-                "AUTHOR=2\n" +
-                "PUSHER=1\n" +
-                "SENDER=2\n" +
+        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO_ID=1\n" +
+                "COMMITTER_ID=2\n" +
+                "AUTHOR_ID=2\n" +
+                "PUSHER_ID=1\n" +
+                "SENDER_ID=2\n" +
                 "HASH=ea77d7ca8ef5d31ad9b2ac6bd1cd0376656a5fe3\n" +
                 "MESSAGE=Add org and repo pages\n" +
                 "TIMESTAMP=1427055873\n" +
@@ -173,7 +173,7 @@ public class IngestIT {
         assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
                 equalTo("COUNT=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT=1\n" +
+        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT_ID=1\n" +
                 "STATUS=queued\n" +
                 "ERROR=null\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_job"),
@@ -233,7 +233,8 @@ public class IngestIT {
         assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
                 equalTo("COUNT=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_repo"), equalTo("GITHUB_ID=30393711\n" +
+        assertThat(stringifyRowQuery("select * from alfred_repo"), equalTo("OWNER_ID=1\n" +
+                "GITHUB_ID=30393711\n" +
                 "NAME=alfred-test-repo\n" +
                 "FULL_NAME=shanegibbs/alfred-test-repo\n" +
                 "PRIVATE=FALSE\n" +
@@ -249,16 +250,15 @@ public class IngestIT {
                 "PUSHED_AT=1424659550\n" +
                 "HOMEPAGE=null\n" +
                 "LANGUAGE=null\n" +
-                "DEFAULT_BRANCH=master\n" +
-                "OWNER=1\n"));
+                "DEFAULT_BRANCH=master\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
                 equalTo("COUNT=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO=1\n" +
-                "COMMITTER=2\n" +
-                "AUTHOR=2\n" +
-                "PUSHER=1\n" +
-                "SENDER=1\n" +
+        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO_ID=1\n" +
+                "COMMITTER_ID=2\n" +
+                "AUTHOR_ID=2\n" +
+                "PUSHER_ID=1\n" +
+                "SENDER_ID=1\n" +
                 "HASH=49dc5f48b404770698bc5ecca0c9a11485b32915\n" +
                 "MESSAGE=Update README.md\n" +
                 "TIMESTAMP=1423194259\n" +
@@ -267,7 +267,7 @@ public class IngestIT {
         assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
                 equalTo("COUNT=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT=1\n" +
+        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT_ID=1\n" +
                 "STATUS=queued\n" +
                 "ERROR=null\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_job"),

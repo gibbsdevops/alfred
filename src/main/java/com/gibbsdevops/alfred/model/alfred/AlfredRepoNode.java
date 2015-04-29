@@ -27,7 +27,7 @@ public class AlfredRepoNode {
         AlfredRepo repo = new AlfredRepo();
         repo.properties = properties;
         if (owner != null) {
-            repo.setOwner(owner.getId());
+            repo.setOwnerId(owner.getId());
         }
         return repo;
     }

@@ -17,17 +17,6 @@ Alfred.Finder.prototype.find = function(id, data) {
     var existing = this.index[id];
     var obj = null;
 
-    function transform(data) {
-        if (data != null) {
-            var props = [ 'sender', 'committer', 'author', 'pusher', 'owner', 'repo', 'commit' ];
-            props.forEach(function(prop) {
-                if (data[prop]) data[prop + '_id'] = data[prop];
-                delete data[prop];
-            });
-        }
-    }
-    transform(data);
-
     var copyProperties = function(finder, source, target) {
         Alfred.debug('Merging ' + finder.className() + '[' + source.id + ']');
         for (var key in source) {
@@ -55,7 +44,6 @@ Alfred.Finder.prototype.find = function(id, data) {
         Alfred.Finder.fetch({
             'path': '/api/' + this.className().toLowerCase() + '/' + id,
             'handle': function(response) {
-                transform(response);
                 copyProperties(finder, response, obj);
             }
         });

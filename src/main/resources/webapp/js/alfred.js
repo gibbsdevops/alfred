@@ -76,10 +76,13 @@ function JobIdsCompare(a, b) {
 }
 
 function handleJobLine(l) {
-    Alfred.Job.AddLine(Alfred.JobsById[l.id], { 'index': l.index, 'line': l.line });
+    var job = Alfred.Job.find(l.jobId);
+    if (job == null) throw "Unable to handle job line. Got null for id " + l.jobId;
+    Alfred.Job.AddLine(job, l);
 }
 
 function handleGitHubEvent(event) {
+    console.log('New GitHub event:');
     console.log(event);
 }
 

@@ -2,7 +2,6 @@ package com.gibbsdevops.alfred.web.controller;
 
 import com.gibbsdevops.alfred.dao.*;
 import com.gibbsdevops.alfred.model.alfred.*;
-import com.gibbsdevops.alfred.model.job.JobOutput;
 import com.gibbsdevops.alfred.web.ResourceNotFoundRuntimeException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -105,20 +104,20 @@ public class AlfredDaoController extends ApiController {
         jobsSlice.forEach(j -> {
             jobs.add(j);
 
-            AlfredCommit commit = commits.get(j.getCommit());
+            AlfredCommit commit = commits.get(j.getCommitId());
             if (commit == null) {
-                commit = alfredCommitDao.findOne(j.getCommit());
+                commit = alfredCommitDao.findOne(j.getCommitId());
                 commits.put(commit.getId(), commit);
             }
 
-            AlfredRepo repo = repos.get(commit.getRepo());
+            AlfredRepo repo = repos.get(commit.getRepoId());
             if (repo == null) {
-                repo = alfredRepoDao.findOne(commit.getRepo());
+                repo = alfredRepoDao.findOne(commit.getRepoId());
                 repos.put(repo.getId(), repo);
             }
 
-            Long[] userIds = new Long[]{repo.getOwner(), commit.getPusher()};
-            Long[] gitUserIds = new Long[]{commit.getPusher(), commit.getCommitter(), commit.getAuthor()};
+            Long[] userIds = new Long[]{repo.getOwnerId(), commit.getPusherId()};
+            Long[] gitUserIds = new Long[]{commit.getPusherId(), commit.getCommitterId(), commit.getAuthorId()};
 
             for (Long id : userIds) {
                 AlfredUser u = users.get(id);

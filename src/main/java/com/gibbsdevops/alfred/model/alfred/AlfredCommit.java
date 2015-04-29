@@ -7,11 +7,11 @@ public class AlfredCommit {
 
     AlfredCommitProperties properties = new AlfredCommitProperties();
 
-    private Long repo;
-    private Long committer;
-    private Long author;
-    private Long pusher;
-    private Long sender;
+    private Long repoId;
+    private Long committerId;
+    private Long authorId;
+    private Long pusherId;
+    private Long senderId;
 
     //<editor-fold desc="Getters and Setters">
     @Id
@@ -73,44 +73,44 @@ public class AlfredCommit {
         properties.setDeletions(deletions);
     }
 
-    public Long getRepo() {
-        return repo;
+    public Long getRepoId() {
+        return repoId;
     }
 
-    public void setRepo(Long repo) {
-        this.repo = repo;
+    public void setRepoId(Long repoId) {
+        this.repoId = repoId;
     }
 
-    public Long getCommitter() {
-        return committer;
+    public Long getCommitterId() {
+        return committerId;
     }
 
-    public void setCommitter(Long committer) {
-        this.committer = committer;
+    public void setCommitterId(Long committerId) {
+        this.committerId = committerId;
     }
 
-    public Long getAuthor() {
-        return author;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(Long author) {
-        this.author = author;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
-    public Long getPusher() {
-        return pusher;
+    public Long getPusherId() {
+        return pusherId;
     }
 
-    public void setPusher(Long pusher) {
-        this.pusher = pusher;
+    public void setPusherId(Long pusherId) {
+        this.pusherId = pusherId;
     }
 
-    public Long getSender() {
-        return sender;
+    public Long getSenderId() {
+        return senderId;
     }
 
-    public void setSender(Long sender) {
-        this.sender = sender;
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
     //</editor-fold>
 

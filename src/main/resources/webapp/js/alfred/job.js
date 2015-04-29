@@ -39,7 +39,8 @@ Alfred.Job.AddLine = function(job, l) {
 
 Alfred.Job.find = function(id, data) {
     var finder = new Alfred.Finder(Alfred.Job, Alfred.JobsById, Alfred.Jobs);
-    return finder.find(id, data);
+    var job = finder.find(id, data);
+    return job;
 }
 
 Alfred.ParseRawOrg = function(raw) {
@@ -49,7 +50,7 @@ Alfred.ParseRawOrg = function(raw) {
 
 Alfred.Job.LoadOutput = function(job) {
     $.get("api/job/" + job.get('id') + '/output', function(response) {
-        console.log('GET Job Output Response: ' + JSON.stringify(response));
+        Alfred.debug('GET Job Output Response: ' + JSON.stringify(response));
         // Alfred.Job.merge(job, response);
 
         $.each(response, function(index, line) {

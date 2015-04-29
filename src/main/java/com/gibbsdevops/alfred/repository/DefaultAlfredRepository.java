@@ -72,7 +72,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
     public AlfredRepo save(AlfredRepo repo) {
         LOG.info("Saving repo {}", repo.getName());
         if (repo.getId() == null) {
-            AlfredRepo existing = alfredRepoDao.findByOwnerAndName(repo.getOwner(), repo.getName());
+            AlfredRepo existing = alfredRepoDao.findByOwnerIdAndName(repo.getOwnerId(), repo.getName());
             if (existing != null) {
                 copyProperties(repo, existing);
                 return alfredRepoDao.save(existing);
@@ -98,7 +98,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
         LOG.info("Saving commit {}", commit.getHash());
 
         if (commit.getId() == null) {
-            AlfredCommit existing = alfredCommitDao.findByRepoAndHash(commit.getRepo(), commit.getHash());
+            AlfredCommit existing = alfredCommitDao.findByRepoIdAndHash(commit.getRepoId(), commit.getHash());
             if (existing != null) {
                 copyProperties(commit, existing);
                 return alfredCommitDao.save(existing);
@@ -110,7 +110,7 @@ public class DefaultAlfredRepository implements AlfredRepository {
     @Override
     public AlfredJob save(AlfredJob job) {
         if (job == null) throw new NullPointerException();
-        if (job.getCommit() == null) throw new IllegalArgumentException("Commit can not be null");
+        if (job.getCommitId() == null) throw new IllegalArgumentException("Commit can not be null");
         LOG.info("Saving job {}", job.getId());
         try {
             job = alfredJobDao.save(job);
@@ -133,14 +133,14 @@ public class DefaultAlfredRepository implements AlfredRepository {
 
         AlfredCommit commit = alfredCommitDao.findOne(id);
 
-        if (commit.getCommitter() == null) throw new NullPointerException();
-        AlfredGitUser committer = alfredGitUserDao.findOne(commit.getCommitter());
-        AlfredGitUser author = alfredGitUserDao.findOne(commit.getAuthor());
-        AlfredGitUser pusher = alfredGitUserDao.findOne(commit.getPusher());
-        AlfredUser sender = alfredUserDao.findOne(commit.getSender());
+        if (commit.getCommitterId() == null) throw new NullPointerException();
+        AlfredGitUser committer = alfredGitUserDao.findOne(commit.getCommitterId());
+        AlfredGitUser author = alfredGitUserDao.findOne(commit.getAuthorId());
+        AlfredGitUser pusher = alfredGitUserDao.findOne(commit.getPusherId());
+        AlfredUser sender = alfredUserDao.findOne(commit.getSenderId());
 
-        AlfredRepo repo = alfredRepoDao.findOne(commit.getRepo());
-        AlfredUser owner = alfredUserDao.findOne(repo.getOwner());
+        AlfredRepo repo = alfredRepoDao.findOne(commit.getRepoId());
+        AlfredUser owner = alfredUserDao.findOne(repo.getOwnerId());
 
         AlfredRepoNode repoNode = AlfredRepoProperties.fromRepo(repo);
         repoNode.setOwner(owner);
