@@ -46,6 +46,22 @@ public class AlfredJobNode {
         this.commit = commit;
     }
 
+    public Integer getDuration() {
+        return properties.getDuration();
+    }
+
+    public Long getCreatedAt() {
+        return properties.getCreatedAt();
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        properties.setCreatedAt(createdAt);
+    }
+
+    public void setDuration(Integer duration) {
+        properties.setDuration(duration);
+    }
+
     public AlfredJob normalize() {
         AlfredJob job = new AlfredJob();
         job.properties = properties;

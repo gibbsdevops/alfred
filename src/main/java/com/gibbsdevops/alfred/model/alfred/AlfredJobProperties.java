@@ -6,6 +6,8 @@ public class AlfredJobProperties {
     private Integer version;
     private String status;
     private String error;
+    private Integer duration;
+    private Long createdAt;
 
     public Long getId() {
         return id;
@@ -37,6 +39,22 @@ public class AlfredJobProperties {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
 
 }

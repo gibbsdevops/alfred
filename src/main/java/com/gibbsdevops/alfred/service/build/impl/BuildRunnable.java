@@ -78,6 +78,8 @@ public class BuildRunnable implements Runnable {
             pb.environment().put("ALFRED_COMMIT", commit.getHash());
             pb.redirectErrorStream(true);
 
+            long startedAt = System.currentTimeMillis();
+
             Process proc = pb.start();
             BuildInputStream stdStream = new BuildInputStream(job, proc.getInputStream(), buildService);
 
@@ -86,12 +88,14 @@ public class BuildRunnable implements Runnable {
             int exitVal = proc.waitFor();
             LOG.info("Exit value of job was {}", exitVal);
 
+            int duration = (int) ((System.currentTimeMillis() - startedAt) / 1000);
+
             GHCommitState state = GHCommitState.FAILURE;
             if (exitVal == 0) {
                 state = GHCommitState.SUCCESS;
-                buildService.succeeded(job);
+                buildService.succeeded(job, duration);
             } else {
-                buildService.failed(job);
+                buildService.failed(job, duration);
             }
 
             /*

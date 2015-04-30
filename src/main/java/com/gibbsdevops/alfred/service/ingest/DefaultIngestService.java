@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 public class DefaultIngestService implements IngestService {
 
@@ -88,6 +90,7 @@ public class DefaultIngestService implements IngestService {
             commitNode = alfredRepository.getCommitNode(commit.getId());
 
             AlfredJobNode job = new AlfredJobNode();
+            job.setCreatedAt(System.currentTimeMillis() / 1000);
             job.setCommit(commitNode);
             job.setStatus("queued");
 

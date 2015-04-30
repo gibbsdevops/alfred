@@ -137,20 +137,20 @@ public class AlfredRepoNode {
         properties.setCloneUrl(cloneUrl);
     }
 
-    public Long getCreatedAt() {
-        return properties.getCreatedAt();
+    public Long getGithubCreatedAt() {
+        return properties.getGithubCreatedAt();
     }
 
-    public void setCreatedAt(Long createdAt) {
-        properties.setCreatedAt(createdAt);
+    public void setGithubCreatedAt(Long createdAt) {
+        properties.setGithubCreatedAt(createdAt);
     }
 
-    public Long getUpdatedAt() {
-        return properties.getUpdatedAt();
+    public Long getGithubUpdatedAt() {
+        return properties.getGithubUpdatedAt();
     }
 
-    public void setUpdatedAt(Long updatedAt) {
-        properties.setUpdatedAt(updatedAt);
+    public void setGithubUpdatedAt(Long updatedAt) {
+        properties.setGithubUpdatedAt(updatedAt);
     }
 
     public Long getPushedAt() {

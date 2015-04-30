@@ -8,9 +8,9 @@ public interface BuildService {
 
     public void starting(AlfredJobNode job);
 
-    public void succeeded(AlfredJobNode job);
+    public void succeeded(AlfredJobNode job, int duration);
 
-    void failed(AlfredJobNode job);
+    void failed(AlfredJobNode job, int duration);
 
     void errored(AlfredJobNode job, String error);
 

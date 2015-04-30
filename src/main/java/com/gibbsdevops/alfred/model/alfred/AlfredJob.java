@@ -52,6 +52,22 @@ public class AlfredJob {
         properties.setError(error);
     }
 
+    public Integer getDuration() {
+        return properties.getDuration();
+    }
+
+    public Long getCreatedAt() {
+        return properties.getCreatedAt();
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        properties.setCreatedAt(createdAt);
+    }
+
+    public void setDuration(Integer duration) {
+        properties.setDuration(duration);
+    }
+
     @Override
     public String toString() {
         return "Job #" + getId();

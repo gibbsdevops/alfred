@@ -1,11 +1,8 @@
 package com.gibbsdevops.alfred.model.alfred;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gibbsdevops.alfred.model.github.GHHookRepository;
 import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.github.utils.GHTimeFormat;
-
-import javax.persistence.*;
 
 public class AlfredRepoProperties {
 
@@ -23,8 +20,8 @@ public class AlfredRepoProperties {
     private String sshUrl;
     private String gitUrl;
     private String cloneUrl;
-    private Long createdAt;
-    private Long updatedAt;
+    private Long githubCreatedAt;
+    private Long githubUpdatedAt;
     private Long pushedAt;
     private String homepage;
     private String language;
@@ -43,8 +40,8 @@ public class AlfredRepoProperties {
         properties.setSshUrl(repository.getSshUrl());
         properties.setGitUrl(repository.getGitUrl());
         properties.setCloneUrl(repository.getCloneUrl());
-        properties.setCreatedAt(GHTimeFormat.parse(repository.getCreatedAt()));
-        properties.setUpdatedAt(GHTimeFormat.parse(repository.getUpdatedAt()));
+        properties.setGithubCreatedAt(GHTimeFormat.parse(repository.getCreatedAt()));
+        properties.setGithubUpdatedAt(GHTimeFormat.parse(repository.getUpdatedAt()));
         properties.setPushedAt(GHTimeFormat.parse(repository.getPushedAt()));
         properties.setHomepage(repository.getHomepage());
         properties.setLanguage(repository.getLanguage());
@@ -167,20 +164,20 @@ public class AlfredRepoProperties {
         this.cloneUrl = cloneUrl;
     }
 
-    public Long getCreatedAt() {
-        return createdAt;
+    public Long getGithubCreatedAt() {
+        return githubCreatedAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
+    public void setGithubCreatedAt(Long githubCreatedAt) {
+        this.githubCreatedAt = githubCreatedAt;
     }
 
-    public Long getUpdatedAt() {
-        return updatedAt;
+    public Long getGithubUpdatedAt() {
+        return githubUpdatedAt;
     }
 
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setGithubUpdatedAt(Long githubUpdatedAt) {
+        this.githubUpdatedAt = githubUpdatedAt;
     }
 
     public Long getPushedAt() {

@@ -25,8 +25,8 @@ public class AlfredUser {
     private String avatarUrl;
     private String type;
     private String description;
-    private Long createdAt;
-    private Long updatedAt;
+    private Long githubCreatedAt;
+    private Long githubUpdatedAt;
 
     private static AlfredUser from(GHUser u) {
         if (u == null) throw new NullPointerException("user is null");
@@ -151,20 +151,20 @@ public class AlfredUser {
         this.description = description;
     }
 
-    public Long getCreatedAt() {
-        return createdAt;
+    public Long getGithubCreatedAt() {
+        return githubCreatedAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
+    public void setGithubCreatedAt(Long githubCreatedAt) {
+        this.githubCreatedAt = githubCreatedAt;
     }
 
-    public Long getUpdatedAt() {
-        return updatedAt;
+    public Long getGithubUpdatedAt() {
+        return githubUpdatedAt;
     }
 
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setGithubUpdatedAt(Long githubUpdatedAt) {
+        this.githubUpdatedAt = githubUpdatedAt;
     }
     //</editor-fold>
 
@@ -183,8 +183,8 @@ public class AlfredUser {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, login, name, email, url, htmlUrl, avatarUrl, type, description, createdAt,
-                updatedAt);
+        return Objects.hashCode(id, login, name, email, url, htmlUrl, avatarUrl, type, description, githubCreatedAt,
+                githubUpdatedAt);
     }
 
     @Override

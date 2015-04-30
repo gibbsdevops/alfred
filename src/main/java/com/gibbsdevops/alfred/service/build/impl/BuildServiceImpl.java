@@ -75,17 +75,19 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public void succeeded(AlfredJobNode job) {
+    public void succeeded(AlfredJobNode job, int duration) {
         LOG.info("Building job {} succeeded", job);
         updateAndSend(job.getId(), j -> {
-            j.setStatus("complete");
+            j.setDuration(duration);
+            j.setStatus("success");
         });
     }
 
     @Override
-    public void failed(AlfredJobNode job) {
+    public void failed(AlfredJobNode job, int duration) {
         LOG.info("Building job {} completed with failure", job);
         updateAndSend(job.getId(), j -> {
+            j.setDuration(duration);
             j.setStatus("failed");
         });
     }
@@ -94,7 +96,7 @@ public class BuildServiceImpl implements BuildService {
     public void errored(AlfredJobNode job, String error) {
         LOG.info("Building job {} errored: {}", job, error);
         updateAndSend(job.getId(), j -> {
-            j.setStatus("failed");
+            j.setStatus("errored");
             j.setError(error);
         });
     }
