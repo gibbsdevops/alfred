@@ -50,10 +50,10 @@ public class TestDatabaseConfig {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dbcp = new BasicDataSource();
-        dbcp.setDriverClassName("org.h2.Driver");
-        dbcp.setUrl("jdbc:h2:./target/test-db;MODE=PostgreSQL;TRACE_LEVEL_FILE=4");
-        dbcp.setUsername("");
-        dbcp.setPassword("");
+        dbcp.setDriverClassName(System.getenv().getOrDefault("ALFRED_TEST_DB_DRIVER", "org.postgresql.Driver"));
+        dbcp.setUrl(System.getenv().getOrDefault("ALFRED_TEST_DB_URL", "jdbc:postgresql://localhost/test"));
+        dbcp.setUsername(System.getenv().getOrDefault("ALFRED_TEST_DB_USERNAME", "alfred_test"));
+        dbcp.setPassword(System.getenv().getOrDefault("ALFRED_TEST_DB_PASSWORD", "alfred_test"));
         dbcp.setMaxActive(5);
         dbcp.setMaxIdle(2);
         dbcp.setInitialSize(2);

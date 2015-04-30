@@ -55,7 +55,7 @@ public class ApiIT {
 
         LOG.info("Setting up new database");
         Connection connection = dataSource.getConnection();
-        connection.createStatement().execute("drop all objects;");
+        connection.createStatement().execute("drop owned by alfred_test cascade;");
         connection.close();
 
         Flyway flyway = new Flyway();

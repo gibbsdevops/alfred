@@ -8,6 +8,7 @@ import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.utils.rest.DateTimeUtils;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
 import org.flywaydb.core.Flyway;
@@ -31,13 +32,17 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -78,6 +83,9 @@ public class IngestIT {
 
     @Before
     public void setup() throws Exception {
+        Instant instant = Instant.parse("2015-04-29T21:30:00Z");
+        DateTimeUtils.setClock(Clock.fixed(instant, ZoneId.of("UTC")));
+
         mockMvc = webAppContextSetup(webApplicationContext).build();
 
         reset(buildService);
@@ -87,7 +95,7 @@ public class IngestIT {
 
         LOG.info("Setting up new database");
         Connection connection = dataSource.getConnection();
-        connection.createStatement().execute("drop all objects;");
+        connection.createStatement().execute("drop owned by alfred_test cascade;");
         connection.close();
 
         Flyway flyway = new Flyway();
@@ -108,76 +116,78 @@ public class IngestIT {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
 
         assertThat(stringifyRowQuery("select * from alfred_git_user where name='shanegibbs'"),
-                equalTo("NAME=shanegibbs\nEMAIL=shane@hands.net.nz\n"));
+                equalTo("name=shanegibbs\nemail=shane@hands.net.nz\n"));
         assertThat(stringifyRowQuery("select * from alfred_git_user where name='Shane Gibbs'"),
-                equalTo("NAME=Shane Gibbs\nEMAIL=shane@hands.net.nz\n"));
+                equalTo("name=Shane Gibbs\nemail=shane@hands.net.nz\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_git_user"),
-                equalTo("COUNT=2\n"));
+                equalTo("count=2\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("LOGIN=shanegibbs\n" +
-                "GITHUB_ID=2838876\n" +
-                "NAME=Shane Gibbs\n" +
-                "EMAIL=\n" +
-                "URL=https://api.github.com/users/shanegibbs\n" +
-                "HTML_URL=https://github.com/shanegibbs\n" +
-                "AVATAR_URL=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
-                "TYPE=User\n" +
-                "DESCRIPTION=null\n" +
-                "CREATED_AT=null\n" +
-                "UPDATED_AT=null\n"));
-        assertThat(stringifyRowQuery("select * from alfred_user where login='gibbsdevops'"), equalTo("LOGIN=gibbsdevops\n" +
-                "GITHUB_ID=10710439\n" +
-                "NAME=null\n" +
-                "EMAIL=null\n" +
-                "URL=https://api.github.com/orgs/gibbsdevops\n" +
-                "HTML_URL=https://github.com/gibbsdevops\n" +
-                "AVATAR_URL=https://avatars.githubusercontent.com/u/10710439?v=3\n" +
-                "TYPE=Organization\n" +
-                "DESCRIPTION=null\n" +
-                "CREATED_AT=null\n" +
-                "UPDATED_AT=null\n"));
+        assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("login=shanegibbs\n" +
+                "github_id=2838876\n" +
+                "name=Shane Gibbs\n" +
+                "email=\n" +
+                "url=https://api.github.com/users/shanegibbs\n" +
+                "html_url=https://github.com/shanegibbs\n" +
+                "avatar_url=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
+                "type=User\n" +
+                "description=null\n" +
+                "github_created_at=null\n" +
+                "github_updated_at=null\n"));
+        assertThat(stringifyRowQuery("select * from alfred_user where login='gibbsdevops'"), equalTo("login=gibbsdevops\n" +
+                "github_id=10710439\n" +
+                "name=null\n" +
+                "email=null\n" +
+                "url=https://api.github.com/orgs/gibbsdevops\n" +
+                "html_url=https://github.com/gibbsdevops\n" +
+                "avatar_url=https://avatars.githubusercontent.com/u/10710439?v=3\n" +
+                "type=Organization\n" +
+                "description=null\n" +
+                "github_created_at=null\n" +
+                "github_updated_at=null\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
-                equalTo("COUNT=2\n"));
+                equalTo("count=2\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_repo where name = 'alfred'"), equalTo("OWNER_ID=1\n" +
-                "GITHUB_ID=30513996\n" +
-                "NAME=alfred\n" +
-                "FULL_NAME=gibbsdevops/alfred\n" +
-                "PRIVATE=FALSE\n" +
-                "DESCRIPTION=Alfred CI Server\n" +
-                "FORK=FALSE\n" +
-                "URL=https://api.github.com/repos/gibbsdevops/alfred\n" +
-                "HTML_URL=https://github.com/gibbsdevops/alfred\n" +
-                "SSH_URL=git@github.com:gibbsdevops/alfred.git\n" +
-                "GIT_URL=git://github.com/gibbsdevops/alfred.git\n" +
-                "CLONE_URL=https://github.com/gibbsdevops/alfred.git\n" +
-                "CREATED_AT=1423447114\n" +
-                "UPDATED_AT=1428459143\n" +
-                "PUSHED_AT=1429455933\n" +
-                "HOMEPAGE=\n" +
-                "LANGUAGE=Java\n" +
-                "DEFAULT_BRANCH=master\n"));
+        assertThat(stringifyRowQuery("select * from alfred_repo where name = 'alfred'"), equalTo("owner_id=1\n" +
+                "github_id=30513996\n" +
+                "name=alfred\n" +
+                "full_name=gibbsdevops/alfred\n" +
+                "private=f\n" +
+                "description=Alfred CI Server\n" +
+                "fork=f\n" +
+                "url=https://api.github.com/repos/gibbsdevops/alfred\n" +
+                "html_url=https://github.com/gibbsdevops/alfred\n" +
+                "ssh_url=git@github.com:gibbsdevops/alfred.git\n" +
+                "git_url=git://github.com/gibbsdevops/alfred.git\n" +
+                "clone_url=https://github.com/gibbsdevops/alfred.git\n" +
+                "github_created_at=1423447114\n" +
+                "github_updated_at=1428459143\n" +
+                "pushed_at=1429455933\n" +
+                "homepage=\n" +
+                "language=Java\n" +
+                "default_branch=master\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO_ID=1\n" +
-                "COMMITTER_ID=2\n" +
-                "AUTHOR_ID=2\n" +
-                "PUSHER_ID=1\n" +
-                "SENDER_ID=2\n" +
-                "HASH=ea77d7ca8ef5d31ad9b2ac6bd1cd0376656a5fe3\n" +
-                "MESSAGE=Add org and repo pages\n" +
-                "TIMESTAMP=1427055873\n" +
-                "ADDITIONS=0\n" +
-                "DELETIONS=0\n"));
+        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("repo_id=1\n" +
+                "committer_id=2\n" +
+                "author_id=2\n" +
+                "pusher_id=1\n" +
+                "sender_id=2\n" +
+                "hash=ea77d7ca8ef5d31ad9b2ac6bd1cd0376656a5fe3\n" +
+                "message=Add org and repo pages\n" +
+                "timestamp=1427055873\n" +
+                "additions=0\n" +
+                "deletions=0\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT_ID=1\n" +
-                "STATUS=queued\n" +
-                "ERROR=null\n"));
+        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("commit_id=1\n" +
+                "status=queued\n" +
+                "error=null\n" +
+                "duration=null\n" +
+                "created_at=1430343000\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_job"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
         ArgumentCaptor<AlfredJobNode> argument = ArgumentCaptor.forClass(AlfredJobNode.class);
         verify(buildService).submit(argument.capture());
@@ -213,65 +223,67 @@ public class IngestIT {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         assertThat(stringifyRowQuery("select * from alfred_git_user where name='shanegibbs'"),
-                equalTo("NAME=shanegibbs\nEMAIL=shane@hands.net.nz\n"));
+                equalTo("name=shanegibbs\nemail=shane@hands.net.nz\n"));
         assertThat(stringifyRowQuery("select * from alfred_git_user where name='Shane Gibbs'"),
-                equalTo("NAME=Shane Gibbs\nEMAIL=shane@hands.net.nz\n"));
+                equalTo("name=Shane Gibbs\nemail=shane@hands.net.nz\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_git_user"),
-                equalTo("COUNT=2\n"));
+                equalTo("count=2\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("LOGIN=shanegibbs\n" +
-                "GITHUB_ID=2838876\n" +
-                "NAME=Shane Gibbs\n" +
-                "EMAIL=\n" +
-                "URL=https://api.github.com/users/shanegibbs\n" +
-                "HTML_URL=https://github.com/shanegibbs\n" +
-                "AVATAR_URL=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
-                "TYPE=User\n" +
-                "DESCRIPTION=null\n" +
-                "CREATED_AT=null\n" +
-                "UPDATED_AT=null\n"));
+        assertThat(stringifyRowQuery("select * from alfred_user where login='shanegibbs'"), equalTo("login=shanegibbs\n" +
+                "github_id=2838876\n" +
+                "name=Shane Gibbs\n" +
+                "email=\n" +
+                "url=https://api.github.com/users/shanegibbs\n" +
+                "html_url=https://github.com/shanegibbs\n" +
+                "avatar_url=https://avatars.githubusercontent.com/u/2838876?v=3\n" +
+                "type=User\n" +
+                "description=null\n" +
+                "github_created_at=null\n" +
+                "github_updated_at=null\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_user"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_repo"), equalTo("OWNER_ID=1\n" +
-                "GITHUB_ID=30393711\n" +
-                "NAME=alfred-test-repo\n" +
-                "FULL_NAME=shanegibbs/alfred-test-repo\n" +
-                "PRIVATE=FALSE\n" +
-                "DESCRIPTION=\n" +
-                "FORK=FALSE\n" +
-                "URL=https://api.github.com/repos/shanegibbs/alfred-test-repo\n" +
-                "HTML_URL=https://github.com/shanegibbs/alfred-test-repo\n" +
-                "SSH_URL=git@github.com:shanegibbs/alfred-test-repo.git\n" +
-                "GIT_URL=git://github.com/shanegibbs/alfred-test-repo.git\n" +
-                "CLONE_URL=https://github.com/shanegibbs/alfred-test-repo.git\n" +
-                "CREATED_AT=1423194200\n" +
-                "UPDATED_AT=1423194200\n" +
-                "PUSHED_AT=1424659550\n" +
-                "HOMEPAGE=null\n" +
-                "LANGUAGE=null\n" +
-                "DEFAULT_BRANCH=master\n"));
+        assertThat(stringifyRowQuery("select * from alfred_repo"), equalTo("owner_id=1\n" +
+                "github_id=30393711\n" +
+                "name=alfred-test-repo\n" +
+                "full_name=shanegibbs/alfred-test-repo\n" +
+                "private=f\n" +
+                "description=\n" +
+                "fork=f\n" +
+                "url=https://api.github.com/repos/shanegibbs/alfred-test-repo\n" +
+                "html_url=https://github.com/shanegibbs/alfred-test-repo\n" +
+                "ssh_url=git@github.com:shanegibbs/alfred-test-repo.git\n" +
+                "git_url=git://github.com/shanegibbs/alfred-test-repo.git\n" +
+                "clone_url=https://github.com/shanegibbs/alfred-test-repo.git\n" +
+                "github_created_at=1423194200\n" +
+                "github_updated_at=1423194200\n" +
+                "pushed_at=1424659550\n" +
+                "homepage=null\n" +
+                "language=null\n" +
+                "default_branch=master\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_repo"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("REPO_ID=1\n" +
-                "COMMITTER_ID=2\n" +
-                "AUTHOR_ID=2\n" +
-                "PUSHER_ID=1\n" +
-                "SENDER_ID=1\n" +
-                "HASH=49dc5f48b404770698bc5ecca0c9a11485b32915\n" +
-                "MESSAGE=Update README.md\n" +
-                "TIMESTAMP=1423194259\n" +
-                "ADDITIONS=0\n" +
-                "DELETIONS=0\n"));
+        assertThat(stringifyRowQuery("select * from alfred_commit"), equalTo("repo_id=1\n" +
+                "committer_id=2\n" +
+                "author_id=2\n" +
+                "pusher_id=1\n" +
+                "sender_id=1\n" +
+                "hash=49dc5f48b404770698bc5ecca0c9a11485b32915\n" +
+                "message=Update README.md\n" +
+                "timestamp=1423194259\n" +
+                "additions=0\n" +
+                "deletions=0\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_commit"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
-        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("COMMIT_ID=1\n" +
-                "STATUS=queued\n" +
-                "ERROR=null\n"));
+        assertThat(stringifyRowQuery("select * from alfred_job"), equalTo("commit_id=1\n" +
+                "status=queued\n" +
+                "error=null\n" +
+                "duration=null\n" +
+                "created_at=1430343000\n"));
         assertThat(stringifyRowQuery("select count(*) as count from alfred_job"),
-                equalTo("COUNT=1\n"));
+                equalTo("count=1\n"));
 
         ArgumentCaptor<AlfredJobNode> argument = ArgumentCaptor.forClass(AlfredJobNode.class);
         verify(buildService).submit(argument.capture());
