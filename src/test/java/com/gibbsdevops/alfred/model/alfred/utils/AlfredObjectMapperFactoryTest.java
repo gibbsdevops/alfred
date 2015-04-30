@@ -10,6 +10,12 @@ public class AlfredObjectMapperFactoryTest {
 
     private AlfredObjectMapperFactory factory;
 
+    private static String endl = System.getProperty("line.separator");
+
+    String format(String pattern) {
+        return pattern.replaceAll("<n>", endl);
+    }
+
     @Before
     public void before() {
         factory = new AlfredObjectMapperFactory();
@@ -19,14 +25,14 @@ public class AlfredObjectMapperFactoryTest {
     public void testJsonAllPropertySerialization() throws Exception {
         JsonTestObject user = new JsonTestObject(2L, "albert", "Albert Einstein");
         String s = factory.getObject().writeValueAsString(user);
-        assertThat(s, equalTo("{\n  \"id\" : 2,\n  \"name\" : \"albert\",\n  \"full_name\" : \"Albert Einstein\"\n}"));
+        assertThat(s, equalTo(format("{<n>  \"id\" : 2,<n>  \"name\" : \"albert\",<n>  \"full_name\" : \"Albert Einstein\"<n>}")));
     }
 
     @Test
     public void testJsonMissingPropertySerialization() throws Exception {
         JsonTestObject user = new JsonTestObject(2L, "albert", null);
         String s = factory.getObject().writeValueAsString(user);
-        assertThat(s, equalTo("{\n  \"id\" : 2,\n  \"name\" : \"albert\"\n}"));
+        assertThat(s, equalTo(format("{<n>  \"id\" : 2,<n>  \"name\" : \"albert\"<n>}")));
     }
 
     @Test
