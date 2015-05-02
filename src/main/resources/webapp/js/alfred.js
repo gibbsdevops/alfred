@@ -1,3 +1,11 @@
+$(document).ready(function() {
+    setInterval(function() {
+        $(".console-cursor").each(function() {
+            $(this).toggleClass("hidden");
+        });
+    }, 500);
+});
+
 var stompClient = null;
 
 function execConnect() {

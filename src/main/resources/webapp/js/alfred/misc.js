@@ -32,7 +32,11 @@ Alfred.OutputLine = Ember.Object.extend({
 Alfred.RunningJobsClass = Ember.ArrayController.extend({
   jobs: Alfred.Jobs,
   model: function() {
-    return this.get('jobs').filterBy('status', 'in-progress');
+    var jobs = this.get('jobs').filterBy('status', 'in-progress');
+    while (jobs.length < 4) {
+        jobs.pushObject(Alfred.Job.create({ 'placeHolder': true }));
+    }
+    return jobs;
   }.property('jobs.@each.status'),
   sortProperties: ['id'],
   sortAscending: false
@@ -41,7 +45,7 @@ Alfred.RunningJobs = Alfred.RunningJobsClass.create();
 
 Alfred.FadeInView = Ember.View.extend({
     didInsertElement: function(){
-        this.$().hide().fadeIn("fast");
+        // this.$().hide().fadeIn("fast");
     }
 });
 
