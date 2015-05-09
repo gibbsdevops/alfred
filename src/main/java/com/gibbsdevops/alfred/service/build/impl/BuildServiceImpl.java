@@ -1,11 +1,14 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.gibbsdevops.alfred.dao.AlfredJobDao;
 import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
 import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
+import com.gibbsdevops.alfred.utils.rest.DefaultJsonRestClient;
+import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
+import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,31 +39,70 @@ public class BuildServiceImpl implements BuildService {
     @Autowired
     private AlfredJobLineDao alfredJobLineDao;
 
+    private JsonRestClient jsonRestClient = new DefaultJsonRestClient();
+
+    public static class GitHubStatus {
+
+        private String state;
+        private String targetUrl;
+        private String description;
+        private String context;
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public String getTargetUrl() {
+            return targetUrl;
+        }
+
+        public void setTargetUrl(String targetUrl) {
+            this.targetUrl = targetUrl;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getContext() {
+            return context;
+        }
+
+        public void setContext(String context) {
+            this.context = context;
+        }
+
+    }
+
+    public void createGithubStatus(long jobId, String repoUrl, String hash, String statusString, String description) {
+        GitHubStatus status = new GitHubStatus();
+        status.setState(statusString);
+        status.setTargetUrl("http://alfred.gibbsdevops.com/#/jobs/" + jobId);
+        status.setDescription(description);
+        status.setContext("continuous-integration/alfred");
+
+        RestRequest post = RestRequest.post(repoUrl + "/statuses/" + hash, status);
+        post.basicAuthorization(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
+
+        JsonNode node = jsonRestClient.exec(post).as(JsonNode.class);
+    }
+
     @Override
     public void submit(AlfredJobNode job) {
         AlfredRepoNode repo = job.getCommit().getRepo();
-        AlfredUser owner = repo.getOwner();
 
-        /*
-        try {
-            GitHub gitHub = GitHub.connect();
-            GHRepository ghRepo = null;
-            if ("Organization".equals(owner.getType())) {
-                GHOrganization ghOrg = gitHub.getOrganization(owner.getLogin());
-                ghRepo = ghOrg.getRepositories().get(repo.getName());
-            } else if ("User".equals(owner.getType())) {
-                GHUser ghUser = gitHub.getUser(owner.getName());
-                ghRepo = ghUser.getRepository(repo.getName());
-            } else {
-                throw new IllegalArgumentException("Unexpected user type: " + owner.getType());
-            }
-
-            ghRepo.createCommitStatus(job.getCommit().getHash(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "Building...");
-
-        } catch (IOException e) {
-            LOG.warn("Failed to mark github status as pending", e);
-        }
-        */
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "pending", "In progress !!");
 
         LOG.info("Submitted job {}", job);
         buildExecutor.execute(new BuildRunnable(job, this));
@@ -81,6 +123,11 @@ public class BuildServiceImpl implements BuildService {
             j.setDuration(duration);
             j.setStatus("success");
         });
+
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "success", "Success !!");
     }
 
     @Override
@@ -90,6 +137,11 @@ public class BuildServiceImpl implements BuildService {
             j.setDuration(duration);
             j.setStatus("failed");
         });
+
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "failure", "Failed !!");
     }
 
     @Override
@@ -99,6 +151,11 @@ public class BuildServiceImpl implements BuildService {
             j.setStatus("errored");
             j.setError(error);
         });
+
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "error", "Error !!");
     }
 
     @Override
