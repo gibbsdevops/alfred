@@ -1,0 +1,2348 @@
+{
+  "ref": "refs/heads/master",
+  "before": "107e1a7eb5fb111e53edb13418f8372650532ea0",
+  "after": "0a07487f5df6804a81a664e04e34003d520ac41a",
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/gibbsdevops/alfred/compare/107e1a7eb5fb...0a07487f5df6",
+  "commits": [
+    {
+      "id": "c58fda0c27c9b7d38fba343a4f7bd97dc618e1b9",
+      "distinct": false,
+      "message": "Refactoring model",
+      "timestamp": "2015-04-11T14:47:29-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/c58fda0c27c9b7d38fba343a4f7bd97dc618e1b9",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHOrganization.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHPerson.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHPersonRef.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHPushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/job/JobLine.java"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Commit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Event.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHOrganization.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHPerson.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHPersonRef.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/PushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Repository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/job/JobLine.java"
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/job/Job.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/IngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/JobOutputRepositoryImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/IngestApiController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java"
+      ]
+    },
+    {
+      "id": "9aad7aa8d2fba39a3618522c636b35cc257660be",
+      "distinct": false,
+      "message": "Setup integration tests",
+      "timestamp": "2015-04-11T17:10:25-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/9aad7aa8d2fba39a3618522c636b35cc257660be",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java",
+        "src/test/resources/log4j.properties"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/service/PingService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/web/RequestLogger.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/IngestApiController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java"
+      ]
+    },
+    {
+      "id": "504ece6e106548bd85d781fcb39e95cc8fcd9008",
+      "distinct": false,
+      "message": "Load ingest body",
+      "timestamp": "2015-04-11T18:45:31-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/504ece6e106548bd85d781fcb39e95cc8fcd9008",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/resources/com/gibbsdevops/alfred/test/it/push-to-org-repo.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150222T2100120600-push-171f0980-bb08-11e4-8b68-20ce9bf371b5.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150322T1524330500-push-75241a00-d0d1-11e4-86ba-fe1635d163a9.json"
+      ],
+      "removed": [
+        "src/test/resources/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+        "src/test/resources/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+        "src/test/resources/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+        "src/test/resources/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+        "src/test/resources/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+        "src/test/resources/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json",
+        "src/test/resources/sample-github-events/20150222T2100120600-push-171f0980-bb08-11e4-8b68-20ce9bf371b5.json",
+        "src/test/resources/sample-github-events/20150322T1524330500-push-75241a00-d0d1-11e4-86ba-fe1635d163a9.json"
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/web/controller/ApiController.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java"
+      ]
+    },
+    {
+      "id": "de13faee22d31e694250aedee9f1a5947c7a10ca",
+      "distinct": false,
+      "message": "Work on integration tests",
+      "timestamp": "2015-04-11T20:36:20-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/de13faee22d31e694250aedee9f1a5947c7a10ca",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/model/github/utils/GHTimeFormat.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "pom.xml",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "34e4a361b602dd20b79723a8ad3591915a1f8ae4",
+      "distinct": false,
+      "message": "Work on new flow",
+      "timestamp": "2015-04-12T00:37:51-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/34e4a361b602dd20b79723a8ad3591915a1f8ae4",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredUserRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredUserRepository.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java"
+      ]
+    },
+    {
+      "id": "7af09b7c3194dd02ade3e79f1564c49e5de93609",
+      "distinct": false,
+      "message": "Work on integration tests",
+      "timestamp": "2015-04-12T14:00:47-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/7af09b7c3194dd02ade3e79f1564c49e5de93609",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "f8a045192bff72884ac0f408d17f636ae7e859cd",
+      "distinct": false,
+      "message": "Refactor IngestService",
+      "timestamp": "2015-04-12T15:56:44-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/f8a045192bff72884ac0f408d17f636ae7e859cd",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredGitUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredUserRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredUserRepository.java"
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHPushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "44a865f8a421bdd1418723f79009efbaabc92696",
+      "distinct": false,
+      "message": "Merge branch 'development' of https://github.com/gibbsdevops/alfred into development",
+      "timestamp": "2015-04-12T15:57:06-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/44a865f8a421bdd1418723f79009efbaabc92696",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "f25b31f6a22d7f7e41140926c7acaf46261ac0d1",
+      "distinct": false,
+      "message": "Refactoring IngestService",
+      "timestamp": "2015-04-12T17:22:47-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/f25b31f6a22d7f7e41140926c7acaf46261ac0d1",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "9a2863dcbf57cd001cc2efb586315e1620fdc78e",
+      "distinct": false,
+      "message": "Work on integration tests",
+      "timestamp": "2015-04-13T20:29:58-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/9a2863dcbf57cd001cc2efb586315e1620fdc78e",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/repository/JdbcAlfredUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/NullAwareBeanUtilsBean.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "pom.xml",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "71156b15050bd22141daba89c2a5c100edbb2928",
+      "distinct": false,
+      "message": "Work on integration tests",
+      "timestamp": "2015-04-14T22:32:30-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/71156b15050bd22141daba89c2a5c100edbb2928",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredGitUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredUserDao.java",
+        "src/main/resources/db/migration/V1__init.sql"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "pom.xml",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredGitUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "edb2b7999775987d54d7781b8027eca4ee432e5b",
+      "distinct": false,
+      "message": "Work on integration tests",
+      "timestamp": "2015-04-14T23:05:55-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/edb2b7999775987d54d7781b8027eca4ee432e5b",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java"
+      ]
+    },
+    {
+      "id": "a57ca859eded77a420f0db3403d50e933a816546",
+      "distinct": false,
+      "message": "Cache GitUser",
+      "timestamp": "2015-04-18T18:08:21-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/a57ca859eded77a420f0db3403d50e933a816546",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/cache/AlfredCache.java",
+        "src/main/resources/ehcache.xml"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/repository/JdbcAlfredUserDao.java"
+      ],
+      "modified": [
+        "pom.xml",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredGitUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredGitUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHPushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/utils/GHTimeFormat.java",
+        "src/main/java/com/gibbsdevops/alfred/model/job/Job.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/FileJobRepository.java",
+        "src/test/java/com/gibbsdevops/alfred/service/job/repositories/file/FileJobRepositoryTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java",
+        "src/test/resources/log4j.properties"
+      ]
+    },
+    {
+      "id": "78845430e0e42a85b330a375134b66a930ff60b6",
+      "distinct": false,
+      "message": "Tidy up build phases",
+      "timestamp": "2015-04-18T18:57:25-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/78845430e0e42a85b330a375134b66a930ff60b6",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/push-to-org-repo.json"
+      ],
+      "removed": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/IngestTestConfig.java",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/push-to-org-repo.json"
+      ],
+      "modified": [
+        "pom.xml"
+      ]
+    },
+    {
+      "id": "65c6bcff6a4d6334ae7d6cbf585c4c3899c80c90",
+      "distinct": false,
+      "message": "Add some debug infos",
+      "timestamp": "2015-04-18T19:30:51-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/65c6bcff6a4d6334ae7d6cbf585c4c3899c80c90",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java"
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java"
+      ]
+    },
+    {
+      "id": "4071b060481c04330be42956539cb204561dd853",
+      "distinct": false,
+      "message": "Rename commit.id to commit.hash",
+      "timestamp": "2015-04-18T19:31:06-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/4071b060481c04330be42956539cb204561dd853",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java"
+      ]
+    },
+    {
+      "id": "c04fdbf3cc8c59e4be71a7856691cf3b47d2bbfe",
+      "distinct": false,
+      "message": "Start on repo persistence. Add some naming strategies.",
+      "timestamp": "2015-04-18T21:08:31-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/c04fdbf3cc8c59e4be71a7856691cf3b47d2bbfe",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredNamingStrategy.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredRepoDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactory.java",
+        "src/test/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactoryTest.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "30c244b20e0a95ef9b4d20327b0212d84f5eed5d",
+      "distinct": false,
+      "message": "Use custom ObjectMapper in MVC",
+      "timestamp": "2015-04-18T22:09:03-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/30c244b20e0a95ef9b4d20327b0212d84f5eed5d",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/config/MvcConfig.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactory.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/IngestApiController.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "43a997700de2eadfd62387126746e7cbda7b88bf",
+      "distinct": false,
+      "message": "Drop explicit names on favor of strategy",
+      "timestamp": "2015-04-18T22:13:36-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/43a997700de2eadfd62387126746e7cbda7b88bf",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/local/NewJobRequest.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHOrganization.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHPerson.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHPersonRef.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java"
+      ]
+    },
+    {
+      "id": "c6dd735baddf4d5ed50b546e4f0494ab504dd8ff",
+      "distinct": false,
+      "message": "Use login instead of id as primary key of users",
+      "timestamp": "2015-04-19T10:01:45-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/c6dd735baddf4d5ed50b546e4f0494ab504dd8ff",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "3f661bc20602f1053704293052a789b51ed62e99",
+      "distinct": false,
+      "message": "Use login instead of id as primary key of users",
+      "timestamp": "2015-04-19T10:02:13-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/3f661bc20602f1053704293052a789b51ed62e99",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "4e52b7b26616b8afd1a6a6aa2a58338e94f998ab",
+      "distinct": false,
+      "message": "Add GithubService",
+      "timestamp": "2015-04-19T10:05:32-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/4e52b7b26616b8afd1a6a6aa2a58338e94f998ab",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/service/github/GithubService.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+
+      ]
+    },
+    {
+      "id": "c74c73ce7853988ae067dcbda76e4ec80184ba5c",
+      "distinct": false,
+      "message": "Create GithubApiService and mock requests",
+      "timestamp": "2015-04-19T17:36:23-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/c74c73ce7853988ae067dcbda76e4ec80184ba5c",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHHookRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/github/DefaultGithubApiService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/github/GithubApiService.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/DefaultJsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/JsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/MockJsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/RestRequest.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/RestResponse.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/UnexpectedJsonRequestRuntimeException.java"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/service/github/GithubService.java"
+      ],
+      "modified": [
+        "pom.xml",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHPushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/job/Job.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "3db3ff77571c9cb2cde25d37f9d4d34dd2ec82d0",
+      "distinct": false,
+      "message": "Persist and integration test for repo",
+      "timestamp": "2015-04-19T18:02:53-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/3db3ff77571c9cb2cde25d37f9d4d34dd2ec82d0",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "cd5deefcc6b5ed647417e29f537f40fbcbf5a0d8",
+      "distinct": false,
+      "message": "Integration test for user owned repo",
+      "timestamp": "2015-04-20T19:47:22-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/cd5deefcc6b5ed647417e29f537f40fbcbf5a0d8",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/push-to-user-repo.json"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHHookRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java",
+        "src/test/resources/log4j.properties"
+      ]
+    },
+    {
+      "id": "687445e2a6a362e5e84c0d74ed81b6eaefc3d1f2",
+      "distinct": false,
+      "message": "Separate cache and test database config",
+      "timestamp": "2015-04-20T20:18:15-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/687445e2a6a362e5e84c0d74ed81b6eaefc3d1f2",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/config/CacheConfig.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/TestDatabaseConfig.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/cache/AlfredCache.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java",
+        "src/test/resources/log4j.properties"
+      ]
+    },
+    {
+      "id": "6e8ebe2dac5eefc5dff950c2cc75c08c91808cdf",
+      "distinct": false,
+      "message": "Separate cache and test database config",
+      "timestamp": "2015-04-20T20:20:35-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/6e8ebe2dac5eefc5dff950c2cc75c08c91808cdf",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/TestDatabaseConfig.java"
+      ],
+      "removed": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/TestDatabaseConfig.java"
+      ],
+      "modified": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "0707a0c0f6827b9e32a45333ccc882d9cbbd6fe5",
+      "distinct": false,
+      "message": "Separate cache and test database config",
+      "timestamp": "2015-04-20T20:25:17-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/0707a0c0f6827b9e32a45333ccc882d9cbbd6fe5",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "aaebb0cb1d6756316af7a9d9a63b88a5dba34aa4",
+      "distinct": false,
+      "message": "Extract mock responses to file",
+      "timestamp": "2015-04-20T21:26:25-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/aaebb0cb1d6756316af7a9d9a63b88a5dba34aa4",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-orgs-gibbsdevops.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-repos-gibbsdevops-alfred.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-repos-shanegibbs-alfred-test-repo.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-users-shanegibbs.json"
+      ],
+      "removed": [
+        "src/test/java/com/gibbsdevops/alfred/config/GithubTest.java"
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/MockJsonRestClient.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "ce114804f86d4008a2d8afccccbe700f045adb73",
+      "distinct": false,
+      "message": "Persist commits",
+      "timestamp": "2015-04-20T22:44:59-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/ce114804f86d4008a2d8afccccbe700f045adb73",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredCommitDao.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "ab8e416b825da8c1719bdad482802aad2cf709fa",
+      "distinct": false,
+      "message": "Code features to persist initial job",
+      "timestamp": "2015-04-20T23:06:23-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/ab8e416b825da8c1719bdad482802aad2cf709fa",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobProperties.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "3500c9d50eda562ba8481b0164a1190dd348ef29",
+      "distinct": false,
+      "message": "Persist Job",
+      "timestamp": "2015-04-21T20:46:36-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/3500c9d50eda562ba8481b0164a1190dd348ef29",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredGitUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/resources/log4j.properties"
+      ]
+    },
+    {
+      "id": "d53c533e3bbbca752c1c23aea16833f58b2f7a8c",
+      "distinct": false,
+      "message": "Switch BuildService to new Job model",
+      "timestamp": "2015-04-21T21:20:19-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/d53c533e3bbbca752c1c23aea16833f58b2f7a8c",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+        "src/main/resources/ehcache.xml"
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/service/build/BuildService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildInputStream.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildRunnable.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "767f39ede9b7b1decb4a0032a7c35da0c3f9196a",
+      "distinct": false,
+      "message": "Make runnable again",
+      "timestamp": "2015-04-22T21:14:22-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/767f39ede9b7b1decb4a0032a7c35da0c3f9196a",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/config/DatabaseConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/web/ResourceNotFoundRuntimeException.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/config/App.java",
+        "src/main/java/com/gibbsdevops/alfred/config/AppConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/config/MvcConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactory.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildRunnable.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/impl/DefaultJobService.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/DefaultJsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/HistoryController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/IngestApiController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java",
+        "src/main/resources/log4j.properties",
+        "src/test/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactoryTest.java"
+      ]
+    },
+    {
+      "id": "89e3b0674648b6203f344c8211808ddfd4bf3adf",
+      "distinct": false,
+      "message": "Make runnable again",
+      "timestamp": "2015-04-22T21:19:49-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/89e3b0674648b6203f344c8211808ddfd4bf3adf",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/config/AppConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/config/MvcConfig.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java"
+      ]
+    },
+    {
+      "id": "4789f834892803a9393327cd032b75cc902aa33f",
+      "distinct": false,
+      "message": "Fix optimistic lock problem",
+      "timestamp": "2015-04-22T23:07:10-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/4789f834892803a9393327cd032b75cc902aa33f",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/config/MvcConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/BuildService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildRunnable.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/web/ResourceNotFoundRuntimeException.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java"
+      ]
+    },
+    {
+      "id": "1147d2011765960a43a2d3b07d991c76131245a7",
+      "distinct": false,
+      "message": "Implement /api/latest",
+      "timestamp": "2015-04-23T20:39:04-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/1147d2011765960a43a2d3b07d991c76131245a7",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredCommitDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredRepoDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/NullAwareBeanUtilsBean.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/web/ResourceNotFoundRuntimeException.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "8cb541b2d3e759070c64808e25cc8a2eb4f09a1d",
+      "distinct": false,
+      "message": "Implement /api/latest",
+      "timestamp": "2015-04-23T21:01:47-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/8cb541b2d3e759070c64808e25cc8a2eb4f09a1d",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java"
+      ]
+    },
+    {
+      "id": "a22255214c9725bb1d0aa1a06b99342707a22121",
+      "distinct": false,
+      "message": "Update Ember with new model",
+      "timestamp": "2015-04-23T22:32:57-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/a22255214c9725bb1d0aa1a06b99342707a22121",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/resources/webapp/js/alfred/commit.js"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/misc.js"
+      ]
+    },
+    {
+      "id": "0a533b33f34e59692c01bb328f687012cb95dfbb",
+      "distinct": false,
+      "message": "Rework ember.js",
+      "timestamp": "2015-04-25T11:27:26-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/0a533b33f34e59692c01bb328f687012cb95dfbb",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/commit.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/misc.js",
+        "src/main/resources/webapp/js/alfred/org.js",
+        "src/main/resources/webapp/js/alfred/repo.js"
+      ]
+    },
+    {
+      "id": "8d79edabbd67dc87fab78853f24ca0938dde2cfd",
+      "distinct": false,
+      "message": "Start on javascript testing",
+      "timestamp": "2015-04-25T22:18:55-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/8d79edabbd67dc87fab78853f24ca0938dde2cfd",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/test/resources/webapp/js/tests.js",
+        "src/test/resources/webapp/test.html"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "bower.json",
+        "src/main/java/com/gibbsdevops/alfred/config/App.java",
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/commit.js"
+      ]
+    },
+    {
+      "id": "18926e80a45fe772c62f61a32edf14e2c8d77384",
+      "distinct": false,
+      "message": "Start on javascript testing",
+      "timestamp": "2015-04-26T15:02:33-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/18926e80a45fe772c62f61a32edf14e2c8d77384",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/resources/webapp/js/alfred/person.js",
+        "src/main/resources/webapp/js/alfred/user.js",
+        "src/test/resources/webapp/js/alfred/commitTest.js",
+        "src/test/resources/webapp/js/alfred/jobTest.js"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/commit.js",
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/misc.js",
+        "src/main/resources/webapp/js/alfred/repo.js",
+        "src/test/resources/webapp/js/tests.js",
+        "src/test/resources/webapp/test.html"
+      ]
+    },
+    {
+      "id": "f11411319e6ff5bee7318f5a9bea93954ed18749",
+      "distinct": false,
+      "message": "Create finder managed static lists",
+      "timestamp": "2015-04-26T15:32:13-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/f11411319e6ff5bee7318f5a9bea93954ed18749",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/commit.js",
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/person.js",
+        "src/main/resources/webapp/js/alfred/repo.js",
+        "src/main/resources/webapp/js/alfred/user.js"
+      ]
+    },
+    {
+      "id": "0798cef7c168dfbbaacc11b5e2e9550733faec96",
+      "distinct": false,
+      "message": "Start on javascript testing",
+      "timestamp": "2015-04-26T16:32:15-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/0798cef7c168dfbbaacc11b5e2e9550733faec96",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/main/resources/webapp/js/alfred/misc.js"
+      ]
+    },
+    {
+      "id": "260d41ab1fbc357bd03382dfc46cd664285cb896",
+      "distinct": false,
+      "message": "Ember routing",
+      "timestamp": "2015-04-26T22:56:37-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/260d41ab1fbc357bd03382dfc46cd664285cb896",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred/app.js",
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/main/resources/webapp/js/alfred/misc.js",
+        "src/main/resources/webapp/js/alfred/org.js",
+        "src/main/resources/webapp/js/alfred/person.js",
+        "src/main/resources/webapp/js/alfred/router.js",
+        "src/main/resources/webapp/js/alfred/user.js",
+        "src/test/resources/webapp/test.html"
+      ]
+    },
+    {
+      "id": "0e05f17c283e277d81d2bccdd7f287aed2ed62c3",
+      "distinct": false,
+      "message": "Use local qunit resources",
+      "timestamp": "2015-04-26T22:58:41-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/0e05f17c283e277d81d2bccdd7f287aed2ed62c3",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/test/resources/webapp/test.html"
+      ]
+    },
+    {
+      "id": "29f169fc8dd280b0ca7df986cbbf2bb7792f24ee",
+      "distinct": false,
+      "message": "Javascript GUI working, kinda",
+      "timestamp": "2015-04-26T23:36:08-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/29f169fc8dd280b0ca7df986cbbf2bb7792f24ee",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/js/alfred/app.js",
+        "src/main/resources/webapp/js/alfred/commit.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/person.js",
+        "src/main/resources/webapp/js/alfred/repo.js",
+        "src/main/resources/webapp/js/alfred/user.js",
+        "src/test/resources/webapp/js/tests.js"
+      ]
+    },
+    {
+      "id": "e62912bf28f6eefa27b259060263eabe9da4f567",
+      "distinct": false,
+      "message": "Fix linked jobs",
+      "timestamp": "2015-04-26T23:51:54-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/e62912bf28f6eefa27b259060263eabe9da4f567",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/repo.js",
+        "src/main/resources/webapp/js/alfred/user.js"
+      ]
+    },
+    {
+      "id": "d2d765a8978be396b9cea0d8b1c6e28324a298af",
+      "distinct": false,
+      "message": "Tidy up javascript",
+      "timestamp": "2015-04-27T08:47:55-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/d2d765a8978be396b9cea0d8b1c6e28324a298af",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/app.js"
+      ]
+    },
+    {
+      "id": "459f0f0cfa442cdeadccfbf7584dd9b4d2da3b71",
+      "distinct": false,
+      "message": "Persist JobLine",
+      "timestamp": "2015-04-28T20:51:01-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/459f0f0cfa442cdeadccfbf7584dd9b4d2da3b71",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "scripts/sql/reset_db.sql",
+        "scripts/sql/setup.sql",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobLineDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/JobLine.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiTestConfig.java"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/model/job/JobLine.java"
+      ],
+      "modified": [
+        "Makefile",
+        "README.md",
+        "src/main/java/com/gibbsdevops/alfred/config/DatabaseConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/BuildService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildInputStream.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/JobOutputRepositoryImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/main/resources/webapp/js/alfred/job.js"
+      ]
+    },
+    {
+      "id": "2a37206370eeefc8a74f4f526701f052bf8f05f5",
+      "distinct": false,
+      "message": "Display job output",
+      "timestamp": "2015-04-28T20:55:51-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/2a37206370eeefc8a74f4f526701f052bf8f05f5",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/js/alfred/job.js"
+      ]
+    },
+    {
+      "id": "57295116f472ecf109fbd5a1db36985f776431ec",
+      "distinct": false,
+      "message": "Refactor relationships to _id",
+      "timestamp": "2015-04-29T09:25:24-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/57295116f472ecf109fbd5a1db36985f776431ec",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredCommitDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredRepoDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "f0d8efee935a111b97a358b3900d4e2303fd89dc",
+      "distinct": false,
+      "message": "Add some timestamps. Rename github times. Change all postgresql string fields to `text`.",
+      "timestamp": "2015-04-29T20:43:48-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/f0d8efee935a111b97a358b3900d4e2303fd89dc",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/BuildService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildRunnable.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/resources/db/migration/V1__init.sql"
+      ]
+    },
+    {
+      "id": "d74cda9f1a518dfbf06958eed5d4b637e035df11",
+      "distinct": false,
+      "message": "Add duration to gui",
+      "timestamp": "2015-04-29T22:00:35-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/d74cda9f1a518dfbf06958eed5d4b637e035df11",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/index.html"
+      ]
+    },
+    {
+      "id": "0a84e9bd91c5a8d59b2c0c25465bb76ca700d68e",
+      "distinct": false,
+      "message": "Make json test os independent",
+      "timestamp": "2015-04-29T22:29:01-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/0a84e9bd91c5a8d59b2c0c25465bb76ca700d68e",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/test/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactoryTest.java"
+      ]
+    },
+    {
+      "id": "2497eb8429c93fff72aa23f0e8b4c849bd7d962f",
+      "distinct": false,
+      "message": "Use postgresql for tests",
+      "timestamp": "2015-04-29T23:13:40-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/2497eb8429c93fff72aa23f0e8b4c849bd7d962f",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/DateTimeUtils.java"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/config/DatabaseConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/TestDatabaseConfig.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java"
+      ]
+    },
+    {
+      "id": "dacfa4e9949961a4b6c8dc7e4654db1ca6913c77",
+      "distinct": false,
+      "message": "Minimalize the gui a bit",
+      "timestamp": "2015-05-02T16:15:55-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/dacfa4e9949961a4b6c8dc7e4654db1ca6913c77",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/misc.js"
+      ]
+    },
+    {
+      "id": "7cccb0cbc8c1e9e4ab198b59efc9804b14d14c45",
+      "distinct": false,
+      "message": "Make postgresql and hibernate migrations optional",
+      "timestamp": "2015-05-08T20:00:51-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/7cccb0cbc8c1e9e4ab198b59efc9804b14d14c45",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/config/DatabaseConfig.java"
+      ]
+    },
+    {
+      "id": "bc6b6bc92a4ba6ae2b9aa9f79c9e56b37977a79d",
+      "distinct": false,
+      "message": "Create test db scripts",
+      "timestamp": "2015-05-08T20:20:33-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/bc6b6bc92a4ba6ae2b9aa9f79c9e56b37977a79d",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "scripts/sql/setup_test.sql"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "Makefile",
+        "scripts/sql/reset_db.sql"
+      ]
+    },
+    {
+      "id": "a490e0e22846a473b810198560b26221c8c49066",
+      "distinct": false,
+      "message": "Set build statuses",
+      "timestamp": "2015-05-09T11:10:24-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/a490e0e22846a473b810198560b26221c8c49066",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/DefaultJsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/RestRequest.java"
+      ]
+    },
+    {
+      "id": "0a07487f5df6804a81a664e04e34003d520ac41a",
+      "distinct": true,
+      "message": "Merge pull request #2 from gibbsdevops/development\n\nImplement hibernate and postgresql",
+      "timestamp": "2015-05-09T11:19:41-05:00",
+      "url": "https://github.com/gibbsdevops/alfred/commit/0a07487f5df6804a81a664e04e34003d520ac41a",
+      "author": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "committer": {
+        "name": "Shane Gibbs",
+        "email": "shane@hands.net.nz",
+        "username": "shanegibbs"
+      },
+      "added": [
+        "scripts/sql/reset_db.sql",
+        "scripts/sql/setup.sql",
+        "scripts/sql/setup_test.sql",
+        "src/main/java/com/gibbsdevops/alfred/cache/AlfredCache.java",
+        "src/main/java/com/gibbsdevops/alfred/config/CacheConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/config/DatabaseConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/config/MvcConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredCommitDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredGitUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobLineDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredNamingStrategy.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredRepoDao.java",
+        "src/main/java/com/gibbsdevops/alfred/dao/AlfredUserDao.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredGitUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/JobLine.java",
+        "src/main/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactory.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHCommit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHHookRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHOrganization.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHPerson.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHPersonRef.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/GHUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/events/GHPushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/github/utils/GHTimeFormat.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/repository/NullAwareBeanUtilsBean.java",
+        "src/main/java/com/gibbsdevops/alfred/service/github/DefaultGithubApiService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/github/GithubApiService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/DateTimeUtils.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/DefaultJsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/JsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/MockJsonRestClient.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/RestRequest.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/RestResponse.java",
+        "src/main/java/com/gibbsdevops/alfred/utils/rest/UnexpectedJsonRequestRuntimeException.java",
+        "src/main/java/com/gibbsdevops/alfred/web/ResourceNotFoundRuntimeException.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java",
+        "src/main/resources/db/migration/V1__init.sql",
+        "src/main/resources/webapp/js/alfred/commit.js",
+        "src/main/resources/webapp/js/alfred/finder.js",
+        "src/main/resources/webapp/js/alfred/person.js",
+        "src/main/resources/webapp/js/alfred/user.js",
+        "src/test/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactoryTest.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/TestDatabaseConfig.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiTestConfig.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+        "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-orgs-gibbsdevops.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-repos-gibbsdevops-alfred.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-repos-shanegibbs-alfred-test-repo.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-users-shanegibbs.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/push-to-org-repo.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/push-to-user-repo.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150222T2100120600-push-171f0980-bb08-11e4-8b68-20ce9bf371b5.json",
+        "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150322T1524330500-push-75241a00-d0d1-11e4-86ba-fe1635d163a9.json",
+        "src/test/resources/log4j.properties",
+        "src/test/resources/webapp/js/alfred/commitTest.js",
+        "src/test/resources/webapp/js/alfred/jobTest.js",
+        "src/test/resources/webapp/js/tests.js",
+        "src/test/resources/webapp/test.html"
+      ],
+      "removed": [
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Commit.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Event.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHOrganization.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHPerson.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHPersonRef.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/GHUser.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/PushEvent.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/github/Repository.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/job/JobLine.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+        "src/test/java/com/gibbsdevops/alfred/config/GithubTest.java",
+        "src/test/resources/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+        "src/test/resources/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+        "src/test/resources/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+        "src/test/resources/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+        "src/test/resources/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+        "src/test/resources/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json",
+        "src/test/resources/sample-github-events/20150222T2100120600-push-171f0980-bb08-11e4-8b68-20ce9bf371b5.json",
+        "src/test/resources/sample-github-events/20150322T1524330500-push-75241a00-d0d1-11e4-86ba-fe1635d163a9.json"
+      ],
+      "modified": [
+        "Makefile",
+        "README.md",
+        "bower.json",
+        "pom.xml",
+        "src/main/java/com/gibbsdevops/alfred/config/App.java",
+        "src/main/java/com/gibbsdevops/alfred/config/AppConfig.java",
+        "src/main/java/com/gibbsdevops/alfred/model/events/local/NewJobRequest.java",
+        "src/main/java/com/gibbsdevops/alfred/model/job/Job.java",
+        "src/main/java/com/gibbsdevops/alfred/service/PingService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/BuildService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildInputStream.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildRunnable.java",
+        "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/service/ingest/IngestService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/impl/DefaultJobService.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/FileJobRepository.java",
+        "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/JobOutputRepositoryImpl.java",
+        "src/main/java/com/gibbsdevops/alfred/web/RequestLogger.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/ApiController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/HistoryController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/IngestApiController.java",
+        "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java",
+        "src/main/resources/log4j.properties",
+        "src/main/resources/webapp/index.html",
+        "src/main/resources/webapp/js/alfred.js",
+        "src/main/resources/webapp/js/alfred/app.js",
+        "src/main/resources/webapp/js/alfred/job.js",
+        "src/main/resources/webapp/js/alfred/misc.js",
+        "src/main/resources/webapp/js/alfred/org.js",
+        "src/main/resources/webapp/js/alfred/repo.js",
+        "src/main/resources/webapp/js/alfred/router.js",
+        "src/test/java/com/gibbsdevops/alfred/service/job/repositories/file/FileJobRepositoryTest.java"
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "0a07487f5df6804a81a664e04e34003d520ac41a",
+    "distinct": true,
+    "message": "Merge pull request #2 from gibbsdevops/development\n\nImplement hibernate and postgresql",
+    "timestamp": "2015-05-09T11:19:41-05:00",
+    "url": "https://github.com/gibbsdevops/alfred/commit/0a07487f5df6804a81a664e04e34003d520ac41a",
+    "author": {
+      "name": "Shane Gibbs",
+      "email": "shane@hands.net.nz",
+      "username": "shanegibbs"
+    },
+    "committer": {
+      "name": "Shane Gibbs",
+      "email": "shane@hands.net.nz",
+      "username": "shanegibbs"
+    },
+    "added": [
+      "scripts/sql/reset_db.sql",
+      "scripts/sql/setup.sql",
+      "scripts/sql/setup_test.sql",
+      "src/main/java/com/gibbsdevops/alfred/cache/AlfredCache.java",
+      "src/main/java/com/gibbsdevops/alfred/config/CacheConfig.java",
+      "src/main/java/com/gibbsdevops/alfred/config/DatabaseConfig.java",
+      "src/main/java/com/gibbsdevops/alfred/config/MvcConfig.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredCommitDao.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredGitUserDao.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobDao.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredJobLineDao.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredNamingStrategy.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredRepoDao.java",
+      "src/main/java/com/gibbsdevops/alfred/dao/AlfredUserDao.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommit.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitNode.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredCommitProperties.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredGitUser.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJob.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobNode.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredJobProperties.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepo.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoNode.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredRepoProperties.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/AlfredUser.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/JobLine.java",
+      "src/main/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactory.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHCommit.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHHookRepository.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHOrganization.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHPerson.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHPersonRef.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHRepository.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/GHUser.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/events/GHEvent.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/events/GHPushEvent.java",
+      "src/main/java/com/gibbsdevops/alfred/model/github/utils/GHTimeFormat.java",
+      "src/main/java/com/gibbsdevops/alfred/repository/AlfredRepository.java",
+      "src/main/java/com/gibbsdevops/alfred/repository/DefaultAlfredRepository.java",
+      "src/main/java/com/gibbsdevops/alfred/repository/NullAwareBeanUtilsBean.java",
+      "src/main/java/com/gibbsdevops/alfred/service/github/DefaultGithubApiService.java",
+      "src/main/java/com/gibbsdevops/alfred/service/github/GithubApiService.java",
+      "src/main/java/com/gibbsdevops/alfred/service/ingest/DefaultIngestService.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/DateTimeUtils.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/DefaultJsonRestClient.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/JsonRestClient.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/MockJsonRestClient.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/RestRequest.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/RestResponse.java",
+      "src/main/java/com/gibbsdevops/alfred/utils/rest/UnexpectedJsonRequestRuntimeException.java",
+      "src/main/java/com/gibbsdevops/alfred/web/ResourceNotFoundRuntimeException.java",
+      "src/main/java/com/gibbsdevops/alfred/web/controller/AlfredDaoController.java",
+      "src/main/resources/db/migration/V1__init.sql",
+      "src/main/resources/webapp/js/alfred/commit.js",
+      "src/main/resources/webapp/js/alfred/finder.js",
+      "src/main/resources/webapp/js/alfred/person.js",
+      "src/main/resources/webapp/js/alfred/user.js",
+      "src/test/java/com/gibbsdevops/alfred/model/alfred/utils/AlfredObjectMapperFactoryTest.java",
+      "src/test/java/com/gibbsdevops/alfred/test/it/TestDatabaseConfig.java",
+      "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiIT.java",
+      "src/test/java/com/gibbsdevops/alfred/test/it/api/ApiTestConfig.java",
+      "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestIT.java",
+      "src/test/java/com/gibbsdevops/alfred/test/it/ingest/IngestTestConfig.java",
+      "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-orgs-gibbsdevops.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-repos-gibbsdevops-alfred.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-repos-shanegibbs-alfred-test-repo.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/github-responses/GET-users-shanegibbs.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/push-to-org-repo.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/it/ingest/push-to-user-repo.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150222T2100120600-push-171f0980-bb08-11e4-8b68-20ce9bf371b5.json",
+      "src/test/resources/com/gibbsdevops/alfred/test/sample-github-events/20150322T1524330500-push-75241a00-d0d1-11e4-86ba-fe1635d163a9.json",
+      "src/test/resources/log4j.properties",
+      "src/test/resources/webapp/js/alfred/commitTest.js",
+      "src/test/resources/webapp/js/alfred/jobTest.js",
+      "src/test/resources/webapp/js/tests.js",
+      "src/test/resources/webapp/test.html"
+    ],
+    "removed": [
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/Commit.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/Event.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/GHOrganization.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/GHPerson.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/GHPersonRef.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/GHUser.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/PushEvent.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/github/Repository.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/job/JobLine.java",
+      "src/main/java/com/gibbsdevops/alfred/service/ingest/impl/IngestServiceImpl.java",
+      "src/test/java/com/gibbsdevops/alfred/config/GithubTest.java",
+      "src/test/resources/sample-github-events/20150205T2144190600-push-6e0bab80-adb2-11e4-9ffb-b00870c1da85.json",
+      "src/test/resources/sample-github-events/20150205T2146340600-push-be830900-adb2-11e4-9a18-bc1b3762fcf5.json",
+      "src/test/resources/sample-github-events/20150205T2147410600-push-e6726c80-adb2-11e4-841c-1397a82dc3d8.json",
+      "src/test/resources/sample-github-events/20150205T2148000600-push-f1c59800-adb2-11e4-97db-8e9bbf182937.json",
+      "src/test/resources/sample-github-events/20150205T2206230600-push-83360980-adb5-11e4-97af-15b2614df51f.json",
+      "src/test/resources/sample-github-events/20150222T2045340600-push-138a8300-bb06-11e4-9fd9-e4398886a737.json",
+      "src/test/resources/sample-github-events/20150222T2100120600-push-171f0980-bb08-11e4-8b68-20ce9bf371b5.json",
+      "src/test/resources/sample-github-events/20150322T1524330500-push-75241a00-d0d1-11e4-86ba-fe1635d163a9.json"
+    ],
+    "modified": [
+      "Makefile",
+      "README.md",
+      "bower.json",
+      "pom.xml",
+      "src/main/java/com/gibbsdevops/alfred/config/App.java",
+      "src/main/java/com/gibbsdevops/alfred/config/AppConfig.java",
+      "src/main/java/com/gibbsdevops/alfred/model/events/local/NewJobRequest.java",
+      "src/main/java/com/gibbsdevops/alfred/model/job/Job.java",
+      "src/main/java/com/gibbsdevops/alfred/service/PingService.java",
+      "src/main/java/com/gibbsdevops/alfred/service/build/BuildService.java",
+      "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildInputStream.java",
+      "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildRunnable.java",
+      "src/main/java/com/gibbsdevops/alfred/service/build/impl/BuildServiceImpl.java",
+      "src/main/java/com/gibbsdevops/alfred/service/ingest/IngestService.java",
+      "src/main/java/com/gibbsdevops/alfred/service/job/impl/DefaultJobService.java",
+      "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/FileJobRepository.java",
+      "src/main/java/com/gibbsdevops/alfred/service/job/repositories/file/JobOutputRepositoryImpl.java",
+      "src/main/java/com/gibbsdevops/alfred/web/RequestLogger.java",
+      "src/main/java/com/gibbsdevops/alfred/web/controller/ApiController.java",
+      "src/main/java/com/gibbsdevops/alfred/web/controller/HistoryController.java",
+      "src/main/java/com/gibbsdevops/alfred/web/controller/IngestApiController.java",
+      "src/main/java/com/gibbsdevops/alfred/web/controller/JobApiController.java",
+      "src/main/resources/log4j.properties",
+      "src/main/resources/webapp/index.html",
+      "src/main/resources/webapp/js/alfred.js",
+      "src/main/resources/webapp/js/alfred/app.js",
+      "src/main/resources/webapp/js/alfred/job.js",
+      "src/main/resources/webapp/js/alfred/misc.js",
+      "src/main/resources/webapp/js/alfred/org.js",
+      "src/main/resources/webapp/js/alfred/repo.js",
+      "src/main/resources/webapp/js/alfred/router.js",
+      "src/test/java/com/gibbsdevops/alfred/service/job/repositories/file/FileJobRepositoryTest.java"
+    ]
+  },
+  "repository": {
+    "id": 30513996,
+    "name": "alfred",
+    "full_name": "gibbsdevops/alfred",
+    "owner": {
+      "name": "gibbsdevops",
+      "email": null
+    },
+    "private": false,
+    "html_url": "https://github.com/gibbsdevops/alfred",
+    "description": "Alfred CI Server",
+    "fork": false,
+    "url": "https://github.com/gibbsdevops/alfred",
+    "forks_url": "https://api.github.com/repos/gibbsdevops/alfred/forks",
+    "keys_url": "https://api.github.com/repos/gibbsdevops/alfred/keys{/key_id}",
+    "collaborators_url": "https://api.github.com/repos/gibbsdevops/alfred/collaborators{/collaborator}",
+    "teams_url": "https://api.github.com/repos/gibbsdevops/alfred/teams",
+    "hooks_url": "https://api.github.com/repos/gibbsdevops/alfred/hooks",
+    "issue_events_url": "https://api.github.com/repos/gibbsdevops/alfred/issues/events{/number}",
+    "events_url": "https://api.github.com/repos/gibbsdevops/alfred/events",
+    "assignees_url": "https://api.github.com/repos/gibbsdevops/alfred/assignees{/user}",
+    "branches_url": "https://api.github.com/repos/gibbsdevops/alfred/branches{/branch}",
+    "tags_url": "https://api.github.com/repos/gibbsdevops/alfred/tags",
+    "blobs_url": "https://api.github.com/repos/gibbsdevops/alfred/git/blobs{/sha}",
+    "git_tags_url": "https://api.github.com/repos/gibbsdevops/alfred/git/tags{/sha}",
+    "git_refs_url": "https://api.github.com/repos/gibbsdevops/alfred/git/refs{/sha}",
+    "trees_url": "https://api.github.com/repos/gibbsdevops/alfred/git/trees{/sha}",
+    "statuses_url": "https://api.github.com/repos/gibbsdevops/alfred/statuses/{sha}",
+    "languages_url": "https://api.github.com/repos/gibbsdevops/alfred/languages",
+    "stargazers_url": "https://api.github.com/repos/gibbsdevops/alfred/stargazers",
+    "contributors_url": "https://api.github.com/repos/gibbsdevops/alfred/contributors",
+    "subscribers_url": "https://api.github.com/repos/gibbsdevops/alfred/subscribers",
+    "subscription_url": "https://api.github.com/repos/gibbsdevops/alfred/subscription",
+    "commits_url": "https://api.github.com/repos/gibbsdevops/alfred/commits{/sha}",
+    "git_commits_url": "https://api.github.com/repos/gibbsdevops/alfred/git/commits{/sha}",
+    "comments_url": "https://api.github.com/repos/gibbsdevops/alfred/comments{/number}",
+    "issue_comment_url": "https://api.github.com/repos/gibbsdevops/alfred/issues/comments{/number}",
+    "contents_url": "https://api.github.com/repos/gibbsdevops/alfred/contents/{+path}",
+    "compare_url": "https://api.github.com/repos/gibbsdevops/alfred/compare/{base}...{head}",
+    "merges_url": "https://api.github.com/repos/gibbsdevops/alfred/merges",
+    "archive_url": "https://api.github.com/repos/gibbsdevops/alfred/{archive_format}{/ref}",
+    "downloads_url": "https://api.github.com/repos/gibbsdevops/alfred/downloads",
+    "issues_url": "https://api.github.com/repos/gibbsdevops/alfred/issues{/number}",
+    "pulls_url": "https://api.github.com/repos/gibbsdevops/alfred/pulls{/number}",
+    "milestones_url": "https://api.github.com/repos/gibbsdevops/alfred/milestones{/number}",
+    "notifications_url": "https://api.github.com/repos/gibbsdevops/alfred/notifications{?since,all,participating}",
+    "labels_url": "https://api.github.com/repos/gibbsdevops/alfred/labels{/name}",
+    "releases_url": "https://api.github.com/repos/gibbsdevops/alfred/releases{/id}",
+    "created_at": 1423447114,
+    "updated_at": "2015-04-08T02:12:23Z",
+    "pushed_at": 1431188382,
+    "git_url": "git://github.com/gibbsdevops/alfred.git",
+    "ssh_url": "git@github.com:gibbsdevops/alfred.git",
+    "clone_url": "https://github.com/gibbsdevops/alfred.git",
+    "svn_url": "https://github.com/gibbsdevops/alfred",
+    "homepage": "",
+    "size": 692,
+    "stargazers_count": 0,
+    "watchers_count": 0,
+    "language": "Java",
+    "has_issues": true,
+    "has_downloads": true,
+    "has_wiki": true,
+    "has_pages": false,
+    "forks_count": 0,
+    "mirror_url": null,
+    "open_issues_count": 0,
+    "forks": 0,
+    "open_issues": 0,
+    "watchers": 0,
+    "default_branch": "master",
+    "stargazers": 0,
+    "master_branch": "master",
+    "organization": "gibbsdevops"
+  },
+  "pusher": {
+    "name": "shanegibbs",
+    "email": "shane@hands.net.nz"
+  },
+  "organization": {
+    "login": "gibbsdevops",
+    "id": 10710439,
+    "url": "https://api.github.com/orgs/gibbsdevops",
+    "repos_url": "https://api.github.com/orgs/gibbsdevops/repos",
+    "events_url": "https://api.github.com/orgs/gibbsdevops/events",
+    "members_url": "https://api.github.com/orgs/gibbsdevops/members{/member}",
+    "public_members_url": "https://api.github.com/orgs/gibbsdevops/public_members{/member}",
+    "avatar_url": "https://avatars.githubusercontent.com/u/10710439?v=3",
+    "description": null
+  },
+  "sender": {
+    "login": "shanegibbs",
+    "id": 2838876,
+    "avatar_url": "https://avatars.githubusercontent.com/u/2838876?v=3",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/shanegibbs",
+    "html_url": "https://github.com/shanegibbs",
+    "followers_url": "https://api.github.com/users/shanegibbs/followers",
+    "following_url": "https://api.github.com/users/shanegibbs/following{/other_user}",
+    "gists_url": "https://api.github.com/users/shanegibbs/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/shanegibbs/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/shanegibbs/subscriptions",
+    "organizations_url": "https://api.github.com/users/shanegibbs/orgs",
+    "repos_url": "https://api.github.com/users/shanegibbs/repos",
+    "events_url": "https://api.github.com/users/shanegibbs/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/shanegibbs/received_events",
+    "type": "User",
+    "site_admin": false
+  }
+}
