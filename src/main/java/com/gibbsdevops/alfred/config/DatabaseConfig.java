@@ -19,14 +19,6 @@ import java.util.Properties;
 public class DatabaseConfig {
 
     @Bean
-    public Flyway flyway() {
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(dataSource());
-        flyway.migrate();
-        return flyway;
-    }
-
-    @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());
@@ -39,8 +31,12 @@ public class DatabaseConfig {
         props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         // props.setProperty("hibernate.show_sql", "true");
         props.setProperty("hibernate.format_sql", "true");
-        // props.setProperty("hibernate.hbm2ddl.auto", "validate");
+
         props.setProperty("hibernate.hbm2ddl.auto", "");
+        if ("true".equals(System.getenv().getOrDefault("ALFRED_HIBERNATE_MIGRATE", "false"))) {
+            props.setProperty("hibernate.hbm2ddl.auto", "create");
+        }
+
         props.setProperty("hibernate.ejb.naming_strategy", "com.gibbsdevops.alfred.dao.AlfredNamingStrategy");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -67,6 +63,13 @@ public class DatabaseConfig {
         dbcp.setMaxIdle(2);
         dbcp.setInitialSize(2);
         dbcp.setValidationQuery("SELECT 1");
+
+        if ("true".equals(System.getenv().getOrDefault("ALFRED_DB_MIGRATE", "false"))) {
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(dbcp);
+            flyway.migrate();
+        }
+
         return dbcp;
     }
 
