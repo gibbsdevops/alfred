@@ -5,5 +5,8 @@
     "sockjs": "~0.3.4",
     "stomp-websocket": "~2.3.4",
     "bootstrap": "~3.3.2"
+  },
+  "devDependencies": {
+    "qunit": "~1.18.0"
   }
 }

@@ -1,17 +1,19 @@
 package com.gibbsdevops.alfred.service.build;
 
-import com.gibbsdevops.alfred.model.job.Job;
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 
 public interface BuildService {
 
-    public void submit(Job job);
+    public void submit(AlfredJobNode job);
 
-    public void starting(Job job);
+    public void starting(AlfredJobNode job);
 
-    public void finished(Job job);
+    public void succeeded(AlfredJobNode job, int duration);
 
-    void failed(Job job, String reason);
+    void failed(AlfredJobNode job, int duration);
 
-    void logOutput(Job job, String line);
+    void errored(AlfredJobNode job, String error);
+
+    void logOutput(AlfredJobNode job, int index, String line);
 
 }

@@ -1,18 +1,14 @@
 package com.gibbsdevops.alfred.web.controller;
 
-import com.gibbsdevops.alfred.model.events.github.GHOrganization;
-import com.gibbsdevops.alfred.model.events.github.Repository;
 import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
-import com.gibbsdevops.alfred.model.events.local.NewJobResponse;
-import com.gibbsdevops.alfred.model.job.Job;
+import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
-import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -23,7 +19,7 @@ public class JobApiController extends ApiController {
     private static final Logger LOG = LoggerFactory.getLogger(JobApiController.class);
 
     @Autowired
-    private JobService jobService;
+    private AlfredRepository alfredRepository;
 
     @Autowired
     private JobOutputRepository jobOutputRepository;
@@ -33,7 +29,7 @@ public class JobApiController extends ApiController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Object getAll(@RequestParam(required = false) Integer limit) {
-        return jobService.getJobs();
+        return null; // jobService.getJobs();
     }
 
     @RequestMapping(value = "/{id}/output", method = RequestMethod.GET)
@@ -43,7 +39,7 @@ public class JobApiController extends ApiController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Object get(@PathVariable int id) {
-        return jobService.getJob(id);
+        return null; // jobService.getJob(id);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -54,13 +50,14 @@ public class JobApiController extends ApiController {
         // org.kohsuke.github.GHOrganization organization = github.getOrganization(request.getOrganization());
 
 
-        Job job = new Job();
+        /* TODO
+        AlfredJobNode job = new AlfredJobNode();
 
         GHOrganization organization = new GHOrganization();
         organization.setLogin(request.getOrganization());
         job.setOrganization(organization);
 
-        Repository repository = new Repository();
+        GHHookRepository repository = new GHHookRepository();
         repository.setName(request.getRepo());
         repository.setHtmlUrl(request.getHtmlUrl());
         repository.setSshUrl(request.getSshUrl());
@@ -81,6 +78,9 @@ public class JobApiController extends ApiController {
         response.setRequest(request);
         response.setId(job.getId());
         return response;
+        */
+
+        return "TODO";
     }
 
 }

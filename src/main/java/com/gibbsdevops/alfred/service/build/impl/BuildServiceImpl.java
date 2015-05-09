@@ -1,20 +1,21 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
-import com.gibbsdevops.alfred.model.job.Job;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.gibbsdevops.alfred.dao.AlfredJobDao;
+import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
+import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
-import com.gibbsdevops.alfred.service.job.JobService;
-import org.kohsuke.github.GHCommitState;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
+import com.gibbsdevops.alfred.utils.rest.DefaultJsonRestClient;
+import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
+import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 @Service
@@ -27,55 +28,161 @@ public class BuildServiceImpl implements BuildService {
     ExecutorService buildExecutor;
 
     @Autowired
-    private JobService jobService;
+    private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    private JobOutputRepository jobOutputRepository;
+    private AlfredRepository alfredRepository;
+
+    @Autowired
+    private AlfredJobDao alfredJobDao;
+
+    @Autowired
+    private AlfredJobLineDao alfredJobLineDao;
+
+    private JsonRestClient jsonRestClient = new DefaultJsonRestClient();
+
+    public static class GitHubStatus {
+
+        private String state;
+        private String targetUrl;
+        private String description;
+        private String context;
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public String getTargetUrl() {
+            return targetUrl;
+        }
+
+        public void setTargetUrl(String targetUrl) {
+            this.targetUrl = targetUrl;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getContext() {
+            return context;
+        }
+
+        public void setContext(String context) {
+            this.context = context;
+        }
+
+    }
+
+    public void createGithubStatus(long jobId, String repoUrl, String hash, String statusString, String description) {
+        GitHubStatus status = new GitHubStatus();
+        status.setState(statusString);
+        status.setTargetUrl("http://alfred.gibbsdevops.com/#/jobs/" + jobId);
+        status.setDescription(description);
+        status.setContext("continuous-integration/alfred");
+
+        RestRequest post = RestRequest.post(repoUrl + "/statuses/" + hash, status);
+        post.basicAuthorization(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
+
+        JsonNode node = jsonRestClient.exec(post).as(JsonNode.class);
+    }
 
     @Override
-    public void submit(Job job) {
+    public void submit(AlfredJobNode job) {
+        AlfredRepoNode repo = job.getCommit().getRepo();
 
-        try {
-            GitHub gitHub = GitHub.connect();
-            GHOrganization ghOrg = gitHub.getOrganization(job.getOrganization().getLogin());
-            GHRepository ghRepo = ghOrg.getRepositories().get(job.getRepository().getName());
-            ghRepo.createCommitStatus(job.getCommit().getId(), GHCommitState.PENDING, "http://alfred.gibbsdevops.com/#/jobs/" + job.getId(), "Building...");
-        } catch (IOException e) {
-            LOG.warn("Failed to mark github status as pending", e);
-        }
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "pending", "In progress !!");
 
         LOG.info("Submitted job {}", job);
         buildExecutor.execute(new BuildRunnable(job, this));
     }
 
     @Override
-    public void starting(Job job) {
+    public void starting(AlfredJobNode job) {
         LOG.info("Started building job {}", job);
-
-        job.setStatus("in-progress");
-        jobService.save(job);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("in-progress");
+        });
     }
 
     @Override
-    public void finished(Job job) {
-        LOG.info("Building job {} complete", job);
+    public void succeeded(AlfredJobNode job, int duration) {
+        LOG.info("Building job {} succeeded", job);
+        updateAndSend(job.getId(), j -> {
+            j.setDuration(duration);
+            j.setStatus("success");
+        });
 
-        job.setStatus("complete");
-        jobService.save(job);
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "success", "Success !!");
     }
 
     @Override
-    public void failed(Job job, String reason) {
-        LOG.info("Building job {} failed: {}", job, reason);
-        job.setStatus("failed");
-        job.setError(reason);
-        jobService.save(job);
+    public void failed(AlfredJobNode job, int duration) {
+        LOG.info("Building job {} completed with failure", job);
+        updateAndSend(job.getId(), j -> {
+            j.setDuration(duration);
+            j.setStatus("failed");
+        });
+
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "failure", "Failed !!");
     }
 
     @Override
-    public void logOutput(Job job, String line) {
+    public void errored(AlfredJobNode job, String error) {
+        LOG.info("Building job {} errored: {}", job, error);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("errored");
+            j.setError(error);
+        });
+
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "error", "Error !!");
+    }
+
+    @Override
+    public void logOutput(AlfredJobNode job, int index, String line) {
         LOG.info("Build Output {}: {}", job, line);
-        jobOutputRepository.append(job.getId(), line);
+        JobLine jobLine = new JobLine();
+        jobLine.setJobId(job.getId());
+        jobLine.setIndex(index);
+        jobLine.setLine(line);
+        alfredJobLineDao.save(jobLine);
+        messagingTemplate.convertAndSend("/topic/job-line", jobLine);
     }
 
+    AlfredJob updateAndSend(Long id, AlfredJobUpdate update) {
+        AlfredJob job = alfredJobDao.findOne(id);
+        update.exec(job);
+        job = alfredRepository.save(job);
+        send(job);
+        return job;
+    }
+
+    void send(AlfredJob node) {
+        LOG.info("Sending Job to /topic/jobs: {}", node);
+        messagingTemplate.convertAndSend("/topic/jobs", node);
+    }
+
+    interface AlfredJobUpdate {
+        void exec(AlfredJob j);
+    }
 }

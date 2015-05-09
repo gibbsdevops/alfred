@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
@@ -26,11 +28,15 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         String devResources = "src/main/resources/webapp";
+        String testResources = "src/test/resources/webapp";
         boolean devMode = new File(devResources).exists();
 
         /* Spring Config */
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("com.gibbsdevops.alfred.config");
+
+        ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
+        errorHandler.addErrorPage(404, "/not-found");
 
         /* API Handler */
         ServletContextHandler apiHandler = new ServletContextHandler();
@@ -39,6 +45,7 @@ public class App {
         apiHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/");
         apiHandler.addEventListener(new ContextLoaderListener(context));
         apiHandler.setResourceBase("src/main/resources/api");
+        apiHandler.setErrorHandler(errorHandler);
 
         /* Resource Handler */
         List<Resource> resourceList = Lists.newArrayList();
@@ -46,6 +53,7 @@ public class App {
         if (devMode) {
             LOG.info("Adding dev resources");
             resourceList.add(Resource.newResource(devResources));
+            resourceList.add(Resource.newResource(testResources));
             resourceList.add(Resource.newResource("target/classes/webapp"));
         } else {
             resourceList.add(Resource.newClassPathResource("/webapp"));

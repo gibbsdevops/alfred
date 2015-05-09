@@ -1,3 +1,11 @@
+$(document).ready(function() {
+    setInterval(function() {
+        $(".console-cursor").each(function() {
+            $(this).toggleClass("hidden");
+        });
+    }, 500);
+});
+
 var stompClient = null;
 
 function execConnect() {
@@ -22,7 +30,8 @@ function connect() {
             });
             stompClient.subscribe('/topic/jobs', function(event){
                 Alfred.Socket.receive_message(event);
-                handleJob(JSON.parse(event.body));
+                var body = JSON.parse(event.body);
+                Alfred.Job.find(body.id, body);
             });
             stompClient.subscribe('/topic/job-line', function(event){
                 Alfred.Socket.receive_message(event);
@@ -53,10 +62,19 @@ function disconnect() {
 }
 
 function load_history() {
-    $.getJSON("api/jobs?limit=100", function(data) {
+    $.getJSON("api/latest", function(data) {
         console.log('Loading history');
-        $.each(data, function(index, j) {
-            handleJob(j);
+        $.each(data.users, function(index, user) {
+            Alfred.User.find(user.id, user);
+        });
+        $.each(data.repos, function(index, repo) {
+            Alfred.Repo.find(repo.id, repo);
+        });
+        $.each(data.commits, function(index, commit) {
+            Alfred.Commit.find(commit.id, commit);
+        });
+        $.each(data.jobs, function(index, job) {
+            Alfred.Job.find(job.id, job);
         });
     });
 }
@@ -65,43 +83,21 @@ function JobIdsCompare(a, b) {
   return parseInt(a) - parseInt(b);
 }
 
-function handleJob(j) {
-    job = Alfred.Job.build(j);
-
-    existing = Alfred.JobsById[job.get('id')];
-    if (existing != null) {
-        Alfred.Job.merge(existing, job);
-    } else {
-        Alfred.JobsById[job.get('id')] = job;
-        Alfred.Jobs.pushObject(job);
-    }
-
-    /*
-    if (Alfred.Jobs.length > 100) {
-        var ids = Object.keys(Alfred.JobsById);
-        ids.sort(JobIdsCompare);
-        id = ids[0];
-
-        var obj = Alfred.Jobs.findProperty('id', parseInt(id));
-        Alfred.Jobs.removeObject(obj);
-        delete Alfred.JobsById[id];
-    }
-    */
-}
-
 function handleJobLine(l) {
-    Alfred.Job.AddLine(Alfred.JobsById[l.id], { 'index': l.index, 'line': l.line });
+    var job = Alfred.Job.find(l.jobId);
+    if (job == null) throw "Unable to handle job line. Got null for id " + l.jobId;
+    Alfred.Job.AddLine(job, l);
 }
 
 function handleGitHubEvent(event) {
+    console.log('New GitHub event:');
     console.log(event);
 }
 
 function alfred_main(live) {
+    Alfred.resetStores();
     if (live) {
         connect();
         load_history();
     }
 }
-
-alfred_main(true);

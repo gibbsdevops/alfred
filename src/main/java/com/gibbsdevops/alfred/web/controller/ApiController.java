@@ -15,6 +15,7 @@ public abstract class ApiController {
 
     private static final Logger LOG = LoggerFactory.getLogger(IngestApiController.class);
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public Map exceptionHandler(HttpServletRequest req, Exception ex) {
         LOG.warn("Caught exception", ex);

@@ -2,11 +2,13 @@ package com.gibbsdevops.alfred.web.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.model.events.github.PushEvent;
+import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
+import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.service.ingest.IngestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -21,12 +23,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IngestApiController extends ApiController {
 
     private static final Logger LOG = LoggerFactory.getLogger(IngestApiController.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = AlfredObjectMapperFactory.get();
     private static final AtomicInteger counter = new AtomicInteger();
     public static final File INGEST_PATH = new File("ingest");
 
     @PostConstruct
-    public void setup() {
+    public void init() {
+        LOG.info("Initializing up IngestController");
         INGEST_PATH.mkdirs();
     }
 
@@ -46,7 +49,7 @@ public class IngestApiController extends ApiController {
         writeEvent(guid, type, json);
 
         if ("push".equals(type)) {
-            PushEvent event = mapper.treeToValue(json, PushEvent.class);
+            GHPushEvent event = mapper.treeToValue(json, GHPushEvent.class);
             event.setGuid(guid);
             ingestService.handle(event);
         }

@@ -1,5 +1,12 @@
 Alfred.Job = Ember.Object.extend({
+    init: function() {
+        this.set('output', Ember.A([]));
+    },
     id: null,
+    commit_id: null,
+    commit: function() {
+        return Alfred.Commit.find(this.get('commit_id'));
+    }.property('commit_id'),
     ref: null,
     branch: function() {
         var ref = this.get('ref');
@@ -12,7 +19,10 @@ Alfred.Job = Ember.Object.extend({
         l = output.get('lastObject');
         console.log("Last line is " + l)
         return l;
-    }.property('output', 'output.@each')
+    }.property('output', 'output.@each'),
+    isErrored: function() {
+        return this.get('status') == 'errored';
+    }.property('status')
 });
 
 Alfred.Job.AddLine = function(job, l) {
@@ -27,96 +37,28 @@ Alfred.Job.AddLine = function(job, l) {
     $(".mini-console").scrollTop(10000);
 }
 
-Alfred.Job.find = function(id) {
-    id = parseInt(id);
-
-    // console.log("Alfred.Org.find " + id + ', ' + (data != null));
-    var job = Alfred.JobsById[id];
-    if (job == null) {
-        console.log('New job: ' + id);
-        job = Alfred.Job.create({ 'id': id, 'version': -1, 'output': Ember.A([]) });
-        Alfred.Jobs.pushObject(job);
-        Alfred.JobsById[id] = job;
-
-        $.get("api/jobs/" + id, function(response) {
-            console.log('GET Job Response: ' + JSON.stringify(response));
-            Alfred.Job.merge(job, response);
-        }, 'json');
-
-    }
+Alfred.Job.find = function(id, data) {
+    var finder = new Alfred.Finder(Alfred.Job, Alfred.JobsById, Alfred.Jobs);
+    var job = finder.find(id, data);
     return job;
-};
+}
 
 Alfred.ParseRawOrg = function(raw) {
     if (raw['organization'] && raw['organization']['login']) return raw['organization'];
     return { 'id': raw['repository']['owner']['email'], 'login': raw['repository']['owner']['name'] }
 };
 
-Alfred.Job.build = function(j) {
-    job = Alfred.Job.create(j);
-    job.set('id', parseInt(job.get('id')));
-    job.set('commit', Alfred.Commit.create(job.commit));
-    job.set('output', []);
-
-    var plainOrg = Alfred.ParseRawOrg(j);
-    var org = Alfred.Org.find(plainOrg.login, plainOrg);
-    if (org == null) throw "org is null"
-    if (org.login == null) throw "org.login is null"
-    job.set('organization', org);
-
-    // parse repo into tree
-    var repo = Alfred.Repo.findByOrgAndName(org, j['repository']['name'], j['repository']);
-    job.set('repository', repo);
-
-    return job;
-};
-
-Alfred.Job.merge = function(job, data) {
-    if (data.id == null) throw "Will not merge job with no id";
-    if (data.version == null) throw "Will not merge job with no version";
-    if (job.get('id') != data.id) throw "Can not merge jobs with different id's";
-
-    if (job.get('version') < data.version) {
-        console.log('Received job update. Version=' + data.version + ', current version=' + job.get('version'));
-        job.set('version', data.version);
-        job.set('status', data.status);
-        job.set('error', data.error);
-        job.set('ref', data.ref);
-
-        if (job.get('commit') == null) {
-            job.set('commit', Alfred.Commit.create(data.commit));
-        }
-        var org = job.get('organization');
-        if (org == null) {
-            var plainOrg = Alfred.ParseRawOrg(data);
-            org = Alfred.Org.find(plainOrg.login, plainOrg);
-            job.set('organization', org);
-        }
-        if (job.get('repository') == null) {
-            job.set('repository', Alfred.Repo.findByOrgAndName(org, data.repository.name, data.repository));
-        }
-        if (job.get('commit') == null) {
-            job.set('commit', Alfred.Commit.create(data.commit));
-        }
-    } else {
-        console.log('Received stale job update. Version=' + data.version + ', current version=' + job.get('version'));
-    }
-};
-
 Alfred.Job.LoadOutput = function(job) {
-    $.get("api/jobs/" + job.get('id') + '/output', function(response) {
-        console.log('GET Job Output Response: ' + JSON.stringify(response));
+    $.get("api/job/" + job.get('id') + '/output', function(response) {
+        Alfred.debug('GET Job Output Response: ' + JSON.stringify(response));
         // Alfred.Job.merge(job, response);
 
-        $.each(response.output, function(index, line) {
-            Alfred.Job.AddLine(job, { 'index': index, 'line': line });
+        $.each(response, function(index, line) {
+            Alfred.Job.AddLine(job, line);
         });
 
     }, 'json');
 };
-
-Alfred.Jobs = Ember.A([]);
-Alfred.JobsById = {};
 
 Alfred.SortedJobs = Ember.ArrayController.create({
   model: Alfred.Jobs,
@@ -136,7 +78,7 @@ Alfred.JobRoute = Ember.Route.extend({
         console.log('init JobRoute');
     },
     model: function(params) {
-        var job = Alfred.Job.find(params.id);
+        var job = Alfred.Job.find(parseInt(params.id));
         Alfred.Job.LoadOutput(job);
         return job;
     },

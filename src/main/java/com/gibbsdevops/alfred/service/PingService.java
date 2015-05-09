@@ -15,7 +15,7 @@ public class PingService {
     @Autowired
     private SimpMessagingTemplate template;
 
-    @Scheduled(fixedDelay=1000)
+    @Scheduled(fixedDelay = 1000)
     public void ping() {
         LOG.info("xxx");
         template.convertAndSend("/topic/ping", "ping");
