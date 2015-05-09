@@ -24,7 +24,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public ExecutorService buildExecutor() {
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        String alfredWorkerCount = System.getenv().getOrDefault("ALFRED_WORKER_COUNT", "2");
+        ExecutorService executor = Executors.newFixedThreadPool(Integer.parseInt(alfredWorkerCount));
         return executor;
     }
 
