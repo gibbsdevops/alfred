@@ -17,5 +17,8 @@ db-reset:
 db-setup:
 	psql dev -f scripts/sql/setup.sql
 
+test-db:
+	psql test -f scripts/sql/setup_test.sql
+
 clean:
 	mvn clean
