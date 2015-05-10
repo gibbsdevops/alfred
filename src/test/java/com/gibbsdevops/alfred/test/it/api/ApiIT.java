@@ -55,7 +55,8 @@ public class ApiIT {
 
         LOG.info("Setting up new database");
         Connection connection = dataSource.getConnection();
-        connection.createStatement().execute("drop owned by alfred_test cascade;");
+        connection.createStatement().execute(String.format("drop owned by %s cascade;",
+                System.getenv().getOrDefault("ALFRED_TEST_DB_USERNAME", "alfred_test")));
         connection.close();
 
         Flyway flyway = new Flyway();
