@@ -1,9 +1,11 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.gibbsdevops.alfred.dao.AlfredJobDao;
 import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
 import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.utils.rest.DefaultJsonRestClient;
@@ -179,7 +181,11 @@ public class BuildServiceImpl implements BuildService {
 
     void send(AlfredJob node) {
         LOG.info("Sending Job to /topic/jobs: {}", node);
-        messagingTemplate.convertAndSend("/topic/jobs", node);
+        try {
+            messagingTemplate.convertAndSend("/topic/jobs", AlfredObjectMapperFactory.get().writeValueAsString(node));
+        } catch (JsonProcessingException e) {
+            LOG.warn("Unable to convert job", e);
+        }
     }
 
     interface AlfredJobUpdate {
