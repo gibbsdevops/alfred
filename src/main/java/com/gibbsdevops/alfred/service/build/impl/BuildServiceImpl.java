@@ -26,10 +26,6 @@ public class BuildServiceImpl implements BuildService {
     private static final Logger LOG = LoggerFactory.getLogger(BuildServiceImpl.class);
 
     @Autowired
-    @Qualifier("buildExecutor")
-    ExecutorService buildExecutor;
-
-    @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
@@ -98,24 +94,16 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public void submit(AlfredJobNode job) {
-        AlfredRepoNode repo = job.getCommit().getRepo();
-
-        AlfredCommitNode commit = job.getCommit();
-        String repoUrl = commit.getRepo().getUrl();
-        String hash = commit.getHash();
-        createGithubStatus(job.getId(), repoUrl, hash, "pending", "In progress !!");
-
-        LOG.info("Submitted job {}", job);
-        buildExecutor.execute(new BuildRunnable(job, this));
-    }
-
-    @Override
     public void starting(AlfredJobNode job) {
         LOG.info("Started building job {}", job);
         updateAndSend(job.getId(), j -> {
             j.setStatus("in-progress");
         });
+
+        AlfredCommitNode commit = job.getCommit();
+        String repoUrl = commit.getRepo().getUrl();
+        String hash = commit.getHash();
+        createGithubStatus(job.getId(), repoUrl, hash, "pending", "In progress !!");
     }
 
     @Override

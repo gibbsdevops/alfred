@@ -2,6 +2,7 @@ package com.gibbsdevops.alfred.test.it.ingest;
 
 import com.gibbsdevops.alfred.config.CacheConfig;
 import com.gibbsdevops.alfred.config.MvcConfig;
+import com.gibbsdevops.alfred.service.build.BuildQueue;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import com.gibbsdevops.alfred.service.job.JobService;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
@@ -42,8 +43,8 @@ public class IngestTestConfig {
     }
 
     @Bean
-    public BuildService buildService() {
-        return mock(BuildService.class);
+    public BuildQueue buildQueue() {
+        return mock(BuildQueue.class);
     }
 
     @Bean
