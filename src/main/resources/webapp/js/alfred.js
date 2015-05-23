@@ -24,6 +24,10 @@ function connect() {
 
         stompClient.connect({}, function(frame) {
             console.log('Connected');
+            stompClient.subscribe('/topic/ping', function(event){
+                Alfred.Socket.receive_message(event);
+                // console.log(event.body);
+            });
             stompClient.subscribe('/topic/github', function(event){
                 Alfred.Socket.receive_message(event);
                 handleGitHubEvent(JSON.parse(event.body));

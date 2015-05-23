@@ -1,33 +1,18 @@
 package com.gibbsdevops.alfred.config;
 
-import com.gibbsdevops.alfred.service.job.repositories.JobRepository;
-import com.gibbsdevops.alfred.service.job.repositories.file.FileJobRepository;
 import com.gibbsdevops.alfred.web.RequestLogger;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Configuration
-@Import({MvcConfig.class, DatabaseConfig.class, CacheConfig.class})
+@Import({MvcConfig.class, DatabaseConfig.class, SchedulingConfig.class, CacheConfig.class})
 @ComponentScan("com.gibbsdevops.alfred")
 @EnableJpaRepositories("com.gibbsdevops.alfred.dao")
 public class AppConfig extends WebMvcConfigurerAdapter {
-
-    @Bean
-    public ExecutorService buildExecutor() {
-        String alfredWorkerCount = System.getenv().getOrDefault("ALFRED_WORKER_COUNT", "2");
-        ExecutorService executor = Executors.newFixedThreadPool(Integer.parseInt(alfredWorkerCount));
-        return executor;
-    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
