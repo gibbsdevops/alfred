@@ -22,14 +22,14 @@ public class MessagingConfig {
     @Bean
     public ConnectionFactory messagingConnectionFactory() {
         brokerService();
-        return new ActiveMQConnectionFactory("tcp://localhost:61613");
+        return new ActiveMQConnectionFactory("tcp://localhost:61616");
     }
 
     @Bean
     public BrokerService brokerService() {
         BrokerService broker = null;
         try {
-            broker = BrokerFactory.createBroker("broker:stomp://localhost:61613");
+            broker = BrokerFactory.createBroker("broker:stomp://localhost:61613,tcp://localhost:61616");
             broker.start();
         } catch (Exception e) {
             throw new RuntimeException("Unable to start broker", e);

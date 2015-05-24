@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
-import com.gibbsdevops.alfred.service.build.BuildQueue;
+import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
 import com.gibbsdevops.alfred.service.build.BuildService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,7 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Service
-public class LocalBuildQueue implements BuildQueue {
+public class LocalBuildQueueSubmitter implements BuildQueueSubmitter {
 
     private static final Logger LOG = LoggerFactory.getLogger(BuildServiceImpl.class);
 

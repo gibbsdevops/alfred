@@ -94,16 +94,24 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public void starting(AlfredJobNode job) {
-        LOG.info("Started building job {}", job);
+    public void queued(AlfredJobNode job) {
+        LOG.info("Queued job {}", job);
         updateAndSend(job.getId(), j -> {
-            j.setStatus("in-progress");
+            j.setStatus("queued");
         });
 
         AlfredCommitNode commit = job.getCommit();
         String repoUrl = commit.getRepo().getUrl();
         String hash = commit.getHash();
         createGithubStatus(job.getId(), repoUrl, hash, "pending", "In progress !!");
+    }
+
+    @Override
+    public void starting(AlfredJobNode job) {
+        LOG.info("Started building job {}", job);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("in-progress");
+        });
     }
 
     @Override

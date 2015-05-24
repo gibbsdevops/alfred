@@ -1,6 +1,7 @@
 package com.gibbsdevops.alfred.utils.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -25,6 +26,8 @@ import java.net.URISyntaxException;
 public class DefaultJsonRestClient implements JsonRestClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultJsonRestClient.class);
+
+    private final ObjectMapper objectMapper = AlfredObjectMapperFactory.get();
 
     @Override
     public RestResponse exec(RestRequest request) {
@@ -73,18 +76,25 @@ public class DefaultJsonRestClient implements JsonRestClient {
 
             int statusCode = response.getStatusLine().getStatusCode();
 
+            HttpEntity entity = response.getEntity();
+            String body = IOUtils.toString(entity.getContent());
+
+            String prettyBody = null;
+            try {
+                prettyBody = objectMapper.writeValueAsString(objectMapper.readTree(body));
+            } catch (Exception e) {
+                LOG.warn("Response body is not parsable", e);
+            }
+
             if (request.getExpected() != null && statusCode != request.getExpected().intValue()) {
 
                 throw new RuntimeException(String.format(
-                        "Http failed with %s - %s. Expected 200: %s %s",
+                        "Http failed with %s - %s. Expected 200: %s %s\n%s",
                         statusCode, response.getStatusLine().getReasonPhrase(),
-                        request.getType(), request.getUrl()));
+                        request.getType(), request.getUrl(), prettyBody));
             }
 
-            HttpEntity entity = response.getEntity();
-
-            String body = IOUtils.toString(entity.getContent());
-            LOG.debug("Response body:\n{}", body);
+            LOG.info("Response {}:\n{}", response.getStatusLine(), prettyBody);
 
             return new RestResponse(body);
 

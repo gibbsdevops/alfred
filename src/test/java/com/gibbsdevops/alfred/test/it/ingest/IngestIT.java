@@ -7,7 +7,7 @@ import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
-import com.gibbsdevops.alfred.service.build.BuildQueue;
+import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
 import com.gibbsdevops.alfred.utils.rest.DateTimeUtils;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
@@ -69,7 +69,7 @@ public class IngestIT {
     private AlfredRepository alfredRepository;
 
     @Autowired
-    private BuildQueue buildQueue;
+    private BuildQueueSubmitter buildQueue;
 
     @Autowired
     private CacheManager cacheManager;
