@@ -4,7 +4,7 @@ import com.gibbsdevops.alfred.model.github.GHRepository;
 
 public class AlfredRepoNode {
 
-    AlfredRepoProperties properties;
+    AlfredRepoProperties properties = new AlfredRepoProperties();
 
     private AlfredUser owner;
 

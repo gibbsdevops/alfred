@@ -8,13 +8,20 @@ import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
-@Service
-public class JmsBuildQueueSubmitter implements BuildQueueSubmitter {
+import javax.jms.Queue;
 
-    private static final Logger LOG = LoggerFactory.getLogger(JmsBuildQueueSubmitter.class);
+@Service
+public class JmsJobQueueSubmitter implements BuildQueueSubmitter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JmsJobQueueSubmitter.class);
+
+    @Autowired
+    @Qualifier("jobQueue")
+    private Queue jobQueue;
 
     @Autowired
     private JmsTemplate jmsTemplate;
@@ -24,8 +31,8 @@ public class JmsBuildQueueSubmitter implements BuildQueueSubmitter {
     @Override
     public void submit(AlfredJobNode job) {
         try {
-            jmsTemplate.convertAndSend("jobs", objectMapper.writeValueAsString(job));
-            LOG.info("Job {} sent to JMS broker", job.getId());
+            jmsTemplate.convertAndSend(jobQueue, objectMapper.writeValueAsString(job));
+            LOG.info("Job {} sent to broker", job.getId());
 
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to serialize job", e);

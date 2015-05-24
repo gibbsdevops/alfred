@@ -8,7 +8,7 @@ import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.service.github.GithubApiService;
 import com.gibbsdevops.alfred.utils.rest.DateTimeUtils;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class DefaultIngestService implements IngestService {
     private SimpMessagingTemplate template;
     private AlfredRepository alfredRepository;
     private BuildQueueSubmitter buildQueue;
-    private BuildService buildService;
+    private BuildStatusService buildStatusService;
 
     @Override
     public void handle(GHPushEvent event) {
@@ -95,10 +95,10 @@ public class DefaultIngestService implements IngestService {
 
             // submit job for building
             try {
-                buildService.queued(job);
+                buildStatusService.queued(job);
                 buildQueue.submit(job);
             } catch (Exception e) {
-                buildService.errored(job, e.getMessage());
+                buildStatusService.errored(job, e.getMessage());
                 throw e;
             }
         }
@@ -127,8 +127,8 @@ public class DefaultIngestService implements IngestService {
     }
 
     @Autowired
-    public void setBuildService(BuildService buildService) {
-        this.buildService = buildService;
+    public void setBuildStatusService(BuildStatusService buildStatusService) {
+        this.buildStatusService = buildStatusService;
     }
     //</editor-fold>
 

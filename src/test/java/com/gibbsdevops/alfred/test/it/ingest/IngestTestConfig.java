@@ -3,7 +3,7 @@ package com.gibbsdevops.alfred.test.it.ingest;
 import com.gibbsdevops.alfred.config.CacheConfig;
 import com.gibbsdevops.alfred.config.MvcConfig;
 import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.MockJsonRestClient;
@@ -46,8 +46,8 @@ public class IngestTestConfig {
     }
 
     @Bean
-    public BuildService buildService() {
-        return mock(BuildService.class);
+    public BuildStatusService buildService() {
+        return mock(BuildStatusService.class);
     }
 
     @Bean

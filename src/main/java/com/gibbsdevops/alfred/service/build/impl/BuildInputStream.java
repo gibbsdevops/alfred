@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +16,13 @@ public class BuildInputStream extends Thread {
 
     private AlfredJobNode job;
     private InputStream is;
-    private BuildService buildService;
+    private BuildStatusService buildStatusService;
 
-    public BuildInputStream(AlfredJobNode job, InputStream is, BuildService buildService) {
+    public BuildInputStream(AlfredJobNode job, InputStream is, BuildStatusService buildStatusService) {
         super("BuildInputStream " + job);
         this.job = job;
         this.is = is;
-        this.buildService = buildService;
+        this.buildStatusService = buildStatusService;
     }
 
     public void run() {
@@ -34,7 +34,7 @@ public class BuildInputStream extends Thread {
             String line = null;
             int index = 0;
             while ((line = br.readLine()) != null) {
-                buildService.logOutput(job, index++, line);
+                buildStatusService.logOutput(job, index++, line);
             }
         } catch (IOException e) {
             LOG.warn("Error reading stream for {}", job, e);

@@ -3,7 +3,7 @@ package com.gibbsdevops.alfred.service.build.impl;
 import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.kohsuke.github.GHCommitState;
@@ -18,11 +18,11 @@ public class BuildRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(BuildRunnable.class);
 
     private final AlfredJobNode job;
-    private final BuildService buildService;
+    private final BuildStatusService buildStatusService;
 
-    public BuildRunnable(AlfredJobNode job, BuildService buildService) {
+    public BuildRunnable(AlfredJobNode job, BuildStatusService buildStatusService) {
         this.job = job;
-        this.buildService = buildService;
+        this.buildStatusService = buildStatusService;
     }
 
     void wait(int seconds) {
@@ -36,7 +36,7 @@ public class BuildRunnable implements Runnable {
     public void run() {
         Thread.currentThread().setName("Builder #" + job.getId());
         LOG.info("Starting Builder #{}", job.getId());
-        buildService.starting(job);
+        buildStatusService.starting(job);
 
         String command = "ci-script.sh";
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -81,7 +81,7 @@ public class BuildRunnable implements Runnable {
             long startedAt = System.currentTimeMillis();
 
             Process proc = pb.start();
-            BuildInputStream stdStream = new BuildInputStream(job, proc.getInputStream(), buildService);
+            BuildInputStream stdStream = new BuildInputStream(job, proc.getInputStream(), buildStatusService);
 
             stdStream.start();
 
@@ -93,9 +93,9 @@ public class BuildRunnable implements Runnable {
             GHCommitState state = GHCommitState.FAILURE;
             if (exitVal == 0) {
                 state = GHCommitState.SUCCESS;
-                buildService.succeeded(job, duration);
+                buildStatusService.succeeded(job, duration);
             } else {
-                buildService.failed(job, duration);
+                buildStatusService.failed(job, duration);
             }
 
             /*
@@ -111,7 +111,7 @@ public class BuildRunnable implements Runnable {
 
         } catch (Throwable t) {
             LOG.warn("Build errored", t);
-            buildService.errored(job, t.getMessage());
+            buildStatusService.errored(job, t.getMessage());
         } finally {
             Thread.currentThread().setName("Builder - Open");
             if (workspace != null) {

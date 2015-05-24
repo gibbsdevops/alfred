@@ -7,23 +7,20 @@ import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
 import com.gibbsdevops.alfred.model.alfred.*;
 import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.utils.rest.DefaultJsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutorService;
-
 @Service
-public class BuildServiceImpl implements BuildService {
+public class BuildStatusServiceImpl implements BuildStatusService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BuildServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BuildStatusServiceImpl.class);
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -88,7 +85,7 @@ public class BuildServiceImpl implements BuildService {
         status.setContext("continuous-integration/alfred");
 
         RestRequest post = RestRequest.post(repoUrl + "/statuses/" + hash, status);
-        post.basicAuthorization(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
+        post.basicAuth(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
 
         JsonNode node = jsonRestClient.exec(post).as(JsonNode.class);
     }
@@ -176,7 +173,7 @@ public class BuildServiceImpl implements BuildService {
     }
 
     void send(AlfredJob node) {
-        LOG.info("Sending Job to /topic/jobs: {}", node);
+        LOG.info("Sending Job to websocket /topic/jobs: {}", node);
         try {
             messagingTemplate.convertAndSend("/topic/jobs", AlfredObjectMapperFactory.get().writeValueAsString(node));
         } catch (JsonProcessingException e) {

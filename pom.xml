@@ -15,6 +15,7 @@
         <jetty.jsp.version>9.2.7.v20150116</jetty.jsp.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <hibernate.version>4.3.8.Final</hibernate.version>
+        <activemq.version>5.11.1</activemq.version>
     </properties>
 
     <dependencies>
@@ -101,8 +102,23 @@
         <!-- ActiveMQ -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.11.1</version>
+            <artifactId>activemq-broker</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-stomp</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-kahadb-store</artifactId>
+            <version>${activemq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectreactor</groupId>

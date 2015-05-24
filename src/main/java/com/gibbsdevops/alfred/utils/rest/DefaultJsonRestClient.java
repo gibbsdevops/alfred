@@ -56,7 +56,7 @@ public class DefaultJsonRestClient implements JsonRestClient {
                     throw new RuntimeException("Failed to process json", e);
                 }
 
-                LOG.info("POST request to {}:\n{}", request.getUrl(), body);
+                LOG.debug("POST request to {}:\n{}", request.getUrl(), body);
 
                 post.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
                 httpRequest = post;
@@ -94,7 +94,7 @@ public class DefaultJsonRestClient implements JsonRestClient {
                         request.getType(), request.getUrl(), prettyBody));
             }
 
-            LOG.info("Response {}:\n{}", response.getStatusLine(), prettyBody);
+            LOG.debug("Response {}:\n{}", response.getStatusLine(), prettyBody);
 
             return new RestResponse(body);
 

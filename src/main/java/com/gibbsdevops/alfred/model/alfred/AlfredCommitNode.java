@@ -4,7 +4,7 @@ import com.gibbsdevops.alfred.model.github.GHCommit;
 
 public class AlfredCommitNode {
 
-    AlfredCommitProperties properties;
+    AlfredCommitProperties properties = new AlfredCommitProperties();
 
     private AlfredRepoNode repo;
     private AlfredGitUser committer;
