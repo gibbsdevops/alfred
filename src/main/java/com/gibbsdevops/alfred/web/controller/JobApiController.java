@@ -2,7 +2,7 @@ package com.gibbsdevops.alfred.web.controller;
 
 import com.gibbsdevops.alfred.model.events.local.NewJobRequest;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.service.job.repositories.JobOutputRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class JobApiController extends ApiController {
     private JobOutputRepository jobOutputRepository;
 
     @Autowired
-    private BuildService buildService;
+    private BuildStatusService buildStatusService;
 
     @RequestMapping(method = RequestMethod.GET)
     public Object getAll(@RequestParam(required = false) Integer limit) {
@@ -72,7 +72,7 @@ public class JobApiController extends ApiController {
         jobService.save(job);
 
         // submit job for building
-        buildService.submit(job);
+        buildStatusService.submit(job);
 
         NewJobResponse response = new NewJobResponse();
         response.setRequest(request);

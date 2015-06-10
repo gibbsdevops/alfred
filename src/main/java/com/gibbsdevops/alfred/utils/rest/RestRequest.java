@@ -79,10 +79,11 @@ public class RestRequest {
         this.expected = expected;
     }
 
-    public void basicAuthorization(String username, String password) {
+    public RestRequest basicAuth(String username, String password) {
         String credString = username + ":" + password;
         String encodedCreds = new String(Base64.encodeBase64(credString.getBytes()));
         headers.put("Authorization", "Basic " + encodedCreds);
+        return this;
     }
 
     public static enum RestRequestType {

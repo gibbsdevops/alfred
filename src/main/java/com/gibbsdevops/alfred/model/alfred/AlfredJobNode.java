@@ -2,6 +2,12 @@ package com.gibbsdevops.alfred.model.alfred;
 
 public class AlfredJobNode {
 
+    public static AlfredJobNode from(AlfredJob job) {
+        AlfredJobNode node = new AlfredJobNode();
+        node.properties = job.properties;
+        return node;
+    }
+
     private AlfredJobProperties properties = new AlfredJobProperties();
 
     private AlfredCommitNode commit;

@@ -3,7 +3,6 @@ package com.gibbsdevops.alfred.service.github;
 import com.gibbsdevops.alfred.model.github.GHOrganization;
 import com.gibbsdevops.alfred.model.github.GHPerson;
 import com.gibbsdevops.alfred.model.github.GHRepository;
-import com.gibbsdevops.alfred.model.github.GHUser;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import org.slf4j.Logger;
@@ -18,19 +17,23 @@ public class DefaultGithubApiService implements GithubApiService {
 
     private JsonRestClient jsonRestClient;
 
+    private RestRequest withAuth(RestRequest request) {
+        return request.basicAuth(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
+    }
+
     @Override
     public GHPerson getPerson(String url) {
-        return jsonRestClient.exec(RestRequest.get(url)).as(GHPerson.class);
+        return jsonRestClient.exec(withAuth(RestRequest.get(url))).as(GHPerson.class);
     }
 
     @Override
     public GHOrganization getOrganization(String url) {
-        return jsonRestClient.exec(RestRequest.get(url)).as(GHOrganization.class);
+        return jsonRestClient.exec(withAuth(RestRequest.get(url))).as(GHOrganization.class);
     }
 
     @Override
     public GHRepository getRepository(String url) {
-        return jsonRestClient.exec(RestRequest.get(url)).as(GHRepository.class);
+        return jsonRestClient.exec(withAuth(RestRequest.get(url))).as(GHRepository.class);
     }
 
     @Autowired

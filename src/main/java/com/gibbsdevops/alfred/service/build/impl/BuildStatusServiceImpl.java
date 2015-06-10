@@ -1,31 +1,29 @@
 package com.gibbsdevops.alfred.service.build.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.gibbsdevops.alfred.dao.AlfredJobDao;
 import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
-import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredJob;
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
+import com.gibbsdevops.alfred.model.alfred.JobLine;
+import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.utils.rest.DefaultJsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutorService;
-
 @Service
-public class BuildServiceImpl implements BuildService {
+public class BuildStatusServiceImpl implements BuildStatusService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BuildServiceImpl.class);
-
-    @Autowired
-    @Qualifier("buildExecutor")
-    ExecutorService buildExecutor;
+    private static final Logger LOG = LoggerFactory.getLogger(BuildStatusServiceImpl.class);
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -90,22 +88,22 @@ public class BuildServiceImpl implements BuildService {
         status.setContext("continuous-integration/alfred");
 
         RestRequest post = RestRequest.post(repoUrl + "/statuses/" + hash, status);
-        post.basicAuthorization(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
+        post.basicAuth(System.getenv("GITHUB_LOGIN"), System.getenv("GITHUB_PASSWORD"));
 
         JsonNode node = jsonRestClient.exec(post).as(JsonNode.class);
     }
 
     @Override
-    public void submit(AlfredJobNode job) {
-        AlfredRepoNode repo = job.getCommit().getRepo();
+    public void queued(AlfredJobNode job) {
+        LOG.info("Queued job {}", job);
+        updateAndSend(job.getId(), j -> {
+            j.setStatus("queued");
+        });
 
         AlfredCommitNode commit = job.getCommit();
         String repoUrl = commit.getRepo().getUrl();
         String hash = commit.getHash();
         createGithubStatus(job.getId(), repoUrl, hash, "pending", "In progress !!");
-
-        LOG.info("Submitted job {}", job);
-        buildExecutor.execute(new BuildRunnable(job, this));
     }
 
     @Override
@@ -178,11 +176,16 @@ public class BuildServiceImpl implements BuildService {
     }
 
     void send(AlfredJob node) {
-        LOG.info("Sending Job to /topic/jobs: {}", node);
-        messagingTemplate.convertAndSend("/topic/jobs", node);
+        LOG.info("Sending Job to websocket /topic/jobs: {}", node);
+        try {
+            messagingTemplate.convertAndSend("/topic/jobs", AlfredObjectMapperFactory.get().writeValueAsString(node));
+        } catch (JsonProcessingException e) {
+            LOG.warn("Unable to convert job", e);
+        }
     }
 
     interface AlfredJobUpdate {
         void exec(AlfredJob j);
     }
+
 }

@@ -12,6 +12,8 @@ function execConnect() {
 
 }
 
+var log_ping = false;
+
 function connect() {
 
     function openSocket(url) {
@@ -24,6 +26,10 @@ function connect() {
 
         stompClient.connect({}, function(frame) {
             console.log('Connected');
+            stompClient.subscribe('/topic/ping', function(event){
+                Alfred.Socket.receive_message(event);
+                if (log_ping) console.log(event.body);
+            });
             stompClient.subscribe('/topic/github', function(event){
                 Alfred.Socket.receive_message(event);
                 handleGitHubEvent(JSON.parse(event.body));
@@ -48,6 +54,9 @@ function connect() {
     $.getJSON("api/settings/system", function(settings) {
         console.log('Settings: ' + JSON.stringify(settings));
         openSocket(settings["websocket-uri"])
+    }).fail(function() {
+        console.log("Failed to get system settings, scheduling reconnection...");
+        setTimeout(connect, 3000);
     });
 
     var url = '/api/broker.socket'

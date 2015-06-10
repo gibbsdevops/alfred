@@ -1,13 +1,13 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
-import com.gibbsdevops.alfred.config.MvcConfig;
+import com.gibbsdevops.alfred.config.web.MvcConfig;
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
 import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredRepoNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredUser;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
 import com.gibbsdevops.alfred.utils.rest.DateTimeUtils;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.apache.commons.io.IOUtils;
@@ -69,7 +69,7 @@ public class IngestIT {
     private AlfredRepository alfredRepository;
 
     @Autowired
-    private BuildService buildService;
+    private BuildQueueSubmitter buildQueue;
 
     @Autowired
     private CacheManager cacheManager;
@@ -88,7 +88,7 @@ public class IngestIT {
 
         mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        reset(buildService);
+        reset(buildQueue);
 
         LOG.info("Clearing cache");
         cacheManager.getCacheNames().stream().forEach(c -> cacheManager.getCache(c).clear());
@@ -191,7 +191,7 @@ public class IngestIT {
                 equalTo("count=1\n"));
 
         ArgumentCaptor<AlfredJobNode> argument = ArgumentCaptor.forClass(AlfredJobNode.class);
-        verify(buildService).submit(argument.capture());
+        verify(buildQueue).submit(argument.capture());
 
         AlfredJobNode job = argument.getValue();
         assertNotNull(job);
@@ -287,7 +287,7 @@ public class IngestIT {
                 equalTo("count=1\n"));
 
         ArgumentCaptor<AlfredJobNode> argument = ArgumentCaptor.forClass(AlfredJobNode.class);
-        verify(buildService).submit(argument.capture());
+        verify(buildQueue).submit(argument.capture());
 
         AlfredJobNode job = argument.getValue();
         assertNotNull(job);

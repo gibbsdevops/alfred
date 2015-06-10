@@ -1,13 +1,12 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
-import com.gibbsdevops.alfred.config.CacheConfig;
-import com.gibbsdevops.alfred.config.MvcConfig;
-import com.gibbsdevops.alfred.service.build.BuildService;
-import com.gibbsdevops.alfred.service.job.JobService;
+import com.gibbsdevops.alfred.config.web.CacheConfig;
+import com.gibbsdevops.alfred.config.web.MvcConfig;
+import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
 import com.gibbsdevops.alfred.utils.rest.JsonRestClient;
 import com.gibbsdevops.alfred.utils.rest.MockJsonRestClient;
-import com.gibbsdevops.alfred.utils.rest.RestRequest;
 import com.gibbsdevops.alfred.web.controller.IngestApiController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,8 +41,13 @@ public class IngestTestConfig {
     }
 
     @Bean
-    public BuildService buildService() {
-        return mock(BuildService.class);
+    public BuildQueueSubmitter buildQueue() {
+        return mock(BuildQueueSubmitter.class);
+    }
+
+    @Bean
+    public BuildStatusService buildService() {
+        return mock(BuildStatusService.class);
     }
 
     @Bean

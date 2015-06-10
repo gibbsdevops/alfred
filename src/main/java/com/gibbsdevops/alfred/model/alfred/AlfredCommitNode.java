@@ -4,13 +4,19 @@ import com.gibbsdevops.alfred.model.github.GHCommit;
 
 public class AlfredCommitNode {
 
-    AlfredCommitProperties properties;
+    AlfredCommitProperties properties = new AlfredCommitProperties();
 
     private AlfredRepoNode repo;
     private AlfredGitUser committer;
     private AlfredGitUser author;
     private AlfredGitUser pusher;
     private AlfredUser sender;
+
+    public static AlfredCommitNode from(AlfredCommit commit) {
+        AlfredCommitNode node = new AlfredCommitNode();
+        node.properties = commit.properties;
+        return node;
+    }
 
     public static AlfredCommitNode from(AlfredCommitProperties properties) {
         AlfredCommitNode node = new AlfredCommitNode();

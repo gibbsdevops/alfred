@@ -7,7 +7,8 @@ import com.gibbsdevops.alfred.model.github.GHPerson;
 import com.gibbsdevops.alfred.model.github.GHRepository;
 import com.gibbsdevops.alfred.model.github.events.GHPushEvent;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
-import com.gibbsdevops.alfred.service.build.BuildService;
+import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
+import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.service.github.GithubApiService;
 import com.gibbsdevops.alfred.utils.rest.DateTimeUtils;
 import org.slf4j.Logger;
@@ -24,7 +25,8 @@ public class DefaultIngestService implements IngestService {
     private GithubApiService githubApiService;
     private SimpMessagingTemplate template;
     private AlfredRepository alfredRepository;
-    private BuildService buildService;
+    private BuildQueueSubmitter buildQueue;
+    private BuildStatusService buildStatusService;
 
     @Override
     public void handle(GHPushEvent event) {
@@ -92,7 +94,12 @@ public class DefaultIngestService implements IngestService {
             alfredRepository.save(job.normalize());
 
             // submit job for building
-            buildService.submit(job);
+            try {
+                buildQueue.submit(job);
+            } catch (Exception e) {
+                buildStatusService.errored(job, e.getMessage());
+                throw e;
+            }
         }
 
     }
@@ -114,8 +121,13 @@ public class DefaultIngestService implements IngestService {
     }
 
     @Autowired
-    public void setBuildService(BuildService buildService) {
-        this.buildService = buildService;
+    public void setBuildQueue(BuildQueueSubmitter buildQueue) {
+        this.buildQueue = buildQueue;
+    }
+
+    @Autowired
+    public void setBuildStatusService(BuildStatusService buildStatusService) {
+        this.buildStatusService = buildStatusService;
     }
     //</editor-fold>
 

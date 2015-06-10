@@ -15,6 +15,7 @@
         <jetty.jsp.version>9.2.7.v20150116</jetty.jsp.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <hibernate.version>4.3.8.Final</hibernate.version>
+        <activemq.version>5.11.1</activemq.version>
     </properties>
 
     <dependencies>
@@ -41,6 +42,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
@@ -91,6 +97,38 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>3.2.1</version>
+        </dependency>
+
+        <!-- ActiveMQ -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-stomp</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-kahadb-store</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>1.1.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectreactor</groupId>
+            <artifactId>reactor-net</artifactId>
+            <version>1.1.6.RELEASE</version>
         </dependency>
 
         <!-- JETTY DEPENDENCIES -->
@@ -255,7 +293,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.gibbsdevops.alfred.config.App</mainClass>
+                            <mainClass>com.gibbsdevops.alfred.config.web.WebMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
