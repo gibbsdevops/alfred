@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
-import com.gibbsdevops.alfred.config.CacheConfig;
-import com.gibbsdevops.alfred.config.MvcConfig;
+import com.gibbsdevops.alfred.config.web.CacheConfig;
+import com.gibbsdevops.alfred.config.web.MvcConfig;
 import com.gibbsdevops.alfred.service.build.BuildQueueSubmitter;
 import com.gibbsdevops.alfred.service.build.BuildStatusService;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;

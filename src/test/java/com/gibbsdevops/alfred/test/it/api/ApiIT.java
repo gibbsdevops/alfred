@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.test.it.api;
 
-import com.gibbsdevops.alfred.config.MvcConfig;
+import com.gibbsdevops.alfred.config.web.MvcConfig;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 
-import static org.mockito.Mockito.reset;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.config;
+package com.gibbsdevops.alfred.config.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

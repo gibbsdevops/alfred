@@ -293,7 +293,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.gibbsdevops.alfred.config.App</mainClass>
+                            <mainClass>com.gibbsdevops.alfred.config.web.WebMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

@@ -20,8 +20,8 @@ public class JmsJobQueueSubmitter implements BuildQueueSubmitter {
     private static final Logger LOG = LoggerFactory.getLogger(JmsJobQueueSubmitter.class);
 
     @Autowired
-    @Qualifier("jobQueue")
-    private Queue jobQueue;
+    @Qualifier("jobBuildQueue")
+    private Queue jobBuildQueue;
 
     @Autowired
     private JmsTemplate jmsTemplate;
@@ -31,7 +31,7 @@ public class JmsJobQueueSubmitter implements BuildQueueSubmitter {
     @Override
     public void submit(AlfredJobNode job) {
         try {
-            jmsTemplate.convertAndSend(jobQueue, objectMapper.writeValueAsString(job));
+            jmsTemplate.convertAndSend(jobBuildQueue, objectMapper.writeValueAsString(job));
             LOG.info("Job {} sent to broker", job.getId());
 
         } catch (JsonProcessingException e) {

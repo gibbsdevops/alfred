@@ -12,6 +12,12 @@ public class AlfredCommitNode {
     private AlfredGitUser pusher;
     private AlfredUser sender;
 
+    public static AlfredCommitNode from(AlfredCommit commit) {
+        AlfredCommitNode node = new AlfredCommitNode();
+        node.properties = commit.properties;
+        return node;
+    }
+
     public static AlfredCommitNode from(AlfredCommitProperties properties) {
         AlfredCommitNode node = new AlfredCommitNode();
         node.properties = properties;

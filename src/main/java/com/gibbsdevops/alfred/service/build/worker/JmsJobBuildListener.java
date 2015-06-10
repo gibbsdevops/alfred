@@ -1,20 +1,20 @@
-package com.gibbsdevops.alfred.service.build.impl;
+package com.gibbsdevops.alfred.service.build.worker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gibbsdevops.alfred.config.MessagingConfig;
+import com.gibbsdevops.alfred.config.common.JmsConfig;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
 import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.service.build.BuildStatusService;
+import com.gibbsdevops.alfred.service.build.impl.BuildRunnable;
+import com.gibbsdevops.alfred.service.build.impl.JmsJobQueueSubmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Service
-public class JmsJobExecutor {
+public class JmsJobBuildListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(JmsJobQueueSubmitter.class);
 
@@ -23,9 +23,9 @@ public class JmsJobExecutor {
     @Autowired
     private BuildStatusService buildStatusService;
 
-    @JmsListener(destination = MessagingConfig.JOB_QUEUE_NAME)
+    @JmsListener(destination = JmsConfig.JOB_BUILD_QUEUE_NAME, containerFactory = "jobExecutorContainerFactory")
     public void receiveJob(String jobBody) {
-        LOG.info("Received {}", jobBody);
+        LOG.debug("Received {}", jobBody);
 
         AlfredJobNode job = null;
         try {

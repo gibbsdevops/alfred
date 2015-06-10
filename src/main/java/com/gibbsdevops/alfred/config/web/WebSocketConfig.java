@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.config;
+package com.gibbsdevops.alfred.config.web;
 
 import org.eclipse.jetty.websocket.api.WebSocketBehavior;
 import org.eclipse.jetty.websocket.api.WebSocketPolicy;

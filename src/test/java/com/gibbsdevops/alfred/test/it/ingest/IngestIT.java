@@ -1,6 +1,6 @@
 package com.gibbsdevops.alfred.test.it.ingest;
 
-import com.gibbsdevops.alfred.config.MvcConfig;
+import com.gibbsdevops.alfred.config.web.MvcConfig;
 import com.gibbsdevops.alfred.dao.AlfredGitUserDao;
 import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
 import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;

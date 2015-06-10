@@ -1,7 +1,7 @@
 package com.gibbsdevops.alfred.test.it.api;
 
-import com.gibbsdevops.alfred.config.CacheConfig;
-import com.gibbsdevops.alfred.config.MvcConfig;
+import com.gibbsdevops.alfred.config.web.CacheConfig;
+import com.gibbsdevops.alfred.config.web.MvcConfig;
 import com.gibbsdevops.alfred.test.it.TestDatabaseConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

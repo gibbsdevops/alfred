@@ -95,7 +95,6 @@ public class DefaultIngestService implements IngestService {
 
             // submit job for building
             try {
-                buildStatusService.queued(job);
                 buildQueue.submit(job);
             } catch (Exception e) {
                 buildStatusService.errored(job, e.getMessage());

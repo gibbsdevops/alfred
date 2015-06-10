@@ -1,10 +1,10 @@
-package com.gibbsdevops.alfred.config;
+package com.gibbsdevops.alfred.config.web;
 
+import com.gibbsdevops.alfred.config.common.AlfredConfigProperties;
 import com.google.common.collect.Lists;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -19,11 +19,12 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 import java.io.File;
+import java.lang.management.ManagementFactory;
 import java.util.List;
 
-public class App {
+public class WebMain {
 
-    private static final Logger LOG = LoggerFactory.getLogger(App.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WebMain.class);
 
     public static void main(String[] args) throws Exception {
 
@@ -31,9 +32,18 @@ public class App {
         String testResources = "src/test/resources/webapp";
         boolean devMode = new File(devResources).exists();
 
+        AnnotationConfigWebApplicationContext configContext = new AnnotationConfigWebApplicationContext();
+        configContext.register(AlfredConfigProperties.class);
+        configContext.refresh();
+        configContext.start();
+        AlfredConfigProperties config = configContext.getBean(AlfredConfigProperties.class);
+        int httpPort = config.getHttpPort();
+        configContext.close();
+
         /* Spring Config */
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.setConfigLocation("com.gibbsdevops.alfred.config");
+        context.registerShutdownHook();
+        context.setConfigLocation("com.gibbsdevops.alfred.config.web");
 
         ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
         errorHandler.addErrorPage(404, "/not-found");
@@ -85,10 +95,21 @@ public class App {
         });
 
         /* Setup Server */
-        Server server = new Server(8080);
+        Server server = new Server(httpPort);
         server.setHandler(handlers);
-        server.start();
         server.setStopAtShutdown(true);
+
+        try {
+            server.start();
+        } catch (Exception ex) {
+            LOG.error("Failed to start application server", ex);
+            System.exit(1);
+        }
+
+        long jvmStartTime = ManagementFactory.getRuntimeMXBean().getStartTime();
+        long bootDuration = System.currentTimeMillis() - jvmStartTime;
+        LOG.info("Application startup complete in {}ms", bootDuration);
+
         server.join();
     }
 }

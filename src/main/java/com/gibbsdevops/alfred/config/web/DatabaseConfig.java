@@ -1,4 +1,4 @@
-package com.gibbsdevops.alfred.config;
+package com.gibbsdevops.alfred.config.web;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.flywaydb.core.Flyway;

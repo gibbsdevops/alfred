@@ -34,6 +34,9 @@ public class BuildRunnable implements Runnable {
 
     @Override
     public void run() {
+        if (job == null) throw new IllegalStateException("job is null");
+        if (buildStatusService == null) throw new IllegalStateException("buildStatusService is null");
+
         Thread.currentThread().setName("Builder #" + job.getId());
         LOG.info("Starting Builder #{}", job.getId());
         buildStatusService.starting(job);

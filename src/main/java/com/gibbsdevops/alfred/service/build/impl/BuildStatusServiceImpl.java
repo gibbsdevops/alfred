@@ -4,7 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.gibbsdevops.alfred.dao.AlfredJobDao;
 import com.gibbsdevops.alfred.dao.AlfredJobLineDao;
-import com.gibbsdevops.alfred.model.alfred.*;
+import com.gibbsdevops.alfred.model.alfred.AlfredCommitNode;
+import com.gibbsdevops.alfred.model.alfred.AlfredJob;
+import com.gibbsdevops.alfred.model.alfred.AlfredJobNode;
+import com.gibbsdevops.alfred.model.alfred.JobLine;
 import com.gibbsdevops.alfred.model.alfred.utils.AlfredObjectMapperFactory;
 import com.gibbsdevops.alfred.repository.AlfredRepository;
 import com.gibbsdevops.alfred.service.build.BuildStatusService;
@@ -184,4 +187,5 @@ public class BuildStatusServiceImpl implements BuildStatusService {
     interface AlfredJobUpdate {
         void exec(AlfredJob j);
     }
+
 }

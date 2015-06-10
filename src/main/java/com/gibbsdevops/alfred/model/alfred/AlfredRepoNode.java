@@ -8,6 +8,12 @@ public class AlfredRepoNode {
 
     private AlfredUser owner;
 
+    public static AlfredRepoNode from(AlfredRepo repo) {
+        AlfredRepoNode node = new AlfredRepoNode();
+        node.properties = repo.properties;
+        return node;
+    }
+
     public static AlfredRepoNode from(GHRepository repository) {
         AlfredRepoNode node = new AlfredRepoNode();
         node.properties = AlfredRepoProperties.from(repository);
